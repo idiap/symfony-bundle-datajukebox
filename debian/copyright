@@ -1,0 +1,20 @@
+Data Jukebox Bundle
+Copyright (C) 2015 Idiap Research Institute <http://www.idiap.ch>
+
+The Data Jukebox Bundle is free software:
+you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, Version 3.
+
+The Data Jukebox Bundle is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the GNU General Public License for more details:
+
+  /usr/share/common-licenses/GPL-3
+
+The Data Jukebox Bundle includes all resources which contain
+the mention "Data Jukebox Bundle" in their preamble.
+
+Other resources are (and must be) used according to their original license,
+which is (should be made) available from their respective author.

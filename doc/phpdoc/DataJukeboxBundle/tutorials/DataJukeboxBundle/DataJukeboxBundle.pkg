@@ -1,0 +1,274 @@
+<refentry id="{@id}">
+
+<refnamediv>
+<refname>PHP/Symfony Data Jukebox Bundle</refname>
+<refpurpose>Forget all about views. Concentrate entirely on the model.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<author>
+Idiap Research Institute
+<authorblurb>{@link http://www.idiap.ch/software/symfony-bundle-datajukebox http://www.idiap.ch/software/symfony-bundle-datajukebox}</authorblurb>
+</author>
+</refsynopsisdiv>
+
+<graphic fileref="DataJukeboxBundle.png" />
+
+{@toc}
+
+
+<refsect1 id="{@id whatis}">
+<title>What is the Data Jukebox Bundle ?</title>
+<para>The <firstterm>Data Jukebox Bundle</firstterm> is a <literal>PHP/Symfony</literal> bundle which aims to provide - for common <literal>CRUD</literal> (Create-Read-Update-Delete) operations - the same level of abstraction that <literal>Symfony</literal> does for forms.</para>
+<para>By defining and associating so-called <firstterm>Properties</firstterm> to standard <literal>ORM</literal> (Object Relation Mapper) <literal>Entities</literal>, one can generate fully-featured list and detail views for those entities, as easily as one generates forms.</para>
+<para>The same <literal>Properties</literal> are used to generate <literal>Symfony</literal> forms even easier, by automating the form building process.</para>
+<para>Developpers can thus concentrate entirely on the data model and have all views build automatically, with just a few lines in the corresponding controllers.</para>
+</refsect1>
+
+
+<refsect1 id="{@id specs}">
+<title>Specifications</title>
+
+<refsect2 id="{@id specs_depends}">
+<title>Dependencies</title>
+<itemizedList>
+<listitem>[MUST] <literal>Symfony 2.3</literal> or later</listitem>
+<listitem>[MUST] <literal>PHP 5.4</literal> or later</listitem>
+</itemizedList>
+</refsect2>
+
+<refsect2 id="{@id specs_features}">
+<title>Features</title>
+<itemizedList>
+<listitem>new <literal>DataJukebox</literal> <emphasis>service</emphasis></listitem>
+<listitem>new <literal>Properties</literal> <emphasis>class</emphasis> and corresponding entity <emphasis>annotation</emphasis></listitem>
+<listitem><emphasis>automated list/detail/form view generation</emphasis></listitem>
+<listitem><emphasis>fully-featured list/detail views</emphasis>, including:
+<blockquote><itemizedList>
+<listitem><emphasis>browsing</emphasis> controls ("First", "Previous", "Next", "Last" buttons)</listitem>
+<listitem>fields <emphasis>display</emphasis> (show/hide) controls</listitem>
+<listitem>fields <emphasis>sorting</emphasis> controls (allowing multiple fields criteria)</listitem>
+<listitem>fields <emphasis>filtering</emphasis> controls (using a rich expression language)</listitem>
+<listitem>global <emphasis>search</emphasis> controls (using a rich expression language)</listitem>
+<listitem>CRUD operations controls (view detail, update, delete links and buttons)</listitem>
+</itemizedList></blockquote>
+</listitem>
+<listitem><emphasis>versatile</emphasis> <literal>Properties</literal> control based on the <emphasis>action</emphasis> ('list', 'detail', 'insert', 'update', etc.) and <emphasis>authorization</emphasis> level (user-defined)</listitem>
+<listitem><emphasis>fine-grained</emphasis> <literal>Properties</literal>, including:
+<blockquote><itemizedList>
+<listitem><emphasis>localized fields labels and tooltips</emphasis></listitem>
+<listitem><emphasis>displayable fields</emphasis> (in the list/detail/form views)</listitem>
+<listitem><emphasis>default-displayed fields</emphasis> (for ergonomic presentation of data)</listitem>
+<listitem><emphasis>hidden fields</emphasis> (that must be fetched from the database but not displayed)</listitem>
+<listitem><emphasis>required fields</emphasis> (that may not be hidden or must be data-filled in forms)</listitem>
+<listitem><emphasis>read-only fields</emphasis> (that may not be modified in forms)</listitem>
+<listitem><emphasis>fields default values</emphasis> (when creating new data in forms)</listitem>
+<listitem><emphasis>fields links</emphasis> (for powerful data-driven hyperlinks)</listitem>
+<listitem><emphasis>orderable fields</emphasis> (fields that may be used for data sorting)</listitem>
+<listitem><emphasis>filterable fields</emphasis> (fields that may be used for field-based data filtering)</listitem>
+<listitem><emphasis>searchable fields</emphasis> (fields that are used for global data filtering)</listitem>
+<listitem><emphasis>additional form options</emphasis> (for further customizing forms)</listitem>
+<listitem><emphasis>additional links</emphasis> (for powerful data-driven hyperlinks)</listitem>
+</itemizedList></blockquote>
+</listitem>
+</itemizedList>
+</refsect2>
+
+</refsect1>
+
+
+<refsect1 id="{@id licence}">
+<title>Licensing</title>
+<para>The Data Jukebox Bundle is distributed under the <emphasis>GNU General Public Licence (GPL) Version 3</emphasis>. The PHP Data Jukebox Bundle includes all resources which contain the mention <literal>Data Jukebox Bundle</literal> in their documentation and licensing preamble.</para>
+<para>Other Open Source resources may come bundled with teh Data Jukebox Bundle release packaging; they are (and must be) used according to their original licence (look for copyright-related files in the folder hierarchy).</para>
+</refsect1>
+
+
+<refsect1 id="{@id download}">
+<title>Downloading</title>
+<para>{@link https://github.com/idiap/symfony-bundle-datajukebox/downloads download tree...}</para>
+</refsect1>
+
+
+<refsect1 id="{@id build}">
+<title>Build</title>
+<para><emphasis>NOTE:</emphasis> By &quot;build&quot;, we mean create the necessary tarballs/package required for installation (according to the Installation section below) or distribution.</para>
+
+<refsect2 id="{@id build_tree}">
+<title>[MUST] Obtain the source code</title>
+<screen>
+<![CDATA[
+$ git clone https://github.com/idiap/symfony-bundle-datajukebox
+]]>
+</screen>
+<para>[OR]</para>
+<screen>
+<![CDATA[
+$ tar -xjf symfony-bundle-datajukebox-source-%{VERSION}.tar.bz2
+$ cd symfony-bundle-datajukebox-%{VERSION}
+]]>
+</screen>
+</refsect2>
+
+<refsect2 id="{@id build_source}">
+<title>[MAY] (Re-)build the source tarball</title>
+<screen>
+<![CDATA[
+$ ./debian/rules build-source-tarball
+$ ls -al ../symfony-bundle-datajukebox-source-%{VERSION}.tar.bz2
+]]>
+</screen>
+</refsect2>
+
+<refsect2 id="{@id build_install}">
+<title>[MAY] Build the installation tarball</title>
+<screen>
+<![CDATA[
+$ ./debian/rules build-install-tarball
+$ ls -al ../symfony-bundle-datajukebox-%{VERSION}.tar.bz2
+]]>
+</screen>
+</refsect2>
+
+<refsect2 id="{@id build_doc}">
+<title>[MAY] Build the documentation tarball</title>
+<screen>
+<![CDATA[
+$ ./debian/rules build-doc-tarball
+$ ls -al ../symfony-bundle-datajukebox-doc-%{VERSION}.tar.bz2
+]]>
+</screen>
+</refsect2>
+
+<refsect2 id="{@id build_debian}">
+<title>[MAY] Build the debian packages</title>
+<screen>
+<![CDATA[
+$ debuild -us -uc -b
+$ ls -al ../symfony-bundle-datajukebox_%{VERSION}_all.deb ../symfony-bundle-datajukebox-doc_%{VERSION}_all.deb
+]]>
+</screen>
+</refsect2>
+
+<refsect2 id="{@id build_debian_source}">
+<title>[MAY] Build the debian source package</title>
+<screen>
+<![CDATA[
+$ debuild -I'.git*' -us -uc -S
+$ ls -al ../symfony-bundle-datajukebox_%{VERSION}.dsc ../symfony-bundle-datajukebox_%{VERSION}.tar.gz
+]]>
+</screen>
+</refsect2>
+
+<refsect2 id="{@id build_all}">
+<title>[SHOULD] Do it all with a single command</title>
+<screen>
+<![CDATA[
+$ ./debian/rules release
+]]>
+</screen>
+</refsect2>
+
+</refsect1>
+
+
+<refsect1 id="{@id install}">
+<title>Installation</title>
+<para><emphasis>WARNING: The Data Jukebox Bundle is actively maintained on Linux. It has not been tested on other platforms.</emphasis></para>
+<para><emphasis>NOTE:</emphasis> We assume a previously working PHP/Symfony setup.</para>
+
+<refsect2 id="{@id install_php}">
+<title>[MUST] Install the Data Jukebox Bundle</title>
+
+<refsect3 id="{@id install_php_release}">
+<title>[OR] using the installation tarball</title>
+<screen>
+<![CDATA[
+$ INSTALL_DIR='<installation-directory>'
+$ cd "${INSTALL_DIR}"
+$ tar -xjf symfony-bundle-datajukebox-%{VERSION}.tar.bz2
+]]>
+</screen>
+</refsect3>
+
+<refsect3 id="{@id install_php_debian}">
+<title>[OR] using the debian package</title>
+<screen>
+<![CDATA[
+$ dpkg -i symfony-bundle-datajukebox_%{VERSION}_all.deb
+]]>
+</screen>
+</refsect3>
+
+</refsect2>
+
+<refsect2 id="{@id install_doc}">
+<title>[MAY] Install the Data Jukebox Bundle documentation</title>
+
+<refsect3 id="{@id install_doc_release}">
+<title>[OR] using the documentation tarball</title>
+<screen>
+<![CDATA[
+$ DOC_DIR='<documentation-directory>'
+$ cd "${DOC_DIR}"
+$ tar -xjf symfony-bundle-datajukebox-doc-%{VERSION}.tar.bz2
+]]>
+</screen>
+</refsect3>
+
+<refsect3 id="{@id install_doc_debian}">
+<title>[OR] using the debian package</title>
+<screen>
+<![CDATA[
+$ dpkg -i symfony-bundle-datajukebox-doc_%{VERSION}_all.deb
+]]>
+</screen>
+</refsect3>
+
+<refsect3 id="{@id install_doc_source}">
+<title>[OR] using the source tarball (and PhpDocumentor)</title>
+<screen>
+<![CDATA[
+$ DOC_DIR='<documentation-directory>'
+$ pear install -o PhpDocumentor
+$ tar -xjf symfony-bundle-datajukebox-source-%{VERSION}.tar.bz2
+$ cd symfony-bundle-datajukebox-%{VERSION}
+$ ./doc/util/makedoc DataJukeboxBundle "PHP/Symfony Data Jukebox Bundle" "${DOC_DIR}" src doc/phpdoc
+]]>
+</screen>
+</refsect3>
+
+</refsect2>
+
+</refsect1>
+
+
+<refsect1 id="{@id usage}">
+<title>Usage</title>
+<para>The Data Jukebox Bundle integrates Symfony the same way as any other bundle. Thus, make sure to:</para>
+<itemizedList>
+<listitem>add the corresponding namespace to your application <emphasis>autoload.php</emphasis></listitem>
+<listitem>instantiate the <literal>DataJukeboxBundle</literal> in your application <emphasis>AppKernel.php</emphasis></listitem>
+<listitem>create/update all assets:</listitem>
+<screen>
+<![CDATA[
+$ ./app/console assets:install --symlink --relative <web-directory>
+]]>
+</screen>
+<listitem>dump Assetic resources:</listitem>
+<screen>
+<![CDATA[
+$ ./app/console assetic:dump <web-directory>
+]]>
+</screen>
+</itemizedList>
+<para>Also refer to the <emphasis>Data Jukebox Tutorial (and Bundle)</emphasis> for detailed explanations on how to use the Data Jukebox Bundle and unleash its full power.</para>
+</refsect1>
+
+
+<refsect1 id="{@id documentation}">
+<title>Further documentation</title>
+<para>The full documentation of the Data Jukebox Bundle (including source code) is part of this (phpDocumentor-generated) HTML documentation; make sure to browse through the expandable tree located on the left of this text, as well as switch the documentation context using the drop list located on top of this text.</para>
+</refsect1>
+
+</refentry> 

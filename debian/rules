@@ -1,0 +1,86 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE = 1
+export PACKAGE = symfony-bundle-datajukebox
+export VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
+export VERSION_UPSTREAM := $(shell echo $(VERSION) | sed 's/[-~].*$$//')
+
+.PHONY: build clean install binary-indep binary-arch binary
+
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean build-stamp
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	# Copy PHP resources to Debian package
+	mkdir -p debian/$(PACKAGE)/usr/share/php/symfony/vendor/Idiap
+	cp -r src/DataJukeboxBundle debian/$(PACKAGE)/usr/share/php/symfony/vendor/Idiap/.
+
+	# Install documentation
+	mkdir -p debian/$(PACKAGE)-doc/usr/share/doc/$(PACKAGE)/html
+	./doc/util/makedoc DataJukeboxBundle "PHP/Symfony Data Jukebox Bundle" debian/$(PACKAGE)-doc/usr/share/doc/$(PACKAGE)/html src doc/phpdoc
+	find debian/$(PACKAGE)-doc/usr/share/doc/$(PACKAGE)/html -type f -exec fgrep -q '%{VERSION}' {} \; -exec sed -i "s/%{VERSION}/$(VERSION_UPSTREAM)/g" {} \;
+
+# Build architecture-dependent files here.
+binary-arch: build install
+# We have nothing to do by default.
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installchangelogs
+	dh_compress --exclude=classTree.js
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+
+build-source-tarball:
+	dh_testdir
+	dh_clean build-stamp
+  # Create the source tarball
+	mkdir -p /tmp/$(PACKAGE)-source-$(VERSION)
+	cp -r * /tmp/$(PACKAGE)-source-$(VERSION)/.
+	tar -C /tmp -cjf ../$(PACKAGE)-source-$(VERSION).tar.bz2 $(PACKAGE)-source-$(VERSION)
+	rm -rf /tmp/$(PACKAGE)-source-$(VERSION)
+
+build-install-tarball:
+  # Create the installation tarball
+	mkdir -p /tmp/$(PACKAGE)-$(VERSION)/
+	cp -rp debian/$(PACKAGE)/usr/share/php/symfony/vendor/Idiap /tmp/$(PACKAGE)-$(VERSION)/.
+	tar -C /tmp -cjf ../$(PACKAGE)-$(VERSION).tar.bz2 $(PACKAGE)-$(VERSION)
+	rm -rf /tmp/$(PACKAGE)-$(VERSION)
+
+build-doc-tarball:
+  # Create the documentation tarball
+	mkdir -p /tmp/$(PACKAGE)-doc-$(VERSION)/Idiap/DataJukeboxBundle
+	cp -rp debian/$(PACKAGE)-doc/usr/share/doc/$(PACKAGE)/html/* /tmp/$(PACKAGE)-doc-$(VERSION)/Idiap/DataJukeboxBundle/.
+	tar -C /tmp -cjf ../$(PACKAGE)-doc-$(VERSION).tar.bz2 $(PACKAGE)-doc-$(VERSION)
+	rm -rf /tmp/$(PACKAGE)-doc-$(VERSION)
+
+debian-packages:
+	debuild -us -uc -b
+
+debian-source:
+	debuild -I'.git*' -us -uc -S
+
+release: debian-packages build-install-tarball build-doc-tarball debian-source build-source-tarball
+

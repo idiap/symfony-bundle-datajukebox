@@ -1,0 +1,253 @@
+{# -*- mode:web; web-mode-markup-indent-offset:2; -*- ex: set tabstop=2 expandtab: #}
+{# DataJukeboxBundle\Resources\views\Data\list.html.twig #}
+
+{% block DataJukebox_list -%}
+  <DIV CLASS="DataJukebox"><DIV CLASS="list">
+    <FORM ID="DataJukebox_{{ data.properties.uid }}_form" ACTION="{% if data.properties.routes.list|default(null) and data.properties.routes.list[1]|default(null) %}{{ path(data.properties.routes.list[0], data.properties.routes.list[1]|DataJukebox_map(app.request.attributes.get('_route_params'))) }}{% endif %}" METHOD="GET" ONSUBMIT="javascript:DataJukebox_onSubmit('{{ data.properties.uid|escape('js') }}');">
+      <INPUT TYPE="hidden" ID="_of" NAME="{{ data.browser.uid }}_of" VALUE="{{ data.browser.range.from }}"{% if app.request.query.get(data.browser.uid~'_of') is null %} DISABLED{% endif %} />
+      {% for field in data.properties.fields_order -%}
+        <INPUT TYPE="hidden" ID="_or[]" NAME="{{ data.browser.uid }}_or[]"{% if loop.index0 < data.browser.fields_order|length %} VALUE="{{ data.browser.fields_order[loop.index0][0] }}_{{ data.browser.fields_order[loop.index0][1] }}"{% else %} DISABLED{% endif %} />
+      {% endfor -%}
+      <TABLE CLASS="data">
+        {{ block('DataJukebox_list_header') }}
+        {{ block('DataJukebox_list_rows') }}
+        {{ block('DataJukebox_list_footer') }}
+      </TABLE>
+    </FORM>
+  </DIV></DIV>
+  {{ block('DataJukebox_list_javascript') }}
+{% endblock DataJukebox_list -%}
+
+{% block DataJukebox_list_header -%}
+  <TR CLASS="header"><TD COLSPAN="999">
+    {{ block('DataJukebox_list_display') }}
+    {% if data.properties.labels._title_list|default(null) -%}
+      <DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_list|default(null) %} TITLE="{{ data.properties.tooltips._title_list }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_list }}{% if data.properties.action == 'select' %} ({{ data.properties.labels._action_select }}){% endif %}</LABEL></DIV>
+    {% endif -%}
+    {{ block('DataJukebox_list_search') }}
+    <DIV STYLE="CLEAR:both;"></DIV></TD></TR>
+  {{ block('DataJukebox_list_label') }}
+  {{ block('DataJukebox_list_filter') }}
+{% endblock DataJukebox_list_header -%}
+
+{% block DataJukebox_list_display -%}
+  <DIV CLASS="display" STYLE="POSITION:relative;">
+    <A HREF="javascript:;" ONCLICK="javascript:document.getElementById('DataJukebox_{{ data.properties.uid }}_display').style.display='inline';"><SPAN CLASS="icon">&#x21f2;</SPAN></A>
+    <DIV CLASS="overlay" ID="DataJukebox_{{ data.properties.uid }}_display" STYLE="POSITION:absolute;DISPLAY:none;">
+      <INPUT TYPE="hidden" ID="_fd[]" NAME="{{ data.browser.uid }}_fd[]" VALUE="1" DISABLED />
+      <TABLE>
+        <TR><TD COLSPAN="2"><TABLE ID="_top"><TR><TD CLASS="action" ID="_display_close"><A HREF="javascript:;" ONCLICK="javascript:document.getElementById('DataJukebox_{{ data.properties.uid }}_display').style.display='none';"><SPAN CLASS="icon">&#x21f1;</SPAN></A></TD><TD CLASS="title"><LABEL{% if data.properties.tooltips._display|default(null) %} TITLE="{{ data.properties.tooltips._display }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._display }}</LABEL></TD><TD CLASS="action" ID="_display_reset"{% if data.properties.tooltips._display_reset|default(null) %} TITLE="{{ data.properties.tooltips._display_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displayReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD><TD CLASS="action" ID="_display_submit"{% if data.properties.tooltips._display_submit|default(null) %} TITLE="{{ data.properties.tooltips._display_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displaySubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD></TR></TABLE></TD></TR>
+        {% for field in data.properties.fields -%}
+          {%- if field not in data.properties.fields_hidden -%}
+            <TR><TD CLASS="field"><LABEL{% if attribute(data.properties.tooltips, field)|default(null) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}</TD><TD CLASS="input"><INPUT TYPE="checkbox"{% if field not in data.properties.fields_required %} ID="_fd[]" NAME="{{ data.browser.uid }}_fd[]"{% endif %} VALUE="{{ field }}{% if app.request.query.get(data.browser.uid~'_fd') is null %} {% endif %}" ONCHANGE="javascript:this.value=this.value.trim()"{% if field in data.properties.fields_required or field in data.browser.fields %} CHECKED{% endif %}{% if field in data.properties.fields_required%} DISABLED{% endif %} /></TD></TR>
+          {% endif -%}
+        {%- endfor -%}
+        {% for field in data.properties.fields_search -%}
+          {%- if field not in data.properties.fields -%}
+            <TR><TD CLASS="field"><LABEL{% if attribute(data.properties.tooltips, field)|default(null) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}</TD><TD CLASS="input"><INPUT TYPE="checkbox" DISABLED /></TD></TR>
+          {% endif -%}
+        {%- endfor -%}
+        <TR><TD COLSPAN="2"><TABLE ID="_bottom"><TR><TD CLASS="action" ID="_display_reset"{% if data.properties.tooltips._display_reset|default(null) %} TITLE="{{ data.properties.tooltips._display_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displayReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD><TD CLASS="action" ID="_display_submit"{% if data.properties.tooltips._display_submit|default(null) %} TITLE="{{ data.properties.tooltips._display_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displaySubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD></TR></TABLE></TD></TR>
+      </TABLE>
+    </DIV>
+  </DIV>
+{% endblock DataJukebox_list_display -%}
+
+{% block DataJukebox_list_search -%}
+  {%- set search_valid = false %}{% for field in data.browser.fields %}{% if field in data.properties.fields_search %}{% set search_valid = true %}{% endif %}{% endfor -%}
+  {%- set filter_valid = false %}{% for field in data.browser.fields %}{% if field not in data.properties.fields_hidden and field in data.properties.fields_filter %}{% set filter_valid = true %}{% endif %}{% endfor %}
+  {% if search_valid or filter_valid -%}
+  <DIV CLASS="search"><TABLE><TR>
+    <TD CLASS="title"{% if data.properties.tooltips._search|default(null) %} TITLE="{{ data.properties.tooltips._search }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x2699;</SPAN>{% if data.properties.labels._search|default(null) %}&nbsp;<LABEL>{{ data.properties.labels._search }}</LABEL>{% endif %}</TD><TD CLASS="action" ID="_search_reset"{% if data.properties.tooltips._search_reset|default(null) %} TITLE="{{ data.properties.tooltips._search_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD>{% if search_valid %}<TD CLASS="input" ID="_search"><INPUT TYPE="text" ID="_sh" NAME="{{ data.browser.uid }}_sh" VALUE="{{ data.browser.search }}" ONKEYPRESS="javacript:DataJukebox_submitOnEnter('{{ data.properties.uid|escape('js') }}',event);" /></TD>{% endif %}<TD CLASS="action" ID="_search_submit"{% if data.properties.tooltips._search_submit|default(null) %} TITLE="{{ data.properties.tooltips._search_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchSubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD>
+  </TR></TABLE></DIV>
+  {% endif -%}
+{% endblock DataJukebox_list_search -%}
+
+{% block DataJukebox_list_label -%}
+  <TR CLASS="label">
+    {%- if data.properties.routes.select_route|default(null) or data.properties.routes.select_delete|default(null) -%}
+      <TH CLASS="action" ID="_pkToggle"><INPUT TYPE="checkbox" NAME="_pkToggle" ONCLICK="javascript:DataJukebox_pkToggle('{{ data.properties.uid|escape('js') }}');" /></TH>
+    {%- endif -%}
+    {%- if data.properties.routes.detail|default(null) -%}
+      <TH CLASS="action" ID="_detail"></TH>
+    {%- endif -%}
+    {%- if data.properties.routes.update|default(null) -%}
+      <TH CLASS="action" ID="_update"></TH>
+    {%- endif -%}
+    {%- if data.properties.routes.delete|default(null) -%}
+      <TH CLASS="action" ID="_delete"></TH>
+    {%- endif -%}
+    {%- for field in data.browser.fields -%}
+      {%- if field not in data.properties.fields_hidden -%}
+        <TH CLASS="field" ID="{{ field }}"><LABEL{% if attribute(data.properties.tooltips, field)|default(null) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}{% if field in data.properties.fields_order %}<SPAN CLASS="order"><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_order('{{ data.properties.uid|escape('js') }}', '{{ field|escape('js') }}','A');"><SPAN CLASS="icon">&#x21e3;</SPAN></A><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_order('{{ data.properties.uid|escape('js') }}', '{{ field|escape('js') }}','D');"><SPAN CLASS="icon">&#x21e1;</SPAN></A></SPAN>{% endif %}</TH>
+      {%- endif -%}
+    {%- endfor -%}
+  </TR>
+{% endblock DataJukebox_list_label -%}
+
+{% block DataJukebox_list_filter -%}
+  {% set filter_valid=false %}{% for field in data.browser.fields %}{% if field not in data.properties.fields_hidden and field in data.properties.fields_filter %}{% set filter_valid = true %}{% endif %}{% endfor -%}
+  {%- if filter_valid -%}
+  <TR CLASS="filter">
+    {%- if data.properties.routes.select_route|default(null) or data.properties.routes.select_delete|default(null) -%}
+      <TH CLASS="action" ID="_pk"></TH>
+    {%- endif -%}
+    {%- if data.properties.routes.detail|default(null) -%}
+      <TH CLASS="action" ID="_detail"></TH>
+    {%- endif -%}
+    {%- if data.properties.routes.update|default(null) -%}
+      <TH CLASS="action" ID="_update"></TH>
+    {%- endif -%}
+    {%- if data.properties.routes.delete|default(null) -%}
+      <TH CLASS="action" ID="_delete"></TH>
+    {%- endif -%}
+    {%- for field in data.browser.fields -%}
+      {%- if field not in data.properties.fields_hidden -%}
+        <TH CLASS="input" ID="{{ field }}">{% if field in data.properties.fields_filter %}<INPUT TYPE="text" ID="{{ field }}" NAME="{{ data.browser.uid }}{{ field }}" VALUE="{% if field in data.browser.fields_filter|keys %}{{ attribute(data.browser.fields_filter, field) }}{% endif %}" ONKEYPRESS="javacript:DataJukebox_submitOnEnter('{{ data.properties.uid|escape('js') }}',event);" />{% endif %}</TH>
+      {%- endif -%}
+    {%- endfor -%}
+  </TR>
+  {%- endif %}
+{% endblock DataJukebox_list_filter -%}
+
+{% block DataJukebox_list_rows -%}
+  {%- if data.rows|length -%}
+    {%- for row in data.rows -%}
+      {{ block('DataJukebox_list_row') }}
+    {% endfor -%}
+  {%- else -%}
+    <TR CLASS="odd"><TD CLASS="empty" COLSPAN="999">{{ data.properties.labels._data_empty }}</TD></TR>
+  {% endif -%}
+{% endblock DataJukebox_list_rows -%}
+
+{% block DataJukebox_list_row -%}
+  {%- set row_keys=row|keys -%}
+  <TR CLASS="{{ cycle(['odd','even'], loop.index0) }}">
+    {%- if data.properties.routes.select_route|default(null) or data.properties.routes.select_delete|default(null) -%}
+      <TD CLASS="action" ID="_pk">{% if data.properties.routes.select_route|default(null) or row.DeleteAllowed is not defined or row.DeleteAllowed %}<INPUT TYPE="checkbox" NAME="_pk[]" VALUE="{{ row._PK }}" />{% endif %}</TD>
+    {%- endif -%}
+    {%- if data.properties.routes.detail|default(null) -%}
+      <TD CLASS="action" ID="_detail"><A HREF="{% if data.properties.routes.detail[1]|default(null) %}{{ path(data.properties.routes.detail[0], data.properties.routes.detail[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.detail[0], {'_pk': row._PK}) }}{% endif %}"><SPAN CLASS="icon">&#x2299;</SPAN></A></TD>
+    {%- endif -%}
+    {%- if data.properties.routes.update|default(null) -%}
+      <TD CLASS="action" ID="_update">{% if row.UpdateAllowed is not defined or row.UpdateAllowed %}<A HREF="{% if data.properties.routes.update[1]|default(null) %}{{ path(data.properties.routes.update[0], data.properties.routes.update[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.update[0], {'_pk': row._PK}) }}{% endif %}"><SPAN CLASS="icon">&#x2298;</SPAN></A>{% endif %}</TD>
+    {%- endif -%}
+    {%- if data.properties.routes.delete|default(null) -%}
+      <TD CLASS="action" ID="_delete">{% if row.DeleteAllowed is not defined or row.DeleteAllowed %}<A HREF="{% if data.properties.routes.delete[1]|default(null) %}{{ path(data.properties.routes.delete[0], app.request.query.all|merge(data.properties.routes.delete[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ path(data.properties.routes.delete[0], app.request.query.all|merge({'_pk': row._PK})) }}{% endif %}" ONCLICK="javascript:return DataJukebox_confirmDelete('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x2297;</SPAN></A>{% endif %}</TD>
+    {%- endif -%}
+    {%- for field in data.browser.fields -%}
+      {%- if field not in data.properties.fields_hidden -%}
+        <TD CLASS="value" ID="{{ field }}">
+          {%- set value=attribute(row, field) -%}
+          {%- set field_formatted=field~'|format' %}{% if field_formatted in row_keys %}{% set value_formatted=attribute(row, field_formatted) %}{% else %}{% set value_formatted=value|DataJukebox_format %}{% endif -%}
+          {%- set disabled=false -%}{% if row.Disabled|default(null) %}{% set disabled=row.Disabled %}{% endif -%}
+          {%- if disabled %}<SPAN CLASS="disabled">{% endif -%}
+            {%- if value|length and field in data.properties.fields_link|keys -%}
+          {%- set link=attribute(data.properties.fields_link, field) -%}
+          {%- if link[0] == 'path' -%}
+            <A HREF="{% if link[2]|default(null) %}{{ path(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(link[1]) }}{% endif %}">{{ value_formatted|raw }}</A>
+          {%- elseif link[0] == 'path+query' -%}
+            <A HREF="{% if link[2]|default(null) %}{{ path(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ path(link[1], app.request.query.all) }}{% endif %}">{{ value_formatted|raw }}</A>
+          {%- elseif link[0] == 'url' -%}
+            <A HREF="{% if link[2]|default(null) %}{{ url(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ url(link[1]) }}{% endif %}">{{ value_formatted|raw }}</A>
+          {%- elseif link[0] == 'url+query' -%}
+            <A HREF="{% if link[2]|default(null) %}{{ url(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ url(link[1], app.request.query.all) }}{% endif %}">{{ value_formatted|raw }}</A>
+          {%- else -%}
+            {{ value_formatted|raw }}
+          {%- endif -%}
+        {%- else -%}
+          {{ value_formatted|raw }}
+        {%- endif -%}
+        {%- if disabled %}</SPAN>{% endif -%}
+        </TD>
+      {%- endif -%}
+    {%- endfor -%}
+  </TR>
+{% endblock DataJukebox_list_row -%}
+
+{% block DataJukebox_list_footer -%}
+  <TR CLASS="footer"><TD COLSPAN="999">
+    {{ block('DataJukebox_list_browser') }}
+    {{ block('DataJukebox_list_actions') }}
+    {{ block('DataJukebox_list_links') }}
+    {{ block('DataJukebox_list_help') }}
+  <DIV STYLE="CLEAR:both;"></TD></TR>
+{% endblock DataJukebox_list_footer -%}
+
+{% block DataJukebox_list_browser -%}
+  <DIV CLASS="browser"><TABLE><TR>
+    {% set browse_valid = data.browser.range.from > 0 %}{% set browse_from = 0 %}<TD CLASS="action" ID="_begin"{% if browse_valid and data.properties.tooltips._range_begin|default(null) %} TITLE="{{ data.properties.tooltips._range_begin }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x21e4;</SPAN>{% if data.properties.labels._range_begin|default(null) %}<LABEL>{{ data.properties.labels._range_begin }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
+    {% set browse_valid = data.browser.range.from > 0 %}{% set browse_from = max(0,data.browser.range.from-data.browser.range.limit) %}<TD CLASS="action" ID="_previous"{% if browse_valid and data.properties.tooltips._range_previous|default(null) %} TITLE="{{ data.properties.tooltips._range_previous }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x219e;</SPAN>{% if data.properties.labels._range_previous|default(null) %}<LABEL>{{ data.properties.labels._range_previous }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
+    <TD CLASS="range" ID="_range">{{ data.browser.range.from+1 }}-{{ data.browser.range.to+1 }}/{{ data.browser.range.count }}</TD>
+    <TD CLASS="input" ID="_limit"{% if data.properties.tooltips._range_limit|default(null) %} TITLE="{{ data.properties.tooltips._range_limit }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x2263;</SPAN><INPUT TYPE="text" ID="_lt" NAME="{{ data.browser.uid }}_lt" PATTERN="[0-9]{1,3} ?" VALUE="{{ data.browser.range.limit }}{% if app.request.query.get(data.browser.uid~'_lt') is null %} {% endif %}" ONFOCUS="javascript:this.value=this.value.trim();" ONKEYPRESS="javacript:DataJukebox_submitOnEnter('{{ data.properties.uid|escape('js') }}',event);" /></TD>
+    {% set browse_valid = data.browser.range.to < data.browser.range.count-1 %}{% set browse_from = min(data.browser.range.count-1, data.browser.range.from+data.browser.range.limit) %}<TD CLASS="action" ID="_next"{% if browse_valid and data.properties.tooltips._range_next|default(null) %} TITLE="{{ data.properties.tooltips._range_next }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x21a0;</SPAN>{% if data.properties.labels._range_next|default(null) %}<LABEL>{{ data.properties.labels._range_next }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
+    {% set browse_valid = data.browser.range.to < data.browser.range.count-1 %}{% set browse_from = min(data.browser.range.count-1, data.browser.range.count-data.browser.range.count%data.browser.range.limit) %}<TD CLASS="action" ID="_end"{% if browse_valid and data.properties.tooltips._range_end|default(null) %} TITLE="{{ data.properties.tooltips._range_end }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x21e5;</SPAN>{% if data.properties.labels._range_end|default(null) %}<LABEL>{{ data.properties.labels._range_end }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
+  </TR></TABLE></DIV>
+{% endblock DataJukebox_list_browser -%}
+
+{% block DataJukebox_list_actions -%}
+  <DIV CLASS="action"><TABLE><TR>
+    {% if data.properties.routes.select_route|default(null) -%}
+      <TD CLASS="action" ID="_select"{% if data.properties.tooltips._action_select|default(null) %} TITLE="{{ data.properties.tooltips._action_select }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:if (DataJukebox_confirmSelect('{{ data.properties.uid|escape('js') }}')) DataJukebox_select('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x2611;</SPAN>{% if data.properties.labels._action_select|default(null) %}<LABEL>{{ data.properties.labels._action_select }}</LABEL>{% endif %}</A></TD>
+    {% endif -%}
+    {% if data.properties.routes.insert|default(null) -%}
+      <TD CLASS="action" ID="_insert"{% if data.properties.tooltips._action_insert|default(null) %} TITLE="{{ data.properties.tooltips._action_insert }}"{% endif %}><A HREF="{% if data.properties.routes.insert[1]|default(null) %}{{ path(data.properties.routes.insert[0], app.request.query.all|merge(data.properties.routes.insert[1]|DataJukebox_map(app.request.attributes.get('_route_params')))) }}{% else %}{{ path(data.properties.routes.insert[0], app.request.query.all) }}{% endif %}"><SPAN CLASS="icon">&#x2295;</SPAN>{% if data.properties.labels._action_insert|default(null) %}<LABEL>{{ data.properties.labels._action_insert }}<LABEL>{% endif %}</A></TD>
+    {% endif -%}
+    {% if data.properties.routes.select_delete|default(null) -%}
+      <TD CLASS="action" ID="_delete"{% if data.properties.tooltips._action_delete|default(null) %} TITLE="{{ data.properties.tooltips._action_delete }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:if (DataJukebox_confirmDelete('{{ data.properties.uid|escape('js') }}')) DataJukebox_delete('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x2297;</SPAN>{% if data.properties.labels._action_delete|default(null) %}<LABEL>{{ data.properties.labels._action_delete }}</LABEL>{% endif %}</A></TD>
+    {% endif -%}
+  </TR></TABLE></DIV>
+{% endblock DataJukebox_list_actions -%}
+
+{% block DataJukebox_list_links -%}
+  {%- if data.properties.footer_links|length -%}
+    <DIV CLASS="links"><TABLE><TR>
+      {% for id, link in data.properties.footer_links -%}
+        {%- set label=id %}{% if id in data.properties.labels|keys %}{% set label=attribute(data.properties.labels, id) %}{% endif -%}
+        {%- set tooltip='' -%}{% if id in data.properties.tooltips|keys %}{% set tooltip=attribute(data.properties.tooltips, id) %}{% endif -%}
+        <TD CLASS="action" ID="{{ id }}">
+          {%- if link[0] == 'path' -%}
+            <A HREF="{% if link[2]|default(null) %}{{ path(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params'))) }}{% else %}{{ path(link[1]) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+          {%- elseif link[0] == 'path+query' -%}
+              <A HREF="{% if link[2]|default(null) %}{{ path(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')))) }}{% else %}{{ path(link[1], app.request.query.all) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+          {%- elseif link[0] == 'url' -%}
+                <A HREF="{% if link[2]|default(null) %}{{ url(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params'))) }}{% else %}{{ url(link[1]) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+          {%- elseif link[0] == 'url+query' -%}
+                  <A HREF="{% if link[2]|default(null) %}{{ url(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')))) }}{% else %}{{ url(link[1], app.request.query.all) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+          {%- elseif link[0] == 'href' -%}
+                    <A HREF="{{ link[1] }}" TARGET="{{ link[2] }}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+          {%- endif -%}
+          {% if link[3]|default(null) %}<SPAN CLASS="icon">{{ link[3] }}</SPAN>{% endif %}<LABEL>{{ label }}</LABEL></A></TD>
+      {% endfor -%}
+    </TR></TABLE></DIV>
+  {% endif -%}
+{% endblock DataJukebox_list_links -%}
+
+{% block DataJukebox_list_help -%}
+  <DIV CLASS="help"><TABLE><TR>
+    {% if data.properties.routes.detail|default(null) and data.properties.labels._view_detail|default(null) -%}
+      <TD CLASS="help" ID="_detail"{% if data.properties.tooltips._view_detail|default(null) %} TITLE="{{ data.properties.tooltips._view_detail }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x2299;</SPAN><LABEL>{{ data.properties.labels._view_detail }}</LABEL></TD>
+    {% endif -%}
+    {% if data.properties.routes.update|default(null) and data.properties.labels._action_update|default(null) -%}
+      <TD CLASS="help" ID="_update"{% if data.properties.tooltips._action_update|default(null) %} TITLE="{{ data.properties.tooltips._action_update }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x2298;</SPAN><LABEL>{{ data.properties.labels._action_update }}</LABEL></TD>
+    {% endif -%}
+    {% if data.properties.routes.delete|default(null) or data.properties.routes.select_delete|default(null) and data.properties.labels._action_delete|default(null) -%}
+      <TD CLASS="help" ID="_delete"{% if data.properties.tooltips._action_delete|default(null) %} TITLE="{{ data.properties.tooltips._action_delete }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x2297;</SPAN><LABEL>{{ data.properties.labels._action_delete }}</LABEL></TD>
+    {% endif -%}
+    {% if data.properties.labels._display_order|default(null) -%}
+      <TD CLASS="help" ID="_order"{% if data.properties.tooltips._display_order|default(null) %} TITLE="{{ data.properties.tooltips._display_order }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x21e3;</SPAN><SPAN CLASS="icon">&#x21e1;</SPAN><LABEL>{{ data.properties.labels._display_order }}</LABEL></TD>
+    {% endif -%}
+  </TR></TABLE></DIV>
+{% endblock DataJukebox_list_help -%}
+
+{% block DataJukebox_list_javascript -%}
+  <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">/*<![CDATA[*/
+    DataJukebox_init(
+      '{{ data.properties.uid|escape('js') }}',
+      '{% if data.properties.routes.select_delete|default(null) %}{% if data.properties.routes.select_delete[1]|default(null) %}{{ path(data.properties.routes.select_delete[0], app.request.query.all|merge(data.properties.routes.select_delete[1]|DataJukebox_map(app.request.attributes.get('_route_params'))))|escape('js') }}{% else %}{{ path(data.properties.routes.select_delete[0], app.request.query.all)|escape('js') }}{% endif %}{% endif %}',
+      '{% if data.properties.routes.select_route|default(null) %}{% if data.properties.routes.select_route[1]|default(null) %}{{ path(data.properties.routes.select_route[0], data.properties.routes.select_route[1]|DataJukebox_map(app.request.attributes.get('_route_params')))|escape('js') }}{% else %}{{ path(data.properties.routes.select_route[0])|escape('js') }}{% endif %}{% endif %}',
+      '{% if data.properties.labels._action_delete_confirm|default(null) %}{{ data.properties.labels._action_delete_confirm|escape('js') }}{% if data.properties.tooltips._action_delete_confirm|default(null) %}\n{{ data.properties.tooltips._action_delete_confirm|escape('js') }}{% endif %}{% endif %}',
+      '{% if data.properties.labels._action_select_confirm|default(null) %}{{ data.properties.labels._action_select_confirm|escape('js') }}{% if data.properties.tooltips._action_select_confirm|default(null) %}\n{{ data.properties.tooltips._action_select_confirm|escape('js') }}{% endif %}{% endif %}'
+    );
+  /*]]>*/</SCRIPT>
+{% endblock DataJukebox_list_javascript -%}

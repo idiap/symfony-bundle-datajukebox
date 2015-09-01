@@ -1,0 +1,11 @@
+{# -*- mode:web; web-mode-markup-indent-offset:2; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab: #}
+{# DataJukeboxBundle/Resources/views/Default/form.html.twig #}
+{% extends '::base.html.twig' %}
+{% form_theme form 'DataJukeboxBundle:DataJukebox:form.html.twig' %}
+
+{% block body %}
+{{ parent() }}
+<!-- BEGIN: DataJukeboxBundle\Resources\views\Default\form.html.twig -->
+{{ form(form) }}
+<!-- BEGIN: DataJukeboxBundle\Resources\views\Default\form.html.twig -->
+{% endblock %}

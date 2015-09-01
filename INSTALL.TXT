@@ -1,0 +1,114 @@
+Data Jukebox Bundle
+===================
+
+
+BUILD
+-----
+
+NOTE: By "build", we mean create the necessary tarballs/package required for
+      installation (according to the INSTALL section below) or distribution.
+
+1. [MUST] Obtain the source tarball:
+
+   $ git clone https://github.com/idiap/symfony-bundle-datajukebox
+
+   OR
+
+   $ tar -xjf symfony-bundle-datajukebox-source-%{VERSION}.tar.bz2
+   $ cd symfony-bundle-datajukebox-source-%{VERSION}
+
+2. [MAY] (Re-)build the source tarball:
+
+   $ ./debian/rules build-source-tarball
+   $ ls -al ../symfony-bundle-datajukebox-source-%{VERSION}.tar.bz2
+
+3. [MAY] Build the installation tarball:
+
+   $ ./debian/rules build-install-tarball
+   $ ls -al ../symfony-bundle-datajukebox-%{VERSION}.tar.bz2
+
+4. [MAY] Build the documentation tarball:
+
+   $ ./debian/rules build-doc-tarball
+   $ ls -al ../symfony-bundle-datajukebox-doc-%{VERSION}.tar.bz2
+
+5. [MAY] Build the debian packages:
+
+   $ debuild -us -uc -b
+   $ ls -al ../symfony-bundle-datajukebox_%{VERSION}_all.deb ../symfony-bundle-datajukebox-doc_%{VERSION}_all.deb
+
+6. [MAY] Build the debian source package:
+
+   $ debuild -I'.git*' -us -uc -S
+   $ ls -al ../symfony-bundle-datajukebox_%{VERSION}.dsc ../symfony-bundle-datajukebox_%{VERSION}.tar.gz
+
+OR
+
+2-6. [SHOULD] Do it all with a single command
+
+   $ ./debian/rules release
+
+
+INSTALL
+-------
+
+WARNING:
+   The Data Jukebox Bundle is actively maintained on Linux.
+   It has not been tested on other platforms.
+
+NOTE:
+   We assume a previously working PHP/Symfony setup.
+
+1. [MUST] Install the Data Jukebox Bundle:
+
+   a. using the installation tarball:
+
+      $ INSTALL_DIR='<installation-directory>'
+      $ cd "${INSTALL_DIR}"
+      $ tar -xjf symfony-bundle-datajukebox-%{VERSION}.tar.bz2
+
+   OR
+
+   b. using the debian package:
+
+      $ dpkg -i symfony-bundle-datajukebox_%{VERSION}_all.deb
+
+2. [MAY] Install the Data Jukebox Bundle documentation:
+
+   a. using the documentation tarball:
+
+      $ DOC_DIR='<documentation-directory>'
+      $ cd "${DOC_DIR}"
+      $ tar -xjf symfony-bundle-datajukebox-doc-%{VERSION}.tar.bz2
+
+   OR
+
+   b. using the debian package:
+
+      $ dpkg -i symfony-bundle-datajukebox-doc_%{VERSION}_all.deb
+
+   OR
+
+   c. using the source tarball (and PhpDocumentor):
+   
+      $ DOC_DIR='<documentation-directory>'
+      $ pear install -o PhpDocumentor
+      $ tar -xjf symfony-bundle-datajukebox-source-%{VERSION}.tar.bz2
+      $ cd symfony-bundle-datajukebox-%{VERSION}
+      $ ./doc/util/makedoc DataJukeboxBundle "PHP/Symfony Data Jukebox Bundle" "${DOC_DIR}" src doc/phpdoc
+
+
+USAGE
+-----
+
+The Data Jukebox Bundle integrates Symfony the same way as any other
+bundle. Thus, make sure to:
+ - add the corresponding namespace to your application 'autoload.php'
+ - instantiate the DataJukeboxBundle in your application 'AppKernel.php'
+ - create/update all assets:
+      $ ./app/console assets:install --symlink --relative <web-directory>
+ - dump Assetic resources:
+      $ ./app/console assetic:dump <web-directory>
+
+Also refer to the Data Jukebox Tutorial (and Bundle) for detailed explanations
+on how to use the Data Jukebox Bundle and unleash its full power.

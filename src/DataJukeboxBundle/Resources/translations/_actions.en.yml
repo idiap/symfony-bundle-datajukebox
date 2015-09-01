@@ -1,0 +1,49 @@
+label:
+  _view_list: List
+  _view_detail: Detail
+  _action_insert: Add
+  _action_update: Edit
+  _action_delete: Delete
+  _action_delete_confirm: PLEASE CONFIRM !
+  _action_select: Select
+  _action_select_confirm: ''
+  _action_form_submit: Submit
+  _action_form_reset: Reset
+  _action_form_cancel: Cancel
+  _action_view_back: Back
+  _display: Fields
+  _display_order: Order
+  _search: Search
+  _range_begin: First
+  _range_previous: Previous
+  _range_next: Next
+  _range_end: Last
+  _data_empty: NO DATA
+  _data_required: Required
+
+tooltip:
+  _view_list: View data list
+  _view_detail: View data detail
+  _action_insert: Add new data
+  _action_update: Edit data
+  _action_delete: Delete data
+  _action_delete_confirm: Do you really want to delete those data ? This action cannot be undone !
+  _action_select: Select the checked data
+  _action_select_confirm: ''
+  _action_form_submit: Submit the data
+  _action_form_reset: Reset the data to their initial value
+  _action_form_cancel: Cancel the current operation
+  _action_view_back: Go back to the previous or parent view
+  _display: Select data fields (columns) to display
+  _display_submit: Refresh the view according to selected fields
+  _display_reset: Reset the view to default fields
+  _display_order: Order data according to selected fields (click: set; double-click: add/replace)
+  _search: Search matching data
+  _search_submit: Launch the search with the given criteria
+  _search_reset: Clear all search criteria
+  _range_begin: Go to first page
+  _range_previous: Go to previous page
+  _range_next: Go to next page
+  _range_end: Go to last page
+  _range_limit: Quantity of data (rows) to display
+  _data_required: Required field/data

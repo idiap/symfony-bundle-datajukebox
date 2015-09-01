@@ -1,0 +1,98 @@
+/* -*- mode:css; css-indent-offset:2; -*- ex: set tabstop=2 expandtab: */
+/* DataJukeboxBundle\Resources\public\css\DataJukebox.css */
+
+DIV.DataJukebox A { COLOR:blue; FONT-WEIGHT:bold; TEXT-DECORATION:none; }
+DIV.DataJukebox LABEL { CURSOR:inherit; FONT-WEIGHT:bold; WHITE-SPACE:nowrap; }
+DIV.DataJukebox TABLE { PADDING:0px; BORDER:none; BORDER-COLLAPSE:collapse; }
+DIV.DataJukebox TH { PADDING:1px 2px; TEXT-ALIGN:left; VERTICAL-ALIGN:top; }
+DIV.DataJukebox TD { PADDING:1px 2px; VERTICAL-ALIGN:top; }
+DIV.DataJukebox INPUT { MARGIN:0px; PADDING:1px; }
+DIV.DataJukebox INPUT[TYPE='checkbox'] { MARGIN:0px; PADDING:0px; }
+DIV.DataJukebox TEXTAREA { MARGIN:0px; PADDING:1px; }
+DIV.DataJukebox TR.header { BACKGROUND:#B0B0B0; }
+DIV.DataJukebox TR.even { BACKGROUND:#F0F0F0; }
+DIV.DataJukebox TR.odd { BACKGROUND:#FFFFFF; }
+DIV.DataJukebox TR.footer { BACKGROUND:#B0B0B0; }
+DIV.DataJukebox SPAN.icon { MARGIN:0px 2px; FONT-WEIGHT:bold; }
+DIV.DataJukebox .value A { FONT-WEIGHT:normal; }
+DIV.DataJukebox .disabled { FONT-STYLE:italic; }
+DIV.DataJukebox .required SPAN.icon { COLOR:#B00000; }
+DIV.DataJukebox .errors { COLOR:#B00000; FONT-WEIGHT:bold; }
+DIV.DataJukebox .errors UL { MARGIN:1px; }
+DIV.DataJukebox .help { FONT-WEIGHT:bold; }
+
+DIV.DataJukebox DIV.title { FLOAT:left; MARGIN-RIGHT:5px; }
+DIV.DataJukebox DIV.title LABEL { TEXT-DECORATION:underline; }
+DIV.DataJukebox DIV.action { FLOAT:left; }
+DIV.DataJukebox DIV.links { FLOAT:left; }
+DIV.DataJukebox DIV.help { FLOAT:right; }
+DIV.DataJukebox TABLE.data { MIN-WIDTH:360px; }
+DIV.DataJukebox TABLE.data TD.empty { TEXT-ALIGN:center; COLOR:#606060; }
+
+DIV.DataJukebox DIV.list TABLE.data TH { BACKGROUND:#D0D0D0; }
+DIV.DataJukebox DIV.list TABLE.data TR.filter TH { MARGIN:0px; PADDING:0px; }
+DIV.DataJukebox DIV.list TABLE.data TR.filter INPUT { WIDTH:95%; MARGIN:0px 0px 2px; }
+DIV.DataJukebox DIV.list TABLE.data TH.action { WIDTH:16px; PADDING:2px 0px; TEXT-ALIGN:center; }
+DIV.DataJukebox DIV.list TABLE.data TH.field { MIN-WIDTH:120px; MAX-WIDTH:360px; WORD-WRAP:break-word; }
+DIV.DataJukebox DIV.list TABLE.data TD.value { MIN-WIDTH:120px; MAX-WIDTH:360px; WORD-WRAP:break-word; }
+DIV.DataJukebox DIV.list TABLE.data TR.odd TD.action { WIDTH:16px; PADDING:2px 0px; TEXT-ALIGN:center; }
+DIV.DataJukebox DIV.list TABLE.data TR.even TD.action { WIDTH:16px; PADDING:2px 0px; TEXT-ALIGN:center; }
+DIV.DataJukebox DIV.list TABLE.data #_pkToggle { PADDING-TOP:3px; }
+DIV.DataJukebox DIV.list TABLE.data #_pk { PADDING-TOP:4px; }
+DIV.DataJukebox DIV.list DIV.browser { CLEAR:both; }
+DIV.DataJukebox DIV.list DIV.browser TABLE { WIDTH:auto; MARGIN-LEFT:auto; MARGIN-RIGHT:auto; }
+
+DIV.DataJukebox DIV.list DIV.search { FLOAT:right; }
+DIV.DataJukebox DIV.list DIV.search TD { PADDING-TOP:2px; }
+DIV.DataJukebox DIV.list DIV.search TD.input { PADDING-TOP:0px; }
+
+DIV.DataJukebox DIV.list DIV.browser LABEL { FONT-WEIGHT:normal; }
+DIV.DataJukebox DIV.list DIV.browser A LABEL { FONT-WEIGHT:bold; }
+DIV.DataJukebox DIV.list DIV.browser TD { PADDING-TOP:2px; COLOR:#606060; }
+DIV.DataJukebox DIV.list DIV.browser TD.value { PADDING-LEFT:10px; FONT-WEIGHT:bold; COLOR:#000000; }
+DIV.DataJukebox DIV.list DIV.browser TD.input { PADDING:0px 10px 5px; FONT-WEIGHT:bold; COLOR:#000000; }
+DIV.DataJukebox DIV.list DIV.browser TD.input INPUT { WIDTH:50px; }
+
+DIV.DataJukebox DIV.detail TH { WIDTH:120px; MAX-WIDTH:360px; WORD-WRAP:break-word; }
+
+DIV.DataJukebox DIV.form TH { WIDTH:120px; MAX-WIDTH:360px; WORD-WRAP:break-word; }
+DIV.DataJukebox DIV.form TD { WHITE-SPACE:nowrap; }
+DIV.DataJukebox DIV.form TD DIV { DISPLAY:inline; }
+DIV.DataJukebox DIV.form TR.odd TD LABEL { PADDING-RIGHT:5px; FONT-WEIGHT:normal; }
+DIV.DataJukebox DIV.form TR.even TD LABEL { PADDING-RIGHT:5px; FONT-WEIGHT:normal; }
+DIV.DataJukebox DIV.form TEXTAREA { WIDTH:95%; }
+DIV.DataJukebox DIV.form INPUT { WIDTH:95%; }
+DIV.DataJukebox DIV.form INPUT[TYPE='checkbox'] { WIDTH:auto; MARGIN-TOP:4px; }
+
+DIV.DataJukebox DIV.display { FLOAT:left; MARGIN-RIGHT:5px; }
+DIV.DataJukebox DIV.display DIV.overlay { TOP:0px; LEFT:0px; BACKGROUND:#FFFFFF; BORDER:1px solid #000000; }
+DIV.DataJukebox DIV.display DIV.overlay TABLE#_top { WIDTH:auto; MARGIN-RIGHT:auto; }
+DIV.DataJukebox DIV.display DIV.overlay TABLE#_bottom { WIDTH:auto; MARGIN-LEFT:auto; }
+DIV.DataJukebox DIV.display DIV.overlay TD.action { PADDING-RIGHT:2px; }
+DIV.DataJukebox DIV.display DIV.overlay TD.field { PADDING-LEFT:5px; FONT-SIZE:0.75em; }
+DIV.DataJukebox DIV.display DIV.overlay TD.field LABEL { FONT-WEIGHT:normal; }
+DIV.DataJukebox DIV.display DIV.overlay TD.input { PADDING-TOP:2px; FONT-SIZE:0.5em; }
+
+/*
+DIV.DataJukebox .search .label { DISPLAY:none; }
+DIV.DataJukebox .browser LABEL { DISPLAY:none; }
+DIV.DataJukebox .action LABEL { DISPLAY:none; }
+DIV.DataJukebox .help LABEL { DISPLAY:none; }
+*/
+
+@media print {
+  DIV.DataJukebox A { COLOR:black !important; }
+  DIV.DataJukebox DIV.display { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.search { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox SPAN.order { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox TR.filter { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.browser #_begin { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.browser #_previous { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.browser #_limit { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.browser #_next { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.browser #_end { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.action { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox TH.action { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox TD.action { DISPLAY:none !important; VISIBILITY:hidden !important; }
+  DIV.DataJukebox DIV.help { DISPLAY:none !important; VISIBILITY:hidden !important; }
+}

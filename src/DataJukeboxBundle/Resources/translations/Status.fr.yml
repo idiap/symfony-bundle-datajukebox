@@ -1,0 +1,15 @@
+label:
+  InsertedAt: Créé
+  InsertedBy: Créateur
+  UpdateAllowed: Permettre la modification
+  UpdatedAt: Modifié
+  UpdatedBy: Modificateur
+  DisableAllowed: Permettre la désactivation
+  Disabled: Caché
+  DeleteAllowed: Permettre l'effacement
+
+tooltip:
+  InsertedAt: Date/heure de création
+  InsertedBy: Utilisateur ayant effectué la création
+  UpdatedAt: Date/heure de la dernière modification
+  UpdatedBy: Utilisateur ayant effectué la dernière modification

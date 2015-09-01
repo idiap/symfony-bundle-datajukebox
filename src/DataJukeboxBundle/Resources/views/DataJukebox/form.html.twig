@@ -1,0 +1,84 @@
+{# -*- mode:web; web-mode-markup-indent-offset:2; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab: #}
+{# DataJukeboxBundle\Resources\views\Data\form.html.twig #}
+{% use "form_div_layout.html.twig" %}
+
+{% block form -%}
+  <DIV CLASS="DataJukebox"><DIV CLASS="form">
+    {{ form_start(form) }}
+    <TABLE CLASS="data" {{ block('widget_container_attributes') }}>
+      {{ block('DataJukebox_form_header') }}
+      {{ form_widget(form) }}
+      {{ block('DataJukebox_form_footer') }}
+    </TABLE>
+    {{ form_end(form) }}
+  </DIV></DIV>
+{% endblock form -%}
+
+{% block form_widget_compound -%}
+  {% if form.parent is empty and errors|length > 0 -%}
+    <TR CLASS="errors"><TD COLSPAN="2">{{ form_errors(form) }}</TD></TR>
+  {% endif -%}
+  {{ block('form_rows') }}
+  {{ form_rest(form) }}
+{% endblock form_widget_compound -%}
+
+{% block form_rows -%}
+  {%- set index = 0 %}{% for child in form -%}
+    {%- if 'hidden' not in child.vars.block_prefixes -%}
+    <TR CLASS="{{ cycle(['odd','even'], index) }}">{{ form_row(child) }}</TR>
+    {% set index = index+1 %}{% endif -%}
+  {% endfor -%}
+{% endblock form_rows -%}
+
+{% block form_label -%}
+  {{  parent() }}{% if required %}<SPAN CLASS="required"><SPAN CLASS="icon">&#x2217;</SPAN></SPAN>{% endif %}
+{% endblock form_label -%}
+
+{% block form_row -%}
+  <TH ID="{{ form.vars.name }}">{{ form_label(form) }}</TH><TD ID="{{ form.vars.name }}">{% if errors|length > 0 %}<DIV CLASS="errors">{{ form_errors(form) }}</DIV>{% endif %}{{ form_widget(form) -}}</TD>
+{% endblock form_row -%}
+
+{% block button_row -%}
+  <TH ID="{{ form.vars.name }}"></TH><TD ID="{{ form.vars.name }}">{{ form_widget(form) }}</TD>
+{% endblock button_row -%}
+
+{% block hidden_row -%}
+  <TR STYLE="DISPLAY:none;"><TH></TH><TD>{{ form_widget(form) }}</TD></TR>
+{% endblock hidden_row -%}
+
+{% block datetime_widget -%}
+  {{ parent() }}{% if widget == 'single_text' %}<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">/*<![CDATA[*/$('#{{ id }}').datetimepicker({dateFormat:'yy-mm-dd', timeFormat:'HH:mm'});/*]]>*/</SCRIPT>{% endif %}
+{% endblock datetime_widget -%}
+
+{% block date_widget -%}
+  {{ parent() }}{% if widget == 'single_text' %}<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">/*<![CDATA[*/$('#{{ id }}').datepicker({dateFormat:'yy-mm-dd'});/*]]>*/</SCRIPT>{% endif %}
+{% endblock date_widget -%}
+
+{% block DataJukebox_form_header -%}
+  <TR CLASS="header"><TD COLSPAN="2">
+    {% if data_properties.labels._title_form|default(null) %}<DIV CLASS="title"><LABEL{% if data_properties.tooltips._title_form|default(null) %} TITLE="{{ data_properties.tooltips._title_form }}" STYLE="CURSOR:help;"{% endif %}>{{ data_properties.labels._title_form }}</LABEL></DIV>{% endif %}
+  </TD></TR>
+{% endblock DataJukebox_form_header -%}
+
+{% block DataJukebox_form_footer -%}
+  <TR CLASS="footer"><TD COLSPAN="2">
+    {{ block('DataJukebox_form_actions') }}
+    {{ block('DataJukebox_form_help') }}
+  </TD></TR>
+{% endblock DataJukebox_form_footer -%}
+
+{% block DataJukebox_form_actions -%}
+  <DIV CLASS="action"><TABLE><TR>
+    <TD CLASS="action" ID="_submit"><INPUT TYPE="submit"{% if data_properties.tooltips._action_form_submit|default(null) %} TITLE="{{ data_properties.tooltips._action_form_submit }}"{% endif %} VALUE="&#x27a1;{% if data_properties.labels._action_form_submit|default(null) %}&nbsp;{{ data_properties.labels._action_form_submit }}{% endif %}" /></TD>
+    <TD CLASS="action" ID="_reset"><INPUT TYPE="reset"{% if data_properties.tooltips._action_form_reset|default(null) %} TITLE="{{ data_properties.tooltips._action_form_reset }}"{% endif %} VALUE="&#x274c;{% if data_properties.labels._action_form_reset|default(null) %}&nbsp;{{ data_properties.labels._action_form_reset }}{% endif %}" /></TD>
+    <TD CLASS="action" ID="_cancel"><INPUT TYPE="button"{% if data_properties.tooltips._action_form_cancel|default(null) %} TITLE="{{ data_properties.tooltips._action_form_cancel }}"{% endif %} VALUE="&#x2190;{% if data_properties.labels._action_form_cancel|default(null) %}&nbsp;{{ data_properties.labels._action_form_cancel }}{% endif %}" ONCLICK="javascript:history.back();" /></TD>
+  </TR></TABLE></DIV>
+{% endblock DataJukebox_form_actions -%}
+
+{% block DataJukebox_form_help -%}
+  <DIV CLASS="help"><TABLE><TR>
+    {% if data_properties.labels._data_required|default(null) %}
+      <TD CLASS="help" ID="_required"{% if data_properties.tooltips._data_required|default(null) %} TITLE="{{ data_properties.tooltips._data_required }}"{% endif %} STYLE="CURSOR:help;"><SPAN CLASS="required"><SPAN CLASS="icon">&#x2217;</SPAN></SPAN><LABEL>{{ data_properties.labels._data_required }}</LABEL></TD>
+    {% endif %}
+  </TR></TABLE></DIV>
+{% endblock DataJukebox_form_help -%}

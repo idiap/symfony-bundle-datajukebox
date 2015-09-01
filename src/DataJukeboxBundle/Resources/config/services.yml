@@ -1,0 +1,24 @@
+# DataJukeboxBundle\Resources\config\services.yml
+parameters:
+    datajukebox.config_yaml:
+
+services:
+  DataJukebox:
+    class: DataJukeboxBundle\Service
+    arguments: [@doctrine, %datajukebox.config_yaml%]
+
+  DataJukebox.doctrine.event_listener:
+    class: DataJukeboxBundle\DoctrineEventListener
+    arguments: ['@service_container']
+    tags:
+      - { name: doctrine.event_listener, event: onFlush }
+
+  DataJukebox.twig.extension:
+    class: DataJukeboxBundle\TwigExtension
+    tags:
+      - { name: twig.extension }
+
+  DataJukebox.form.type_extension:
+    class: DataJukeboxBundle\FormTypeExtension
+    tags:
+      - { name: form.type_extension, alias: form }
