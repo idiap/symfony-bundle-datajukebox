@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Cedric Dufour <cedric.dufour@idiap.ch>
 Build-Depends: debhelper (>= 8)
 Build-Depends-Indep: php-pear
-Homepage: http://www.idiap.ch/software/symfony-bundle-datajukebox
+Homepage: http://www.idiap.ch/scientific-research/resources/symfony-bundle-datajukebox
 Standards-Version: 3.9.4
 
 Package: symfony-bundle-datajukebox
@@ -12,6 +12,19 @@ Architecture: all
 Depends: ${misc:Depends}, libapache2-mod-php5 | php5-cgi
 Suggests: php-symfony (>=2.3)
 Description: PHP/Symfony Data Jukebox Bundle
+ The Data Jukebox Bundle is a PHP/Symfony bundle which aims to provide - for
+ common CRUD (Create-Read-Update-Delete) operations - the same level of abstraction
+ that Symfony does for forms.
+ .
+ By defining and associating so-called "Properties" to standard ORM (Object
+ Relation Mapper) "Entities", one can generate fully-featured list and detail
+ views for those entities, as easily as one generates forms.
+ .
+ The same "Properties" are used to generate Symfony forms even easier, by automating
+ the form building process.
+ .
+ Developpers can thus concentrate entirely on the data model and have all views
+ build automatically, with just a few lines in the corresponding controllers.
 
 Package: symfony-bundle-datajukebox-doc
 Architecture: all

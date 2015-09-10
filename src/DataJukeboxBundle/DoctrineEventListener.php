@@ -51,10 +51,10 @@ class DoctrineEventListener
    * PROPERTIES
    ********************************************************************************/
 
-  /** Symfony service container
-   * @var \Symfony\Component\DependencyInjection\ContainerInterface Symfony service container
+  /** Symfony security token storage
+   * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
    */
-  protected $oContainer;
+  protected $oSecurityTokenStorage;
 
 
   /*
@@ -62,11 +62,11 @@ class DoctrineEventListener
    ********************************************************************************/
 
   /** Constructor
-   * @param \Symfony\Component\DependencyInjection\ContainerInterface $oContainer Symfony service container
+   * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface Symfony security token storage
    */
-  public function __construct(DependencyInjection\ContainerInterface $oContainer)
+  public function __construct(\Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $oSecurityTokenStorage)
   {
-    $this->oContainer = $oContainer;
+    $this->oSecurityTokenStorage = $oSecurityTokenStorage;
   }
 
 
@@ -78,7 +78,7 @@ class DoctrineEventListener
   {
     $oEntityManager = $oEventArgs->getEntityManager();
     $oUnitOfWork = $oEntityManager->getUnitOfWork();
-    $oToken = $this->oContainer->get('security.context')->getToken();
+    $oToken = $this->oSecurityTokenStorage->getToken();
     $sUser = $oToken ? $oToken->getUser() : null;
 
     foreach ($oUnitOfWork->getScheduledEntityInsertions() as $oEntity) {

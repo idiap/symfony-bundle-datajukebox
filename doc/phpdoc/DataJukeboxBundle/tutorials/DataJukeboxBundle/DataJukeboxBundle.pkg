@@ -7,8 +7,8 @@
 
 <refsynopsisdiv>
 <author>
-Idiap Research Institute
-<authorblurb>{@link http://www.idiap.ch/software/symfony-bundle-datajukebox http://www.idiap.ch/software/symfony-bundle-datajukebox}</authorblurb>
+Cédric Dufour, Idiap Research Institute
+<authorblurb>{@link http://www.idiap.ch/scientific-research/resources/symfony-bundle-datajukebox http://www.idiap.ch/scientific-research/resources/symfony-bundle-datajukebox}</authorblurb>
 </author>
 </refsynopsisdiv>
 
@@ -32,8 +32,8 @@ Idiap Research Institute
 <refsect2 id="{@id specs_depends}">
 <title>Dependencies</title>
 <itemizedList>
-<listitem>[MUST] <literal>Symfony 2.3</literal> or later</listitem>
-<listitem>[MUST] <literal>PHP 5.4</literal> or later</listitem>
+<listitem>[MUST] <literal>Symfony 2.7</literal> or later</listitem>
+<listitem>[MUST] <literal>PHP 5.3.9</literal> or later</listitem>
 </itemizedList>
 </refsect2>
 
@@ -86,7 +86,7 @@ Idiap Research Institute
 
 <refsect1 id="{@id download}">
 <title>Downloading</title>
-<para>{@link https://github.com/idiap/symfony-bundle-datajukebox/downloads download tree...}</para>
+<para>{@link https://github.com/idiap/symfony-bundle-datajukebox/releases download tree...}</para>
 </refsect1>
 
 

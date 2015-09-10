@@ -9,7 +9,7 @@ services:
 
   DataJukebox.doctrine.event_listener:
     class: DataJukeboxBundle\DoctrineEventListener
-    arguments: ['@service_container']
+    arguments: ['@security.token_storage']
     tags:
       - { name: doctrine.event_listener, event: onFlush }
 
