@@ -18,7 +18,7 @@ label:
   _range_previous: Précédente
   _range_next: Suivante
   _range_end: Fin
-  _data_empty: PAS DE DONNÉES
+  _data_empty: Pas de données
   _data_required: Obligatoire
 
 tooltip:

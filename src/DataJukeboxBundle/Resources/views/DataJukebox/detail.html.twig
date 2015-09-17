@@ -3,7 +3,7 @@
 
 {% block DataJukebox_detail -%}
   <DIV CLASS="DataJukebox"><DIV CLASS="detail">
-    <FORM ID="DataJukebox_{{ data.properties.uid }}_form" ACTION="{% if data.properties.routes.detail|default(null) and data.properties.routes.detail[1]|default(null) %}{{ path(data.properties.routes.detail[0], data.properties.routes.detail[1]|DataJukebox_map(app.request.attributes.get('_route_params'))) }}{% endif %}" METHOD="GET" ONSUBMIT="javascript:DataJukebox_onSubmit('{{ data.properties.uid|escape('js') }}');">
+    <FORM ID="DataJukebox_{{ data.properties.uid }}_form" ACTION="{% if data.properties.routes.detail[1] is defined and data.properties.routes.detail[1] %}{{ path(data.properties.routes.detail[0], data.properties.routes.detail[1]|DataJukebox_map(app.request.attributes.get('_route_params'))) }}{% endif %}" METHOD="GET" ONSUBMIT="javascript:DataJukebox_onSubmit('{{ data.properties.uid|escape('js') }}');">
       <TABLE CLASS="data">
         {{ block('DataJukebox_detail_header') }}
         {% if data.rows|length -%}
@@ -21,7 +21,7 @@
 {% block DataJukebox_detail_header -%}
   <TR CLASS="header"><TD COLSPAN="2">
     {{ block('DataJukebox_detail_display') }}
-    {% if data.properties.labels._title_detail|default(null) %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_detail|default(null) %} TITLE="{{ data.properties.tooltips._title_detail }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_detail }}</LABEL></DIV>{% endif %}
+    <DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_detail is defined and data.properties.tooltips._title_detail %} TITLE="{{ data.properties.tooltips._title_detail }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_detail }}</LABEL></DIV>
   </TD></TR>
 {% endblock DataJukebox_detail_header -%}
 
@@ -31,13 +31,14 @@
     <DIV CLASS="overlay" ID="DataJukebox_{{ data.properties.uid }}_display" STYLE="POSITION:absolute;DISPLAY:none;">
       <INPUT TYPE="hidden" ID="_fd[]" NAME="{{ data.browser.uid }}_fd[]" VALUE="1" DISABLED />
       <TABLE>
-        <TR><TD COLSPAN="2"><TABLE ID="_top"><TR><TD CLASS="action" ID="_display_close"><A HREF="javascript:;" ONCLICK="javascript:document.getElementById('DataJukebox_{{ data.properties.uid }}_display').style.display='none';"><SPAN CLASS="icon">&#x21f1;</SPAN></A></TD><TD CLASS="title"><LABEL{% if data.properties.tooltips._display|default(null) %} TITLE="{{ data.properties.tooltips._display }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._display }}</LABEL></TD><TD CLASS="action" ID="_display_reset"{% if data.properties.tooltips._display_reset|default(null) %} TITLE="{{ data.properties.tooltips._display_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displayReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD><TD CLASS="action" ID="_display_submit"{% if data.properties.tooltips._display_submit|default(null) %} TITLE="{{ data.properties.tooltips._display_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displaySubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD></TR></TABLE></TD></TR>
-        {% for field in data.properties.fields -%}
+        <TR><TD COLSPAN="2"><TABLE ID="_top"><TR><TD CLASS="action" ID="_display_close"><A HREF="javascript:;" ONCLICK="javascript:document.getElementById('DataJukebox_{{ data.properties.uid }}_display').style.display='none';"><SPAN CLASS="icon">&#x21f1;</SPAN></A></TD><TD CLASS="title"><LABEL{% if data.properties.tooltips._display is defined and data.properties.tooltips._display %} TITLE="{{ data.properties.tooltips._display }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._display }}</LABEL></TD><TD CLASS="action" ID="_display_reset"{% if data.properties.tooltips._display_reset is defined and data.properties.tooltips._display_reset %} TITLE="{{ data.properties.tooltips._display_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displayReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD><TD CLASS="action" ID="_display_submit"{% if data.properties.tooltips._display_submit is defined and data.properties.tooltips._display_submit %} TITLE="{{ data.properties.tooltips._display_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displaySubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD></TR></TABLE></TD></TR>
+        {% set tooltips_keys = data.properties.tooltips|keys -%}
+        {%- for field in data.properties.fields -%}
           {%- if field not in data.properties.fields_hidden -%}
-            <TR><TD CLASS="field"><LABEL{% if attribute(data.properties.tooltips, field)|default(null) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL></TD><TD CLASS="input"><INPUT TYPE="checkbox"{% if field not in data.properties.fields_required %} ID="_fd[]" NAME="{{ data.browser.uid }}_fd[]"{% endif %} VALUE="{{ field }}{% if app.request.query.get(data.browser.uid~'_fd') is null %} {% endif %}" ONCHANGE="javascript:this.value=this.value.trim()"{% if field in data.properties.fields_required or field in data.browser.fields %} CHECKED{% endif %}{% if field in data.properties.fields_required%} DISABLED{% endif %} /></TD></TR>
+            <TR><TD CLASS="field"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL></TD><TD CLASS="input"><INPUT TYPE="checkbox"{% if field not in data.properties.fields_required %} ID="_fd[]" NAME="{{ data.browser.uid }}_fd[]"{% endif %} VALUE="{{ field }}{% if app.request.query.get(data.browser.uid~'_fd') is null %} {% endif %}" ONCHANGE="javascript:this.value=this.value.trim()"{% if field in data.properties.fields_required or field in data.browser.fields %} CHECKED{% endif %}{% if field in data.properties.fields_required%} DISABLED{% endif %} /></TD></TR>
           {% endif -%}
         {%- endfor -%}
-        <TR><TD COLSPAN="2"><TABLE ID="_bottom"><TR><TD CLASS="action" ID="_display_reset"{% if data.properties.tooltips._display_reset|default(null) %} TITLE="{{ data.properties.tooltips._display_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displayReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD><TD CLASS="action" ID="_display_submit"{% if data.properties.tooltips._display_submit|default(null) %} TITLE="{{ data.properties.tooltips._display_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displaySubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD></TR></TABLE></TD></TR>
+        <TR><TD COLSPAN="2"><TABLE ID="_bottom"><TR><TD CLASS="action" ID="_display_reset"{% if data.properties.tooltips._display_reset is defined and data.properties.tooltips._display_reset %} TITLE="{{ data.properties.tooltips._display_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displayReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD><TD CLASS="action" ID="_display_submit"{% if data.properties.tooltips._display_submit is defined and data.properties.tooltips._display_submit %} TITLE="{{ data.properties.tooltips._display_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displaySubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD></TR></TABLE></TD></TR>
       </TABLE>
       <DIV CLASS="placeholder">&nbsp;</DIV>
     </DIV>
@@ -47,24 +48,26 @@
 {% block DataJukebox_detail_row -%}
   {%- set row = data.rows[0] -%}
   {%- set row_keys = row|keys -%}
-  {%- set disabled=false -%}{% if row.Disabled|default(null) %}{% set disabled=row.Disabled %}{% endif -%}
+  {%- set tooltips_keys = data.properties.tooltips|keys -%}
+  {%- set fields_link_keys = data.properties.fields_link|keys -%}
+  {%- set disabled=false -%}{% if row.Disabled is defined %}{% set disabled=row.Disabled %}{% endif -%}
   {%- set index = 0 %}{% for field, value in row -%}
     {%- if field not in data.properties.fields_hidden and value is not null -%}
       {%- set field_formatted=field~'|format' %}{% if field_formatted in row_keys %}{% set value_formatted=attribute(row, field_formatted) %}{% else %}{% set value_formatted=value|DataJukebox_format %}{% endif -%}
       <TR CLASS="{{ cycle(['odd','even'], index) }}">
-        <TH CLASS="field" ID="{{ field }}"><LABEL{% if attribute(data.properties.tooltips, field)|default(null) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL></TH>
+        <TH CLASS="field" ID="{{ field }}"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL></TH>
         <TD CLASS="value" ID="{{ field }}">
           {%- if disabled %}<SPAN CLASS="disabled">{% endif -%}
-          {%- if value|length and field in data.properties.fields_link|keys -%}
+          {%- if value|length and field in fields_link_keys -%}
             {%- set link=attribute(data.properties.fields_link, field) -%}
             {%- if link[0] == 'path' -%}
-              <A HREF="{% if link[2]|default(null) %}{{ path(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(link[1]) }}{% endif %}">{{ value_formatted|raw }}</A>
+              <A HREF="{% if link[2] is defined and link[2] %}{{ path(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(link[1]) }}{% endif %}">{{ value_formatted|raw }}</A>
             {%- elseif link[0] == 'path+query' -%}
-              <A HREF="{% if link[2]|default(null) %}{{ path(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ path(link[1], app.request.query.all) }}{% endif %}">{{ value_formatted|raw }}</A>
+              <A HREF="{% if link[2] is defined and link[2] %}{{ path(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ path(link[1], app.request.query.all) }}{% endif %}">{{ value_formatted|raw }}</A>
             {%- elseif link[0] == 'url' -%}
-              <A HREF="{% if link[2]|default(null) %}{{ url(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ url(link[1]) }}{% endif %}">{{ value_formatted|raw }}</A>
+              <A HREF="{% if link[2] is defined and link[2] %}{{ url(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ url(link[1]) }}{% endif %}">{{ value_formatted|raw }}</A>
             {%- elseif link[0] == 'url+query' -%}
-              <A HREF="{% if link[2]|default(null) %}{{ url(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ url(link[1], app.request.query.all) }}{% endif %}">{{ value_formatted|raw }}</A>
+              <A HREF="{% if link[2] is defined and link[2] %}{{ url(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ url(link[1], app.request.query.all) }}{% endif %}">{{ value_formatted|raw }}</A>
             {%- else -%}
               {{ value_formatted|raw }}
             {%- endif -%}
@@ -91,14 +94,14 @@
 {% block DataJukebox_detail_actions -%}
   {%- set row = data.rows[0] -%}
   <DIV CLASS="action"><TABLE><TR>
-    {% if data.properties.routes.update|default(null) and ( row.UpdateAllowed is not defined or row.UpdateAllowed ) -%}
-      <TD CLASS="action" ID="_update"{% if data.properties.tooltips._action_update|default(null) %} TITLE="{{ data.properties.tooltips._action_update }}"{% endif %}><A HREF="{% if data.properties.routes.update[1]|default(null) %}{{ path(data.properties.routes.update[0], data.properties.routes.update[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.update[0], {'_pk': row._PK}) }}{% endif %}"><SPAN CLASS="icon">&#x2298;</SPAN>{% if data.properties.labels._action_update|default(null) %}<LABEL>{{ data.properties.labels._action_update }}</LABEL>{% endif %}</A></TD>
+    {% if data.properties.routes.update is defined and data.properties.routes.update and ( row.UpdateAllowed is not defined or row.UpdateAllowed ) -%}
+      <TD CLASS="action" ID="_update"{% if data.properties.tooltips._action_update is defined and data.properties.tooltips._action_update %} TITLE="{{ data.properties.tooltips._action_update }}"{% endif %}><A HREF="{% if data.properties.routes.update[1] is defined and data.properties.routes.update[1] %}{{ path(data.properties.routes.update[0], data.properties.routes.update[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.update[0], {'_pk': row._PK}) }}{% endif %}"><SPAN CLASS="icon">&#x2298;</SPAN><LABEL>{{ data.properties.labels._action_update }}</LABEL></A></TD>
     {% endif -%}
-    {% if data.properties.routes.delete|default(null) and ( row.DeleteAllowed is not defined or row.DeleteAllowed ) -%}
-      <TD CLASS="action" ID="_delete"{% if data.properties.tooltips._action_delete|default(null) %} TITLE="{{ data.properties.tooltips._action_delete }}"{% endif %}><A HREF="{% if data.properties.routes.delete[1]|default(null) %}{{ path(data.properties.routes.delete[0], data.properties.routes.delete[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.delete[0], {'_pk': row._PK}) }}{% endif %}" ONCLICK="javascript:return window.confirm('{{ data.properties.labels._action_delete_confirm|escape('js') }}{% if data.properties.tooltips._action_delete|default(null) %}\n{{ data.properties.tooltips._action_delete_confirm|escape('js') }}{% endif %}');"><SPAN CLASS="icon">&#x2297;</SPAN>{% if data.properties.labels._action_delete|default(null) %}<LABEL>{{ data.properties.labels._action_delete }}</LABEL>{% endif %}</A></TD>
+    {% if data.properties.routes.delete is defined and data.properties.routes.delete and ( row.DeleteAllowed is not defined or row.DeleteAllowed ) -%}
+      <TD CLASS="action" ID="_delete"{% if data.properties.tooltips._action_delete is defined and data.properties.tooltips._action_delete %} TITLE="{{ data.properties.tooltips._action_delete }}"{% endif %}><A HREF="{% if data.properties.routes.delete[1] is defined and data.properties.routes.delete[1] %}{{ path(data.properties.routes.delete[0], data.properties.routes.delete[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.delete[0], {'_pk': row._PK}) }}{% endif %}" ONCLICK="javascript:return window.confirm('{{ data.properties.labels._action_delete_confirm|escape('js') }}{% if data.properties.tooltips._action_delete is defined and data.properties.tooltips._action_delete %}\n{{ data.properties.tooltips._action_delete_confirm|escape('js') }}{% endif %}');"><SPAN CLASS="icon">&#x2297;</SPAN><LABEL>{{ data.properties.labels._action_delete }}</LABEL></A></TD>
     {% endif -%}
-    {% if data.properties.routes.insert|default(null) -%}
-      <TD CLASS="action" ID="_insert"{% if data.properties.tooltips._action_insert|default(null) %} TITLE="{{ data.properties.tooltips._action_insert }}"{% endif %}><A HREF="{% if data.properties.routes.insert[1]|default(null) %}{{ path(data.properties.routes.insert[0], data.properties.routes.insert[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.insert[0]) }}{% endif %}"><SPAN CLASS="icon">&#x2295;</SPAN>{% if data.properties.labels._action_insert|default(null) %}<LABEL>{{ data.properties.labels._action_insert }}<LABEL>{% endif %}</A></TD>
+    {% if data.properties.routes.insert is defined and data.properties.routes.insert -%}
+      <TD CLASS="action" ID="_insert"{% if data.properties.tooltips._action_insert is defined and data.properties.tooltips._action_insert %} TITLE="{{ data.properties.tooltips._action_insert }}"{% endif %}><A HREF="{% if data.properties.routes.insert[1] is defined and data.properties.routes.insert[1] %}{{ path(data.properties.routes.insert[0], data.properties.routes.insert[1]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(data.properties.routes.insert[0]) }}{% endif %}"><SPAN CLASS="icon">&#x2295;</SPAN><LABEL>{{ data.properties.labels._action_insert }}<LABEL></A></TD>
     {% endif -%}
   </TR></TABLE></DIV>
 {% endblock DataJukebox_detail_actions -%}
@@ -107,22 +110,23 @@
   {%- if data.properties.footer_links|length -%}
     {%- set row = data.rows[0] -%}
     <DIV CLASS="links"><TABLE><TR>
-      {% for id, link in data.properties.footer_links -%}
-        {%- set label=id %}{% if id in data.properties.labels|keys %}{% set label=attribute(data.properties.labels, id) %}{% endif -%}
-        {%- set tooltip='' -%}{% if id in data.properties.tooltips|keys %}{% set tooltip=attribute(data.properties.tooltips, id) %}{% endif -%}
+      {% set tooltips_keys = data.properties.tooltips|keys -%}
+      {%- for id, link in data.properties.footer_links -%}
+        {%- set label=id %}{% set label=attribute(data.properties.labels, id) %}
+        {%- set tooltip='' -%}{% if id in tooltips_keys %}{% set tooltip=attribute(data.properties.tooltips, id) %}{% endif -%}
         <TD CLASS="action" ID="{{ id }}">
           {%- if link[0] == 'path' -%}
-            <A HREF="{% if link[2]|default(null) %}{{ path(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(link[1]) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+            <A HREF="{% if link[2] is defined and link[2] %}{{ path(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ path(link[1]) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
           {%- elseif link[0] == 'path+query' -%}
-              <A HREF="{% if link[2]|default(null) %}{{ path(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ path(link[1], app.request.query.all) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+              <A HREF="{% if link[2] is defined and link[2] %}{{ path(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ path(link[1], app.request.query.all) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
           {%- elseif link[0] == 'url' -%}
-                <A HREF="{% if link[2]|default(null) %}{{ url(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ url(link[1]) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+                <A HREF="{% if link[2] is defined and link[2] %}{{ url(link[1], link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row))) }}{% else %}{{ url(link[1]) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
           {%- elseif link[0] == 'url+query' -%}
-                  <A HREF="{% if link[2]|default(null) %}{{ url(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ url(link[1], app.request.query.all) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
+                  <A HREF="{% if link[2] is defined and link[2] %}{{ url(link[1], app.request.query.all|merge(link[2]|DataJukebox_map(app.request.attributes.get('_route_params')|merge(row)))) }}{% else %}{{ url(link[1], app.request.query.all) }}{% endif %}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
           {%- elseif link[0] == 'href' -%}
                     <A HREF="{{ link[1]|replace({'%{this}':value, '%{pk}':row._PK}) }}" TARGET="{{ link[2] }}"{% if tooltip %} TITLE="{{ tooltip }}"{% endif %}>
           {%- endif -%}
-          {% if link[3]|default(null) %}<SPAN CLASS="icon">{{ link[3] }}</SPAN>{% endif %}<LABEL>{{ label }}</LABEL></A></TD>
+          {% if link[3] is defined and link[3] %}<SPAN CLASS="icon">{{ link[3] }}</SPAN>{% endif %}<LABEL>{{ label }}</LABEL></A></TD>
       {% endfor -%}
     </TR></TABLE></DIV>
   {% endif -%}

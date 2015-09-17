@@ -268,39 +268,43 @@ abstract class Properties
       $bDefaultToName ? $asFields : array_fill(0, count($asFields), null)
     );
     // ... add internal resources
-    $asFields = array_merge(
-      $asFields,
-      array(
-        '_title_list' => null,
-        '_title_detail' => null,
-        '_title_form' => null,
-        '_view_list' => null,
-        '_view_detail' => null,
-        '_action_insert' => null,
-        '_action_update' => null,
-        '_action_delete' => null,
-        '_action_delete_confirm' => null,
-        '_action_select' => null,
-        '_action_select_confirm' => null,
-        '_action_form_submit' => null,
-        '_action_form_reset' => null,
-        '_action_form_cancel' => null,
-        '_display' => null,
-        '_display_submit' => null,
-        '_display_reset' => null,
-        '_display_order' => null,
-        '_search' => null,
-        '_search_submit' => null,
-        '_search_reset' => null,
-        '_range_begin' => null,
-        '_range_previous' => null,
-        '_range_next' => null,
-        '_range_end' => null,
-        '_range_limit' => null,
-        '_data_empty' => null,
-        '_data_required' => null,
-      )
+    $asFields_internal = array(
+      '_title_list' => 'List',
+      '_title_detail' => 'Detail',
+      '_title_form' => 'Form',
+      '_view_list' => 'List',
+      '_view_detail' => 'Detail',
+      '_action_insert' => 'Add',
+      '_action_update' => 'Edit',
+      '_action_delete' => 'Delete',
+      '_action_delete_confirm' => 'Delete ?',
+      '_action_select' => 'Select',
+      '_action_select_confirm' => 'Select ?',
+      '_action_form_submit' => 'Submit',
+      '_action_form_reset' => 'Reset',
+      '_action_form_cancel' => 'Cancel',
+      '_display' => 'Fields',
+      '_display_submit' => 'Submit',
+      '_display_reset' => 'Reset',
+      '_display_order' => 'Sort',
+      '_search' => 'Search',
+      '_search_submit' => 'Submit',
+      '_search_reset' => 'Reset',
+      '_range_begin' => 'First',
+      '_range_previous' => 'Previous',
+      '_range_next' => 'Next',
+      '_range_end' => 'Last',
+      '_range_limit' => 'Rows',
+      '_data_empty' => 'No Data',
+      '_data_required' => 'Required',
     );
+    if ($sMetaType!='label') {
+      array_walk(
+        $asFields_internal,
+        function(&$v, $k) { $v=null; }
+      );
+    }
+    $asFields = array_merge($asFields, $asFields_internal);
 
     // Translation
     if (!is_null($this->oTranslator)) {

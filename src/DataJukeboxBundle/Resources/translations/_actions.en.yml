@@ -18,7 +18,7 @@ label:
   _range_previous: Previous
   _range_next: Next
   _range_end: Last
-  _data_empty: NO DATA
+  _data_empty: No Data
   _data_required: Required
 
 tooltip:
@@ -37,7 +37,7 @@ tooltip:
   _display: Select data fields (columns) to display
   _display_submit: Refresh the view according to selected fields
   _display_reset: Reset the view to default fields
-  _display_order: Order data according to selected fields (click: set; double-click: add/replace)
+  _display_order: Sort data according to selected fields (click: set; double-click: add/replace)
   _search: Search matching data
   _search_submit: Launch the search with the given criteria
   _search_reset: Clear all search criteria
