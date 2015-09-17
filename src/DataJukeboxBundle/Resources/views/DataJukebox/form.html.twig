@@ -56,7 +56,7 @@
 
 {% block DataJukebox_form_header -%}
   <TR CLASS="header"><TD COLSPAN="2">
-    <DIV CLASS="title"><LABEL{% if data_properties.tooltips._title_form is defined and data_properties.tooltips._title_form %} TITLE="{{ data_properties.tooltips._title_form }}" STYLE="CURSOR:help;"{% endif %}>{{ data_properties.labels._title_form }}</LABEL></DIV>
+    {% if data_properties.labels._title_form is defined %}<DIV CLASS="title"><LABEL{% if data_properties.tooltips._title_form is defined %} TITLE="{{ data_properties.tooltips._title_form }}" STYLE="CURSOR:help;"{% endif %}>{{ data_properties.labels._title_form }}</LABEL></DIV>{% endif %}
   </TD></TR>
 {% endblock DataJukebox_form_header -%}
 
@@ -69,14 +69,14 @@
 
 {% block DataJukebox_form_actions -%}
   <DIV CLASS="action"><TABLE><TR>
-    <TD CLASS="action" ID="_submit"><INPUT TYPE="submit"{% if data_properties.tooltips._action_form_submit is defined and data_properties.tooltips._action_form_submit %} TITLE="{{ data_properties.tooltips._action_form_submit }}"{% endif %} VALUE="&#x27a1;&nbsp;{{ data_properties.labels._action_form_submit }}" /></TD>
-    <TD CLASS="action" ID="_reset"><INPUT TYPE="reset"{% if data_properties.tooltips._action_form_reset is defined and data_properties.tooltips._action_form_reset %} TITLE="{{ data_properties.tooltips._action_form_reset }}"{% endif %} VALUE="&#x274c;&nbsp;{{ data_properties.labels._action_form_reset }}" /></TD>
-    <TD CLASS="action" ID="_cancel"><INPUT TYPE="button"{% if data_properties.tooltips._action_form_cancel is defined and data_properties.tooltips._action_form_cancel %} TITLE="{{ data_properties.tooltips._action_form_cancel }}"{% endif %} VALUE="&#x2190;&nbsp;{{ data_properties.labels._action_form_cancel }}" ONCLICK="javascript:history.back();" /></TD>
+    <TD CLASS="action" ID="_submit"><INPUT TYPE="submit"{% if data_properties.tooltips._action_form_submit is defined %} TITLE="{{ data_properties.tooltips._action_form_submit }}"{% endif %} VALUE="&#x27a1;{% if data_properties.labels._action_form_submit is defined %}&nbsp;{{ data_properties.labels._action_form_submit }}{% endif %}" /></TD>
+    <TD CLASS="action" ID="_reset"><INPUT TYPE="reset"{% if data_properties.tooltips._action_form_reset is defined %} TITLE="{{ data_properties.tooltips._action_form_reset }}"{% endif %} VALUE="&#x274c;{% if data_properties.labels._action_form_reset is defined %}&nbsp;{{ data_properties.labels._action_form_reset }}{% endif %}" /></TD>
+    <TD CLASS="action" ID="_cancel"><INPUT TYPE="button"{% if data_properties.tooltips._action_form_cancel is defined %} TITLE="{{ data_properties.tooltips._action_form_cancel }}"{% endif %} VALUE="&#x2190;{% if data_properties.labels._action_form_cancel is defined %}&nbsp;{{ data_properties.labels._action_form_cancel }}{% endif %}" ONCLICK="javascript:history.back();" /></TD>
   </TR></TABLE></DIV>
 {% endblock DataJukebox_form_actions -%}
 
 {% block DataJukebox_form_help -%}
   <DIV CLASS="help"><TABLE><TR>
-    <TD CLASS="help" ID="_required"{% if data_properties.tooltips._data_required is defined and data_properties.tooltips._data_required %} TITLE="{{ data_properties.tooltips._data_required }}"{% endif %} STYLE="CURSOR:help;"><SPAN CLASS="required"><SPAN CLASS="icon">&#x2217;</SPAN></SPAN><LABEL>{{ data_properties.labels._data_required }}</LABEL></TD>
+    <TD CLASS="help" ID="_required"{% if data_properties.tooltips._data_required is defined %} TITLE="{{ data_properties.tooltips._data_required }}"{% endif %} STYLE="CURSOR:help;"><SPAN CLASS="required"><SPAN CLASS="icon">&#x2217;</SPAN></SPAN>{% if data_properties.labels._data_required is defined %}<LABEL>{{ data_properties.labels._data_required }}</LABEL>{% endif %}</TD>
   </TR></TABLE></DIV>
 {% endblock DataJukebox_form_help -%}
