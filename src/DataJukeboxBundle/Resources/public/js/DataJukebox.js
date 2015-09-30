@@ -374,3 +374,32 @@ function DataJukebox_select(sID)
     oForm.submit();
   }
 }
+
+function DataJukebox_displayPopupOverlay(sURL)
+{
+  oContainer = document.getElementById('DataJukebox_popupContainer');
+  oOverlay = document.getElementById('DataJukebox_popupOverlay');
+  if (typeof oContainer == 'undefined' || typeof oOverlay == 'undefined') return;
+
+  if (oContainer.style.display == 'block' && oOverlay.value == sURL) {
+    oContainer.style.display = 'none';
+  } else if (oContainer.style.display == 'none' && oOverlay.value == sURL) {
+    oContainer.style.top = window.pageYOffset+'px';
+    oContainer.style.display = 'block';
+  } else {
+    oOverlay.innerHTML = '<DIV ID="DataJukebox_popupSpinner"></DIV>';
+    oOverlay.value = '';
+    oContainer.style.top = window.pageYOffset+'px';
+    oContainer.style.display = 'block';
+    oXMLHttpRequest = new XMLHttpRequest();
+    oXMLHttpRequest.onreadystatechange=function() {
+      if (oXMLHttpRequest.readyState==4 && oXMLHttpRequest.status==200)
+      {
+        oOverlay.innerHTML = oXMLHttpRequest.responseText;
+        oOverlay.value = sURL
+      }
+    }
+    oXMLHttpRequest.open('GET', sURL, true);
+    oXMLHttpRequest.send();
+  }
+}

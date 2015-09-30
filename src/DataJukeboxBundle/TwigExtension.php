@@ -62,6 +62,11 @@ class TwigExtension
         array($this, 'renderDetail'),
         array('needs_environment' => true, 'is_safe' => array('html'))
       ),
+      new \Twig_SimpleFunction(
+        'DataJukebox_popupContainer',
+        array($this, 'renderPopupContainer'),
+        array('needs_environment' => true, 'is_safe' => array('html'))
+      ),
     );
   }
 
@@ -95,6 +100,12 @@ class TwigExtension
   {
     $oTemplate = $oTwigEnvironment->loadTemplate('DataJukeboxBundle:DataJukebox:detail.html.twig');
     return $oTemplate->renderBlock('DataJukebox_detail', $oTwigEnvironment->mergeGlobals(array('data' => $data)));
+  }
+
+  public function renderPopupContainer(\Twig_Environment $oTwigEnvironment)
+  {
+    $oTemplate = $oTwigEnvironment->loadTemplate('DataJukeboxBundle:DataJukebox:popup.html.twig');
+    return $oTemplate->renderBlock('DataJukebox_popupContainer', array());
   }
 
   public function formatFilter($mValue)

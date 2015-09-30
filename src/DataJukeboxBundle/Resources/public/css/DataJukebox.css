@@ -73,6 +73,11 @@ DIV.DataJukebox DIV.display DIV.overlay TD.field { PADDING-LEFT:5px; FONT-SIZE:0
 DIV.DataJukebox DIV.display DIV.overlay TD.field LABEL { FONT-WEIGHT:normal; }
 DIV.DataJukebox DIV.display DIV.overlay TD.input { PADDING-TOP:2px; FONT-SIZE:0.5em; }
 
+DIV#DataJukebox_popupContainer { POSITION:absolute; LEFT:0px; TOP:0px; WIDTH:100%; HEIGHT:100%; TEXT-ALIGN:center; WHITE-SPACE:nowrap; POINTER-EVENTS:none; }
+DIV#DataJukebox_popupContainerSpacer { DISPLAY:inline-block; HEIGHT:100%; VERTICAL-ALIGN:middle; CONTENT:''; }
+DIV#DataJukebox_popupOverlay { DISPLAY:inline-block; VERTICAL-ALIGN:middle; BACKGROUND:#FFFFFF; POINTER-EVENTS:auto; }
+DIV#DataJukebox_popupSpinner { WIDTH:40px; HEIGHT:40px; MARGIN:5px; BACKGROUND:#FFFFFF url('images/dj-spinner.png'); }
+
 /*
 DIV.DataJukebox .search .label { DISPLAY:none; }
 DIV.DataJukebox .browser LABEL { DISPLAY:none; }
