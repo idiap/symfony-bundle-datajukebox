@@ -298,13 +298,13 @@ abstract class Properties
       '_data_empty' => 'No Data',
       '_data_required' => 'Required',
     );
-    if ($sMetaType!='label') {
+    if ($sTranslatorDomain!='_actions' or $sMetaType!='label') {
       array_walk(
         $asFields_internal,
         function(&$v, $k) { $v=null; }
       );
     }
-    $asFields = array_merge($asFields, $asFields_internal);
+    $asFields = array_merge($asFields_internal, $asFields);
 
     // Translation
     if (!is_null($this->oTranslator)) {
@@ -314,7 +314,7 @@ abstract class Properties
           $s = $t[0]->trans(sprintf('%s%s', $t[1], $k), array(), $t[2]);
           if (substr($s, 0, strlen($t[1])) != $t[1]) $v=$s;
         },
-        array($this->oTranslator, sprintf('%s.', $sMetaType), $sTranslatorDomain )
+        array($this->oTranslator, sprintf('%s.', $sMetaType), $sTranslatorDomain)
       );
     }
 
