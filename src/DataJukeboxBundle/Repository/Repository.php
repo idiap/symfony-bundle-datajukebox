@@ -196,7 +196,7 @@ class Repository
       $aaResults = $oQuery->getArrayResult();
       $this->mergePrimaryKey($aaResults);
       if ($this->oProperties instanceof DataJukebox\FormatInterface)  {
-        array_walk($aaResults, array(get_class($this->oProperties), 'formatFields'));
+        array_walk($aaResults, array($this->oProperties, 'formatFields'));
       }
     }
 
@@ -266,7 +266,7 @@ class Repository
     }
     $this->mergePrimaryKey($aaResults);
     if ($this->oProperties instanceof DataJukebox\FormatInterface) {
-      array_walk($aaResults, array(get_class($this->oProperties), 'formatFields'));
+      array_walk($aaResults, array($this->oProperties, 'formatFields'));
     }
 
     // Done

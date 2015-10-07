@@ -57,6 +57,6 @@ interface FormatInterface
    * @param array Data row (fields array)
    * @param integer Data row index
    */
-  public static function formatFields(array &$aRow, $iIndex);
+  public function formatFields(array &$aRow, $iIndex);
 
 }
