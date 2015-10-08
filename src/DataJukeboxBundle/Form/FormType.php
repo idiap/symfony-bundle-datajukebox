@@ -112,7 +112,7 @@ class FormType
 
     return array(
       '_pk' => implode(
-        ',',
+        ':',
         array_merge(
           array_fill_keys($this->oProperties->getClassMetadata()->getIdentifierFieldNames(), null),
           $oData->getPrimaryKey()
