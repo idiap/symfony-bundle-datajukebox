@@ -375,7 +375,7 @@ function DataJukebox_select(sID)
   }
 }
 
-function DataJukebox_displayPopupOverlay(sURL)
+function DataJukebox_displayPopupURL(sURL, iTimeout)
 {
   oContainer = document.getElementById('DataJukebox_popupContainer');
   oOverlay = document.getElementById('DataJukebox_popupOverlay');
@@ -387,19 +387,38 @@ function DataJukebox_displayPopupOverlay(sURL)
     oContainer.style.top = window.pageYOffset+'px';
     oContainer.style.display = 'block';
   } else {
-    oOverlay.innerHTML = '<DIV ID="DataJukebox_popupSpinner"></DIV>';
     oOverlay.value = '';
+    oOverlay.innerHTML = '<DIV ID="DataJukebox_popupSpinner"></DIV>';
     oContainer.style.top = window.pageYOffset+'px';
     oContainer.style.display = 'block';
-    oXMLHttpRequest = new XMLHttpRequest();
-    oXMLHttpRequest.onreadystatechange=function() {
-      if (oXMLHttpRequest.readyState==4 && oXMLHttpRequest.status==200)
-      {
-        oOverlay.innerHTML = oXMLHttpRequest.responseText;
-        oOverlay.value = sURL
-      }
-    }
-    oXMLHttpRequest.open('GET', sURL, true);
-    oXMLHttpRequest.send();
+    $.ajax(sURL).done(function(sResponse) {
+      oOverlay.value = sURL
+      oOverlay.innerHTML = sResponse;
+    });
+    if (typeof iTimeout != 'undefined') setTimeout(DataJukebox_hidePopup, iTimeout);
   }
+}
+
+function DataJukebox_displayPopupHTML(sHTML, iTimeout)
+{
+  oContainer = document.getElementById('DataJukebox_popupContainer');
+  oOverlay = document.getElementById('DataJukebox_popupOverlay');
+  if (typeof oContainer == 'undefined' || typeof oOverlay == 'undefined') return;
+
+  if (oContainer.style.display == 'block') {
+    return;
+  } else {
+    oOverlay.value = '#HTML#';
+    oOverlay.innerHTML = sHTML;
+    oContainer.style.top = window.pageYOffset+'px';
+    oContainer.style.display = 'block';
+    if (typeof iTimeout != 'undefined') setTimeout(DataJukebox_hidePopup, iTimeout);
+  }
+}
+
+function DataJukebox_hidePopup()
+{
+  oContainer = document.getElementById('DataJukebox_popupContainer');
+  if (typeof oContainer == 'undefined') return;
+  oContainer.style.display = 'none';
 }
