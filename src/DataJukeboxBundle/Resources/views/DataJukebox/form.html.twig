@@ -31,7 +31,7 @@
 {% endblock form_rows -%}
 
 {% block form_label -%}
-  {{  parent() }}{% if required %}<SPAN CLASS="required"><SPAN CLASS="icon">&#x2217;</SPAN></SPAN>{% endif %}
+  {{  parent() }}{% if required and not disabled %}<SPAN CLASS="required"><SPAN CLASS="icon">&#x2217;</SPAN></SPAN>{% endif %}
 {% endblock form_label -%}
 
 {% block form_row -%}
