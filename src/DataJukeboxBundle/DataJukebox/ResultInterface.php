@@ -65,4 +65,9 @@ interface ResultInterface
    */
   public function getTemplateData();
 
+  /** Returns the results primary key slugs (_pk)
+   * @return array|string Primary key slugs (_pk)
+   */
+  public function getPrimaryKeySlugs();
+
 }

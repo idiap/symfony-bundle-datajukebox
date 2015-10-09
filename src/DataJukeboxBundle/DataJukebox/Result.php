@@ -114,4 +114,11 @@ class Result
     );
   }
 
+  public function getPrimaryKeySlugs()
+  {
+    $aaPrimaryKeySlugs = array();
+    foreach ($this->aData as $aRow) $aaPrimaryKeySlugs[] = array('_pk' => $aRow['_PK']);
+    return $aaPrimaryKeySlugs;
+  }
+
 }
