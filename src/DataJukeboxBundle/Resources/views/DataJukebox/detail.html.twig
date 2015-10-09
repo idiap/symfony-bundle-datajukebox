@@ -53,7 +53,7 @@
   {%- set disabled=false -%}{% if row.Disabled is defined %}{% set disabled=row.Disabled %}{% endif -%}
   {%- set index = 0 %}{% for field, value in row -%}
     {%- if field not in data.properties.fields_hidden and value is not null -%}
-      {%- set field_formatted=field~'|format' %}{% if field_formatted in row_keys %}{% set value_formatted=attribute(row, field_formatted) %}{% else %}{% set value_formatted=value|DataJukebox_format %}{% endif -%}
+      {%- set field_formatted=field~'_formatted' %}{% if field_formatted in row_keys %}{% set value_formatted=attribute(row, field_formatted) %}{% else %}{% set value_formatted=value|DataJukebox_format %}{% endif -%}
       <TR CLASS="{{ cycle(['odd','even'], index) }}">
         <TH CLASS="field" ID="{{ field }}"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL></TH>
         <TD CLASS="value" ID="{{ field }}">

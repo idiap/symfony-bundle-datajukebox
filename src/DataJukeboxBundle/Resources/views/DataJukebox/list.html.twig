@@ -141,7 +141,7 @@
       {%- if field not in data.properties.fields_hidden -%}
         <TD CLASS="value" ID="{{ field }}">
           {%- set value=attribute(row, field) -%}
-          {%- set field_formatted=field~'|format' %}{% if field_formatted in row_keys %}{% set value_formatted=attribute(row, field_formatted) %}{% else %}{% set value_formatted=value|DataJukebox_format %}{% endif -%}
+          {%- set field_formatted=field~'_formatted' %}{% if field_formatted in row_keys %}{% set value_formatted=attribute(row, field_formatted) %}{% else %}{% set value_formatted=value|DataJukebox_format %}{% endif -%}
           {%- set disabled=false -%}{% if row.Disabled is defined %}{% set disabled=row.Disabled %}{% endif -%}
           {%- if disabled %}<SPAN CLASS="disabled">{% endif -%}
             {%- if value|length and field in fields_link_keys -%}

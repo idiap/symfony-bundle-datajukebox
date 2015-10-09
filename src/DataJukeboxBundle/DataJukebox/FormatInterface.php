@@ -48,7 +48,7 @@ interface FormatInterface
   /** Format data
    *
    * <P>This method shall be fed to PHP <SAMP>array_walk</SAMP> and add to the given
-   * data row - associating fields name and their value - additional '<fieldname>|format'
+   * data row - associating fields name and their value - additional '<fieldname>_formatted'
    * items - associating the formatted value - for each field that needs custom formatting.<P>
    *
    * <P><B>WARNING: proper escaping MUST be performed by this function (formatted value shall

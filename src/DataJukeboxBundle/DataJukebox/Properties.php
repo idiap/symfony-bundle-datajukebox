@@ -521,7 +521,7 @@ abstract class Properties
       $aFields_hidden = array_merge(
         $aFields_hidden,
         array_map(
-          function($v){ return sprintf('%s|format',$v); },
+          function($v){ return sprintf('%s_formatted',$v); },
           $aFields
         )
       );
