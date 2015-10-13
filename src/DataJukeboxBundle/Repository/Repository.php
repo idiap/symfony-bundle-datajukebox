@@ -64,7 +64,7 @@ class Repository
    */
   protected $bDebug = false;
 
- 
+
   /*
    * METHODS
    ********************************************************************************/
@@ -77,29 +77,10 @@ class Repository
     $this->bDebug = (boolean)$bDebug;
   }
 
-
-  /*
-   * METHODS: RepositoryInterface
-   ********************************************************************************/
-
-  /*
-   * SETTERS
+  /** Returns the data list (queried from the database)
+   * @param BrowserInterface $oBrowser Data browser
+   * @return Result Data result (data list)
    */
-
-  public function setProperties(DataJukebox\PropertiesInterface &$oProperties)
-  {
-    $this->oProperties =& $oProperties;
-  }
-
-  /*
-   * GETTERS
-   */
-
-  public function getProperties()
-  {
-    return $this->oProperties;
-  }
-
   public function getDataList($oBrowser=null)
   {
     if (!is_null($oBrowser) and !$oBrowser instanceof DataJukebox\BrowserInterface) {
@@ -110,57 +91,24 @@ class Repository
     $oEntityManager = $this->getEntityManager();
     $oDbConnection = $oEntityManager->getConnection();
     $oClassMetadata = $this->getClassMetadata();
-
-    // Data range
     if (!$oBrowser) $oBrowser = $this->oProperties->getBrowser();
+
+    // Data count
+    $sSQL_where = $this->sqlWhere($oBrowser);
+    $iCount = $this->queryCount($sSQL_where);
+
+    // Check/save range
     $iFrom = $oBrowser->getOffset();
-    if ($iFrom<0) $iFrom = 0;
     $iTo = $iFrom+$oBrowser->getLimit()-1;
+    if ($iFrom >= $iCount) $iFrom = $iCount-$oBrowser->getLimit();
+    if ($iTo >= $iCount) $iTo = $iCount-1;
+    if ($iFrom<0) $iFrom = 0;
     if ($iTo<$iFrom) $iTo = $iFrom;
-    if ($iTo-$iFrom>1000) $iTo = $iFrom+1000; // prevent DoS-like queries
+    $oBrowser->setRange($iCount, $iFrom, $iTo);
 
     // Fields to display/query
     $asFields_display = $oBrowser->getFields();
     $asFields_valid = $this->validFields($asFields_display);
-
-    // SELECT COUNT statement
-    $sSQL = sprintf(
-      'SELECT COUNT(*) AS __count FROM %s',
-      $oClassMetadata->getTableName()
-    );
-
-    // WHERE statement
-    $sSQL_where = null;
-    $sBrowserSearch = null;
-    if ($oBrowser) {
-      // ... search (apply same criteria across searchable fields)
-      $sCriteria = trim($oBrowser->getSearch());
-      $asSQL = array(); if ($sCriteria) $asSQL = $this->sqlSearch($sCriteria);
-      $sSQL_search = implode(' OR ', $asSQL);
-
-      // ... filter (apply specific criteria to filterable fields)
-      $asCriteria = $oBrowser->getFieldsFilter();
-      $asSQL = array(); if ($asCriteria) $asSQL = $this->sqlFilter($asCriteria, $asFields_valid, $asFields_display);
-      $sSQL_filter = implode(' AND ', $asSQL);
-
-      // ... mix the two
-      $sSQL_where = $sSQL_search;
-      if ($sSQL_filter and $sSQL_where) $sSQL_where = sprintf('( %s ) AND ', $sSQL_where);
-      $sSQL_where .= $sSQL_filter;
-    }
-    if ($sSQL_where) $sSQL = sprintf('%s WHERE %s', $sSQL, $sSQL_where);
-
-    // Query the database for data count
-    if ($this->bDebug) var_dump($sSQL); // DEBUG
-    $oResultSetMapping = new ORM\Query\ResultSetMapping();
-    $oResultSetMapping->addScalarResult('__count','__count');
-    $oQuery = $oEntityManager->createNativeQuery($sSQL, $oResultSetMapping);
-    $iCount = $oQuery->getSingleScalarResult();
-
-    // Check/save range
-    if ($iFrom > $iCount) $iFrom = $iCount;
-    if ($iTo >= $iCount) $iTo = $iCount-1;
-    $oBrowser->setRange($iCount, $iFrom, $iTo);
 
     // Query the actual data
     $aaResults = array();
@@ -208,6 +156,11 @@ class Repository
     );
   }
 
+  /** Returns the data detail (queried from the database)
+   * @param array $aPK_values Primary key(s)
+   * @param BrowserInterface $oBrowser Data browser
+   * @return Result Data result (data detail)
+   */
   public function getDataDetail($aPK_values, $oBrowser=null)
   {
     if (!is_null($oBrowser) and !$oBrowser instanceof DataJukebox\BrowserInterface) {
@@ -277,7 +230,52 @@ class Repository
     );
   }
 
-  public function getDataObject($aPK_values)
+
+  /*
+   * METHODS: RepositoryInterface
+   ********************************************************************************/
+
+  /*
+   * SETTERS
+   */
+
+  public function setProperties(DataJukebox\PropertiesInterface &$oProperties)
+  {
+    $this->oProperties =& $oProperties;
+  }
+
+  /*
+   * GETTERS
+   */
+
+  public function getProperties()
+  {
+    return $this->oProperties;
+  }
+
+  public function getDataCount($oBrowser=null)
+  {
+    if (!is_null($oBrowser) and !$oBrowser instanceof DataJukebox\BrowserInterface) {
+      throw new \RuntimeException('Browser object must implement \DataJukeboxBundle\DataJukebox\BrowserInterface');
+    }
+
+    if (!$oBrowser) $oBrowser = $this->oProperties->getBrowser();
+    $sSQL_where = $this->sqlWhere($oBrowser);
+    return $this->queryCount($sSQL_where);
+  }
+
+  public function getDataResult($aPK_values=null, $oBrowser=null)
+  {
+    if (!is_null($oBrowser) and !$oBrowser instanceof DataJukebox\BrowserInterface) {
+      throw new \RuntimeException('Browser object must implement \DataJukeboxBundle\DataJukebox\BrowserInterface');
+    }
+
+    return is_null($aPK_values)
+      ? $this->getDataList($oBrowser)
+      : $this->getDataDetail($aPK_values, $oBrowser);
+  }
+
+  public function getDataEntity($aPK_values)
   {
     // Entity resources
     $oEntityManager = $this->getEntityManager();
@@ -487,43 +485,69 @@ class Repository
       }
     }
 
-    /* foreach ($asFields_entity as $sField) { */
-    /*   try { */
-    /*     $sField_forced = sprintf('*%s', $sField); */
-    /*     if (array_key_exists($sField_forced, $asCriteria)) { */
-    /*       $aoCriteriaNodes = DataJukebox\Expression\Expression::parse($asCriteria[$sField_forced], $oFilter); */
-    /*     } elseif (array_key_exists($sField, $asCriteria) and in_array($sField, $asFields_filterable)) { */
-    /*       if (is_array($asFields_display) and !in_array($sField, $asFields_display)) continue; */
-    /*       $aoCriteriaNodes = DataJukebox\Expression\Expression::parse($asCriteria[$sField], $oFilter); */
-    /*     } else { */
-    /*       continue; */
-    /*     } */
-    /*     $asFields_sub = array(); */
-    /*     foreach ($aoCriteriaNodes as $oCriteriaNode) { */
-    /*       $asFields_sub[] = sprintf( */
-    /*         '(%s)', */
-    /*         $oCriteriaNode->evaluate( */
-    /*           array( */
-    /*             '__CONNECTION' => $oDbConnection, */
-    /*             '__COLUMN' => $oClassMetadata->getColumnName($sField), */
-    /*             '__TYPE' => $oClassMetadata->getTypeOfField($sField), */
-    /*           ) */
-    /*         ) */
-    /*       ); */
-    /*     } */
-    /*     $asFields_sql[] = implode(' AND ', $asFields_sub); */
-    /*   } catch(\Exception $e) { */
-    /*     //throw $e; // DEBUG */
-    /*     $asFields_sql = array('FALSE'); */
-    /*     break; */
-    /*   } */
-    /* } */
-
     return $asFields_sql;
   }
 
+  /** Translates the given browser to SQL (WHERE)
+   * @param BrowserInterface $oBrowser Data browser
+   * @return string SQL 'WHERE' clause
+   */
+  protected function sqlWhere(DataJukebox\BrowserInterface $oBrowser)
+  {
+    // Fields to display/query
+    $asFields_display = $oBrowser->getFields();
+    $asFields_valid = $this->validFields($asFields_display);
+
+    // Build WHERE statement
+    $sSQL = null;
+    // ... search (apply same criteria across searchable fields)
+    $sCriteria = trim($oBrowser->getSearch());
+    $asSQL = array(); if ($sCriteria) $asSQL = $this->sqlSearch($sCriteria);
+    $sSQL_search = implode(' OR ', $asSQL);
+
+    // ... filter (apply specific criteria to filterable fields)
+    $asCriteria = $oBrowser->getFieldsFilter();
+    $asSQL = array(); if ($asCriteria) $asSQL = $this->sqlFilter($asCriteria, $asFields_valid, $asFields_display);
+    $sSQL_filter = implode(' AND ', $asSQL);
+
+    // ... mix the two
+    $sSQL = $sSQL_search;
+    if ($sSQL_filter and $sSQL) $sSQL = sprintf('( %s ) AND ', $sSQL);
+    $sSQL .= $sSQL_filter;
+
+    return $sSQL;
+  }
+
+  /** Query the database for data quantity (COUNT)
+   * @param $sSQL_where SQL 'WHERE' clause
+   * @return integer Data quantity
+   */
+  protected function queryCount($sSQL_where=null)
+  {
+    // Entity resources
+    $oEntityManager = $this->getEntityManager();
+    $oClassMetadata = $this->getClassMetadata();
+
+    // SELECT COUNT statement
+    $sSQL = sprintf(
+      'SELECT COUNT(*) AS __count FROM %s',
+      $oClassMetadata->getTableName()
+    );
+
+    // WHERE statement
+    if ($sSQL_where) $sSQL = sprintf('%s WHERE %s', $sSQL, $sSQL_where);
+
+    // Query the database for data count
+    if ($this->bDebug) var_dump($sSQL); // DEBUG
+    $oResultSetMapping = new ORM\Query\ResultSetMapping();
+    $oResultSetMapping->addScalarResult('__count','__count');
+    $oQuery = $oEntityManager->createNativeQuery($sSQL, $oResultSetMapping);
+    $iCount = $oQuery->getSingleScalarResult();
+
+    return $iCount;
+  }
+
   /** Adds the internal primary key field (_PK) to the query results
-   *
    * @param array|array|mixed Data row/fields
    */
   protected function mergePrimaryKey(array &$aaResults) {

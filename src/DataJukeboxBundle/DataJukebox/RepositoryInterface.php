@@ -47,7 +47,7 @@ interface RepositoryInterface
    */
 
   /** Sets the associated data properties (by reference)
-   * @param \DataJukeboxBundle\DataJukebox\PropertiesInterface
+   * @param PropertiesInterface
    */
   public function setProperties(PropertiesInterface &$oProperties);
 
@@ -60,23 +60,29 @@ interface RepositoryInterface
    */
   public function getProperties();
 
-  /** Returns the data list (queried from the database)
+  /** Returns the data count (queried from the database)
    * @param BrowserInterface $oBrowser Data browser
-   * @return Result Data result (data list)
+   * @return integer Data result
    */
-  public function getDataList($oBrowser=null);
+  public function getDataCount($oBrowser=null);
 
-  /** Returns the data detail (queried from the database)
+  /** Returns the data result (queried from the database)
+   *
+   * <P>Returns the result matching the (optional) primary key and browser.
+   * If the primary key is supplied, it will ignore any browser-supplied
+   * range/limit/search/filter criteria and fetch the (single) corresponding
+   * item. Otherwise, all items (or browser-specified items) shall be fetched.</P>
+   *
    * @param array $aPK_values Primary key(s)
    * @param BrowserInterface $oBrowser Data browser
-   * @return Result Data result (data detail)
+   * @return Result Data result
    */
-  public function getDataDetail($aPK_values, $oBrowser=null);
+  public function getDataResult($aPK_values=null, $oBrowser=null);
 
-  /** Returns the data object (queried from the database)
+  /** Returns the data entity (queried from the database)
    * @param array $aPK_values Primary key(s)
-   * @return Result Data result (data detail)
+   * @return Entity Data entity
    */
-  public function getDataObject($aPK_values);
+  public function getDataEntity($aPK_values);
 
 }
