@@ -7,6 +7,7 @@ label:
   _action_delete_confirm: VEUILLEZ CONFIRMER !
   _action_select: Sélectionner
   _action_select_confirm: ''
+  _action_export: Export
   _action_form_submit: Soumettre
   _action_form_reset: Réinitialiser
   _action_form_cancel: Annuler
@@ -30,6 +31,7 @@ tooltip:
   _action_delete_confirm: Voulez-vous vraiment effacer ces données ? Cette action est irréversible !
   _action_select: Sélectionner les données cochées
   _action_select_confirm: ''
+  _action_export: Exporter (télécharger) les données dans le format spécifié
   _action_form_submit: Soumettre les données
   _action_form_reset: Réinitialiser les données à leur valeur initiale
   _action_form_cancel: Annuler l'opération en cours

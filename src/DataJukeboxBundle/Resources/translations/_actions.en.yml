@@ -7,6 +7,7 @@ label:
   _action_delete_confirm: PLEASE CONFIRM !
   _action_select: Select
   _action_select_confirm: ''
+  _action_export: Export
   _action_form_submit: Submit
   _action_form_reset: Reset
   _action_form_cancel: Cancel
@@ -30,6 +31,7 @@ tooltip:
   _action_delete_confirm: Do you really want to delete those data ? This action cannot be undone !
   _action_select: Select the checked data
   _action_select_confirm: ''
+  _action_export: Export (download) data using the specified format
   _action_form_submit: Submit the data
   _action_form_reset: Reset the data to their initial value
   _action_form_cancel: Cancel the current operation

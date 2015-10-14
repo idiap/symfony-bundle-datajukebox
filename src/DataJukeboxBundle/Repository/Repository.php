@@ -104,7 +104,7 @@ class Repository
     if ($iTo >= $iCount) $iTo = $iCount-1;
     if ($iFrom<0) $iFrom = 0;
     if ($iTo<$iFrom) $iTo = $iFrom;
-    $oBrowser->setRange($iCount, $iFrom, $iTo);
+    $oBrowser->setRangeActual($iCount, $iFrom, $iTo);
 
     // Fields to display/query
     $asFields_display = $oBrowser->getFields();
@@ -174,7 +174,7 @@ class Repository
 
     // Data pointer
     if (!$oBrowser) $oBrowser = $this->oProperties->getBrowser();
-    $oBrowser->setRange(1,1,1,1);
+    $oBrowser->setRangeActual(1, 1, 1, 1);
     if (!is_array($aPK_values)) $aPK_values = explode(':', $aPK_values);
     $aPK_fields = $oClassMetadata->getIdentifierFieldNames();
     if (count($aPK_values) != count($aPK_fields)) {

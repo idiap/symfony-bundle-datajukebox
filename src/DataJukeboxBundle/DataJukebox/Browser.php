@@ -104,7 +104,7 @@ class Browser
     $this->oProperties = &$oProperties;
 
     // Parse request
-    $this->setRange(0, 0, 0, 25);
+    $this->setRangeActual(0, 0, 0, 25);
     if ($oRequest) {
       $this->setFields($oRequest->query->get(sprintf('%s_fd', $this->sUID)));
       $this->setFieldsOrder($oRequest->query->get(sprintf('%s_or', $this->sUID)), true);
@@ -210,24 +210,6 @@ class Browser
     return $this;
   }
 
-  /** Sets the data count/range/limit
-   * @param integer $iCount Actual quantity of data (rows)
-   * @param integer $iFrom Actual index of the first queried/displayed data (row), starting from zero
-   * @param integer $iTo Actual index of the last queried/displayed data (row), starting from zero
-   * @param integer $iLimit Data limit (quantity of rows), ignored if <SAMP>null</SAMP>
-   * @return this
-   */
-  public function setRange($iCount, $iFrom, $iTo, $iLimit=null)
-  {
-    $this->aiRange = array(
-      'count' => (integer)$iCount,
-      'from' => (integer)$iFrom,
-      'to' => (integer)$iTo,
-      'limit' => !is_null($iLimit) ? (integer)$iLimit : $this->aiRange['limit'],
-    );
-    return $this;
-  }
-
   /** Sets the data offset (rows paging)
    * @param integer $iOffset Data offset (rows paging)
    * @return this
@@ -245,6 +227,24 @@ class Browser
   public function setLimit($iLimit)
   {
     if (!is_null($iLimit)) $this->aiRange['limit'] = (integer)$iLimit;
+    return $this;
+  }
+
+  /** Sets the actual data count/range/limit
+   * @param integer $iCount Actual quantity of data (rows)
+   * @param integer $iFrom Actual index of the first queried/displayed data (row), starting from zero
+   * @param integer $iTo Actual index of the last queried/displayed data (row), starting from zero
+   * @param integer $iLimit Data limit (quantity of rows), ignored if <SAMP>null</SAMP>
+   * @return this
+   */
+  public function setRangeActual($iCount, $iFrom, $iTo, $iLimit=null)
+  {
+    $this->aiRange = array(
+      'count' => (integer)$iCount,
+      'from' => (integer)$iFrom,
+      'to' => (integer)$iTo,
+      'limit' => !is_null($iLimit) ? (integer)$iLimit : $this->aiRange['limit'],
+    );
     return $this;
   }
 

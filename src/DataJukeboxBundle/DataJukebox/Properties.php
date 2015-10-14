@@ -71,10 +71,10 @@ abstract class Properties
    * PROPERTIES
    ********************************************************************************/
 
-  /** Properties UID
+  /** Properties name
    * @var string
    */
-  private $sUID;
+  private $sName;
 
   /** Doctrine ORM entity manager
    * NOTE: this is required for generating SQL that matches the actual RDMS used
@@ -101,6 +101,11 @@ abstract class Properties
    * @var string
    */
   private $sAction;
+
+  /** Output format (html, xml, json, csv, ...)
+   * @var string
+   */
+  private $sFormat;
 
   /** Symfony translator
    * @var \Symfony\Component\Translation\TranslatorInterface
@@ -133,12 +138,13 @@ abstract class Properties
    */
   public function __construct(EntityManager $oEntityManager, $sEntityName)
   {
-    $this->sUID = preg_replace('/^.*\\\\/', '', get_class($this));
+    $this->sName = preg_replace('/(^.*\\\\|Properties$)/i', '', get_class($this));
     $this->oEntityManager = $oEntityManager;
     $this->sEntityName = (string)$sEntityName;
     $this->oClassMetadata = $this->oEntityManager->getClassMetadata($sEntityName);
     $this->iAuthorization = self::AUTH_PUBLIC;
     $this->sAction = null;
+    $this->sFormat = 'html';
     $this->oTranslator = null;
     $this->aRouteSelect = null;
     $this->aFieldsLink = array();
@@ -153,6 +159,15 @@ abstract class Properties
   /*
    * SETTERS
    */
+
+  /** Sets the data name
+   * @param string $sName Data name
+   */
+  public function setName($sName)
+  {
+    $this->sName = (string)$sName;
+    return $this;
+  }
 
   /** Sets the authorization
    * @param integer $iAuthorization Authorization level
@@ -170,6 +185,15 @@ abstract class Properties
   public function setAction($sAction)
   {
     $this->sAction = (string)$sAction;
+    return $this;
+  }
+
+  /** Sets the output format
+   * @param string $sFormat Output format (html, xml, json, csv, ...)
+   */
+  public function setFormat($sFormat)
+  {
+    $this->sFormat = (string)$sFormat;
     return $this;
   }
 
@@ -215,7 +239,15 @@ abstract class Properties
   /*
    * GETTERS
    */
-  
+
+  /** Returns the data name
+   * @return string Data name
+   */
+  public function getName()
+  {
+    return $this->sName;
+  }
+
   /** Returns whether the current action is authorized (at the current authorization level)
    *
    * <P>This method MUST be overridden since by default, it returns <SAMP>false</SAMP> for
@@ -227,26 +259,34 @@ abstract class Properties
   {
     return $this->iAuthorization >= self::AUTH_SYSTEM;
   }
-  
+
   /** Returns the authorization level
    *
    * <P>This method returns the authorization level (<SAMP>AUTH_PUBLIC</SAMP> by default).
    * The authorization level numeric (integer) value MUST increase as a more privileges
    * are granted (allowing for easy/fast numeric comparison of authorization levels).</P>
-   * 
+   *
    * @return integer Authorization level
    */
   public function getAuthorization()
   {
     return $this->iAuthorization;
   }
-  
+
   /** Returns the action
    * @return string Action (list, detail, insert, update, ...)
    */
   public function getAction()
   {
     return $this->sAction;
+  }
+
+  /** Returns the output format
+   * @return string Output format (html, xml, json, csv, ...)
+   */
+  public function getFormat()
+  {
+    return $this->sFormat;
   }
 
   /** Returns meta-data (label, tooltip, ...) for fields and resources
@@ -280,6 +320,7 @@ abstract class Properties
       '_action_delete_confirm' => 'Delete ?',
       '_action_select' => 'Select',
       '_action_select_confirm' => 'Select ?',
+      '_action_export' => 'Export',
       '_action_form_submit' => 'Submit',
       '_action_form_reset' => 'Reset',
       '_action_form_cancel' => 'Cancel',
@@ -332,7 +373,7 @@ abstract class Properties
 
   public function getUID()
   {
-    return sprintf('%s_%s', $this->sUID, $this->sAction);
+    return sprintf('%s_%s', $this->sName, $this->sAction);
   }
 
   public function getEntityManager()
@@ -463,18 +504,44 @@ abstract class Properties
    */
   public function getTemplate()
   {
-    switch ($this->sAction) {
-    case 'list':
-    case 'select':
-      return 'DataJukeboxBundle:Default:list.html.twig';
-    case 'detail':
-      return 'DataJukeboxBundle:Default:detail.html.twig';
-    case 'insert':
-    case 'update':
-      return 'DataJukeboxBundle:Default:form.html.twig';
-    default:
-      throw new \Exception(sprintf('Invalid/unsupported action (%s)', $this->sAction));
+    switch ($this->sFormat) {
+    case 'html':
+      switch ($this->sAction) {
+      case 'list':
+      case 'select':
+        return 'DataJukeboxBundle:Default:list.html.twig';
+      case 'detail':
+        return 'DataJukeboxBundle:Default:detail.html.twig';
+      case 'insert':
+      case 'update':
+        return 'DataJukeboxBundle:Default:form.html.twig';
+      }
+
+    case 'xml':
+      switch ($this->sAction) {
+      case 'list':
+      case 'detail':
+      case 'export':
+        return 'DataJukeboxBundle:Default:xml.txt.twig';
+      }
+
+    case 'json':
+      switch ($this->sAction) {
+      case 'list':
+      case 'detail':
+      case 'export':
+        return 'DataJukeboxBundle:Default:json.txt.twig';
+      }
+
+    case 'csv':
+      switch ($this->sAction) {
+      case 'list':
+      case 'detail':
+      case 'export':
+        return 'DataJukeboxBundle:Default:csv.txt.twig';
+      }
     }
+    throw new \Exception(sprintf('Invalid/unsupported action/format (%s/%s)', $this->sAction, $this->sFormat));
   }
 
   public function getFooterLinks()
@@ -487,6 +554,7 @@ abstract class Properties
    * <P>The following template data are returned:</P>
    * <LI>
    * <UL><B>array['uid']</B>: corresponding to <SAMP>$this->getUID()</SAMP></UL>
+   * <UL><B>array['name']</B>: corresponding to <SAMP>$this->getName()</SAMP></UL>
    * <UL><B>array['action']</B>: corresponding to <SAMP>$this->getAction()</SAMP></UL>
    * <UL><B>array['routes']</B>: corresponding to <SAMP>$this->getRoutes()</SAMP></UL>
    * <UL><B>array['labels']</B>: corresponding to <SAMP>$this->getLabels()</SAMP></UL>
@@ -510,7 +578,7 @@ abstract class Properties
     // Populate default routes
     $aaRoutes = $this->getRoutes();
     if ($aRouteSelect = $this->getRouteSelect()) $aaRoutes = array_merge($aaRoutes, array('select_route' => $aRouteSelect ));
- 
+
     // Valid fields
     $aFields_valid = $this->oClassMetadata->getFieldNames();
     $aFields = array_intersect($this->getFields(), $aFields_valid);
@@ -530,6 +598,7 @@ abstract class Properties
     // Return data
     return array(
       'uid' => $this->getUID(),
+      'name' => $this->getName(),
       'action' => $this->getAction(),
       'routes' => $aaRoutes,
       'labels' => $this->getLabels(),
