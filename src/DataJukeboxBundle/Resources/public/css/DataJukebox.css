@@ -24,8 +24,12 @@ DIV.DataJukebox .help { FONT-WEIGHT:bold; }
 DIV.DataJukebox DIV.title { FLOAT:left; MARGIN-RIGHT:5px; }
 DIV.DataJukebox DIV.title LABEL { TEXT-DECORATION:underline; }
 DIV.DataJukebox DIV.action { FLOAT:left; }
+DIV.DataJukebox DIV.action TD { VERTICAL-ALIGN:middle; }
+DIV.DataJukebox DIV.action SELECT { BORDER:none; FONT-WEIGHT:bold; }
 DIV.DataJukebox DIV.links { FLOAT:left; }
+DIV.DataJukebox DIV.links TD { VERTICAL-ALIGN:middle; }
 DIV.DataJukebox DIV.help { FLOAT:right; }
+DIV.DataJukebox DIV.help TD { VERTICAL-ALIGN:middle; }
 DIV.DataJukebox TABLE.data { MIN-WIDTH:360px; }
 DIV.DataJukebox TABLE.data TD.empty { TEXT-ALIGN:center; COLOR:#606060; }
 
@@ -39,18 +43,17 @@ DIV.DataJukebox DIV.list TABLE.data TR.odd TD.action { WIDTH:16px; PADDING:2px 0
 DIV.DataJukebox DIV.list TABLE.data TR.even TD.action { WIDTH:16px; PADDING:2px 0px; TEXT-ALIGN:center; }
 DIV.DataJukebox DIV.list TABLE.data #_pkToggle { PADDING-TOP:3px; }
 DIV.DataJukebox DIV.list TABLE.data #_pk { PADDING-TOP:4px; }
-DIV.DataJukebox DIV.list DIV.browser { CLEAR:both; }
-DIV.DataJukebox DIV.list DIV.browser TABLE { WIDTH:auto; MARGIN-LEFT:auto; MARGIN-RIGHT:auto; }
 
 DIV.DataJukebox DIV.list DIV.search { FLOAT:right; }
-DIV.DataJukebox DIV.list DIV.search TD { PADDING-TOP:2px; }
-DIV.DataJukebox DIV.list DIV.search TD.input { PADDING-TOP:0px; }
+DIV.DataJukebox DIV.list DIV.search TD { VERTICAL-ALIGN:middle; }
 
+DIV.DataJukebox DIV.list DIV.browser { CLEAR:both; }
 DIV.DataJukebox DIV.list DIV.browser LABEL { FONT-WEIGHT:normal; }
 DIV.DataJukebox DIV.list DIV.browser A LABEL { FONT-WEIGHT:bold; }
-DIV.DataJukebox DIV.list DIV.browser TD { PADDING-TOP:2px; COLOR:#606060; }
+DIV.DataJukebox DIV.list DIV.browser TABLE { WIDTH:auto; MARGIN-LEFT:auto; MARGIN-RIGHT:auto; }
+DIV.DataJukebox DIV.list DIV.browser TD { VERTICAL-ALIGN:middle; COLOR:#606060; }
 DIV.DataJukebox DIV.list DIV.browser TD.value { PADDING-LEFT:10px; FONT-WEIGHT:bold; COLOR:#000000; }
-DIV.DataJukebox DIV.list DIV.browser TD.input { PADDING:0px 10px 5px; FONT-WEIGHT:bold; COLOR:#000000; }
+DIV.DataJukebox DIV.list DIV.browser TD.input { FONT-WEIGHT:bold; COLOR:#000000; }
 DIV.DataJukebox DIV.list DIV.browser TD.input INPUT { WIDTH:50px; }
 
 DIV.DataJukebox DIV.detail TH { WIDTH:120px; MAX-WIDTH:360px; WORD-WRAP:break-word; }
@@ -68,10 +71,11 @@ DIV.DataJukebox DIV.display { FLOAT:left; MARGIN-RIGHT:5px; }
 DIV.DataJukebox DIV.display DIV.overlay { TOP:0px; LEFT:0px; BACKGROUND:#FFFFFF; BORDER:1px solid #000000; }
 DIV.DataJukebox DIV.display DIV.overlay TABLE#_top { WIDTH:auto; MARGIN-RIGHT:auto; }
 DIV.DataJukebox DIV.display DIV.overlay TABLE#_bottom { WIDTH:auto; MARGIN-LEFT:auto; }
+DIV.DataJukebox DIV.display DIV.overlay TD { VERTICAL-ALIGN:middle; }
 DIV.DataJukebox DIV.display DIV.overlay TD.action { PADDING-RIGHT:2px; }
 DIV.DataJukebox DIV.display DIV.overlay TD.field { PADDING-LEFT:5px; FONT-SIZE:0.75em; }
 DIV.DataJukebox DIV.display DIV.overlay TD.field LABEL { FONT-WEIGHT:normal; }
-DIV.DataJukebox DIV.display DIV.overlay TD.input { PADDING-TOP:2px; FONT-SIZE:0.5em; }
+DIV.DataJukebox DIV.display DIV.overlay TD.input { FONT-SIZE:0.5em; }
 
 DIV#DataJukebox_popupContainer { POSITION:absolute; LEFT:0px; TOP:0px; WIDTH:100%; HEIGHT:100%; TEXT-ALIGN:center; WHITE-SPACE:nowrap; POINTER-EVENTS:none; }
 DIV#DataJukebox_popupContainerSpacer { DISPLAY:inline-block; HEIGHT:100%; VERTICAL-ALIGN:middle; CONTENT:''; }
