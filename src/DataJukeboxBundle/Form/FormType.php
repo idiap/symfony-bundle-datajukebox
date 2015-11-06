@@ -109,12 +109,16 @@ class FormType
     if (!$oData instanceof DataJukebox\PrimaryKeyInterface) {
       throw new \RuntimeException('Data object must implement \DataJukeboxBundle\DataJukebox\PrimaryKeyInterface');
     }
+    $oClassMetadata = $this->oProperties->getClassMetadata();
+    if (is_null($oClassMetadata)) {
+      throw new \RuntimeException('Properties have no associated entity and class metadata');
+    }
 
     return array(
       '_pk' => implode(
         ':',
         array_merge(
-          array_fill_keys($this->oProperties->getClassMetadata()->getIdentifierFieldNames(), null),
+          array_fill_keys($oClassMetadata->getIdentifierFieldNames(), null),
           $oData->getPrimaryKey()
         )
       )
@@ -128,8 +132,7 @@ class FormType
 
   public function getName()
   {
-    list($sNamespaceAlias, $sSimpleClassName) = explode(':', $this->oProperties->getEntityName());
-    return $sSimpleClassName;
+    return $this->oProperties->getName();
   }
 
   public function buildForm(Form\FormBuilderInterface $oFormBuilder, array $amOptions)
@@ -140,7 +143,7 @@ class FormType
     $asLabels = $this->oProperties->getLabels();
     $asTooltips = $this->oProperties->getTooltips();
     $asFields_all = $this->oProperties->getFields();
-    $asFields_pk = $oClassMetadata->getIdentifierFieldNames();
+    $asFields_pk = !is_null($oClassMetadata) ? $oClassMetadata->getIdentifierFieldNames() : array();
     $asFields_hidden = $this->oProperties->getFieldsHidden();
     $asFields_required = array_merge($asFields_pk, array_diff($this->oProperties->getFieldsRequired(), $asFields_pk));
     $asFields_readonly = array_merge($asFields_pk, array_diff($this->oProperties->getFieldsReadonly(), $asFields_pk));
@@ -152,8 +155,8 @@ class FormType
 
       // ... type and options
       if (array_key_exists($sField, $aaFields_form)) {
-        $sField_type = $aaFields_form[$sField][0];
-        $aField_options = $aaFields_form[$sField][1];
+        $sField_type = array_key_exists(0, $aaFields_form[$sField]) ? $aaFields_form[$sField][0] : null;
+        $aField_options = array_key_exists(1, $aaFields_form[$sField]) ? $aaFields_form[$sField][1] : array();
       } else {
         $sField_type = null;
         $aField_options = array();
@@ -194,7 +197,7 @@ class FormType
         $aField_options = array_merge($aField_options, array('data' => $amFields_default[$sField]));
       }
       // ... (custom) widget
-      switch (!is_null($sField_type) ? $sField_type : $oClassMetadata->getTypeOfField($sField)) {
+      switch ((is_null($sField_type) and !is_null($oClassMetadata)) ? $oClassMetadata->getTypeOfField($sField) : $sField_type) {
       case 'datetime':
         // We need a properly formatted 'single_text' widget for JQuery
         if (!array_key_exists('widget', $aField_options) or $aField_options['widget']=='single_text') {
@@ -237,9 +240,10 @@ class FormType
   public function setDefaultOptions(OptionsResolver\OptionsResolverInterface $oOptionsResolver)
   {
     // Form defaults
+    $oClassMetadata = $this->oProperties->getClassMetadata();
     $oOptionsResolver->setDefaults(
       array(
-        'data_class' => $this->oProperties->getClassMetadata()->name,
+        'data_class' => !is_null($oClassMetadata) ? $oClassMetadata->name : null,
         'data_properties' => $this->oProperties->getTemplateData(),
       )
     );

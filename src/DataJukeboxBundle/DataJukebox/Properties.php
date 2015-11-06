@@ -136,14 +136,20 @@ abstract class Properties
    * @param EntityManager $oEntityManager Doctrine ORM entity manager
    * @param string $sEntityName Doctrine ORM entity name ('<Bundle>:<Entity>' notation)
    */
-  public function __construct(EntityManager $oEntityManager, $sEntityName)
+  public function __construct($oEntityManager=null, $sEntityName=null)
   {
+    if (!is_null($oEntityManager)) {
+      if (!$oEntityManager instanceof EntityManager )
+        throw new \RuntimeException('Entity manager object must inherit from \Doctrine\ORM\EntityManager');
+      if (empty($sEntityName))
+        throw new \RuntimeException('Entity name may not be empty');
+    }
     $this->sName = preg_replace('/(^.*\\\\|Properties$)/i', '', get_class($this));
     $this->oEntityManager = $oEntityManager;
-    $this->sEntityName = (string)$sEntityName;
-    $this->oClassMetadata = $this->oEntityManager->getClassMetadata($sEntityName);
+    $this->sEntityName = !is_null($this->oEntityManager) ? (string)$sEntityName : null;
+    $this->oClassMetadata = !is_null($this->oEntityManager) ? $this->oEntityManager->getClassMetadata($sEntityName) : null;
     $this->iAuthorization = self::AUTH_PUBLIC;
-    $this->sAction = null;
+    $this->sAction = 'default';
     $this->sFormat = 'html';
     $this->oTranslator = null;
     $this->aRouteSelect = null;
@@ -299,7 +305,7 @@ abstract class Properties
   {
     // Initialize meta-data for all possible fields
     $asFields = array_merge(
-      $this->oClassMetadata->getFieldNames(),
+      !is_null($this->oClassMetadata) ? $this->oClassMetadata->getFieldNames() : $this->getFields(),
       array_keys($this->getFooterLinks()),
       array_keys($this->getFieldsForm())
     );
@@ -426,7 +432,7 @@ abstract class Properties
 
   public function getFields()
   {
-    return $this->oClassMetadata->getFieldNames();
+    return !is_null($this->oClassMetadata) ? $this->oClassMetadata->getFieldNames() : array();
   }
 
   public function getFieldsDefault()
@@ -454,7 +460,7 @@ abstract class Properties
 
   public function getFieldsReadonly()
   {
-    return $this->oClassMetadata->getIdentifierFieldNames();
+    return !is_null($this->oClassMetadata) ? $this->oClassMetadata->getIdentifierFieldNames() : array();
   }
 
   public function getFieldsDefaultValue()
@@ -580,8 +586,12 @@ abstract class Properties
     if ($aRouteSelect = $this->getRouteSelect()) $aaRoutes = array_merge($aaRoutes, array('select_route' => $aRouteSelect ));
 
     // Valid fields
-    $aFields_valid = $this->oClassMetadata->getFieldNames();
-    $aFields = array_intersect($this->getFields(), $aFields_valid);
+    if (!is_null($this->oClassMetadata)) {
+      $aFields_valid = $this->oClassMetadata->getFieldNames();
+      $aFields = array_intersect($this->getFields(), $aFields_valid);
+    } else {
+      $aFields = $this->getFields();
+    }
 
     // Hide special fields
     $aFields_hidden = array_merge(array('_PK'), $this->getFieldsHidden());
