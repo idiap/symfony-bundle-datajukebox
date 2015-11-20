@@ -300,7 +300,7 @@ class Browser
    */
   public static function getPrimaryKeys(Request $oRequest) {
     $asPK = $oRequest->request->get('_pk', array());
-    if (!is_array($asPK)) $asPK = array($asPK);
+    if (!is_array($asPK)) $asPK = explode(',', $asPK);
     return $asPK;
   }
 
