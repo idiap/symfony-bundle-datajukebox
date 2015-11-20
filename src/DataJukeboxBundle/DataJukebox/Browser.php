@@ -80,6 +80,11 @@ class Browser
    */
   private $aiRange;
 
+  /** User interface components
+   * @var array|boolean
+   */
+  private $abUserInterface;
+
 
   /*
    * CONSTRUCTORS
@@ -102,6 +107,20 @@ class Browser
     }
     $this->sUID = $sUID;
     $this->oProperties = &$oProperties;
+    $this->abUserInterface = array(
+      'header' => true,
+      'footer' => true,
+      'title' => true,
+      'label' => true,
+      'display' => true,
+      'order' => true,
+      'search' => true,
+      'filter' => true,
+      'browser' => true,
+      'actions' => true,
+      'links' => true,
+      'help' => true,
+    );
 
     // Parse request
     $this->setRangeActual(0, 0, 0, 25);
@@ -248,6 +267,34 @@ class Browser
     return $this;
   }
 
+  /** Sets user interface components usage/visibility
+   *
+   * <P>The following components are defined/supported:</P>
+   * <LI>
+   * <UL><B>header</B>: data header</UL>
+   * <UL><B>footer</B>: data footer</UL>
+   * <UL><B>title</B>: data title</UL>
+   * <UL><B>label</B>: fields label</UL>
+   * <UL><B>display</B>: displayed (visible) fields</UL>
+   * <UL><B>order</B>: data sorting</UL>
+   * <UL><B>search</B>: global search</UL>
+   * <UL><B>filter</B>: per-field filter</UL>
+   * <UL><B>browser</B>: data (pages) browsing</UL>
+   * <UL><B>actions</B>: standard (CRUD) actions</UL>
+   * <UL><B>links</B>: user-defined links</UL>
+   * <UL><B>help</B>: help</UL>
+   * </LI>
+   *
+   * @param string $sComponent Component name
+   * @param boolean $bStatus Component usage/visibility status
+   * @return this
+   */
+  public function setUserInterface($sComponent, $bStatus)
+  {
+    if (in_array($sComponent, $this->abUserInterface)) $this->abUserInterface[$sComponent] = (boolean)$bStatus;
+    return $this;
+  }
+
   /** Returns the POST-ed primary keys (_pk[])
    * @return array|mixed Array of POST-ed primary keys
    */
@@ -315,6 +362,11 @@ class Browser
     return $this->aiRange['limit'];
   }
 
+  public function getUserInterface()
+  {
+    return $this->abUserInterface;
+  }
+
   /** Returns the ad-hoc template data
    *
    * <P>The following template data are returned:</P>
@@ -325,6 +377,7 @@ class Browser
    * <UL><B>array['fields_filter']</B>: corresponding to <SAMP>$this->getFieldsFilter()</SAMP></UL>
    * <UL><B>array['search']</B>: corresponding to <SAMP>$this->getSearch()</SAMP></UL>
    * <UL><B>array['range']</B>: corresponding to <SAMP>$this->getRange()</SAMP></UL>
+   * <UL><B>array['ui']</B>: corresponding to <SAMP>$this->getUserInterface()</SAMP></UL>
    * </LI>
    *
    * @return array Template data
@@ -338,6 +391,7 @@ class Browser
       'fields_filter' => $this->getFieldsFilter(),
       'search' => $this->getSearch(),
       'range' => $this->getRange(),
+      'ui' => $this->getUserInterface(),
     );
   }
 

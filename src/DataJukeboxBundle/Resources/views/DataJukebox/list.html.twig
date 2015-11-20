@@ -9,9 +9,9 @@
         <INPUT TYPE="hidden" ID="_or[]" NAME="{{ data.browser.uid }}_or[]"{% if loop.index0 < data.browser.fields_order|length %} VALUE="{{ data.browser.fields_order[loop.index0][0] }}_{{ data.browser.fields_order[loop.index0][1] }}"{% else %} DISABLED{% endif %} />
       {% endfor -%}
       <TABLE CLASS="data">
-        {{ block('DataJukebox_list_header') }}
+        {% if data.browser.ui.header %}{{ block('DataJukebox_list_header') }}{% endif %}
         {{ block('DataJukebox_list_rows') }}
-        {{ block('DataJukebox_list_footer') }}
+        {% if data.browser.ui.footer %}{{ block('DataJukebox_list_footer') }}{% endif %}
       </TABLE>
     </FORM>
   </DIV></DIV>
@@ -20,12 +20,13 @@
 
 {% block DataJukebox_list_header -%}
   <TR CLASS="header"><TD COLSPAN="999">
-    {{ block('DataJukebox_list_display') }}
-    {% if data.properties.labels._title_list is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_list is defined %} TITLE="{{ data.properties.tooltips._title_list }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_list }}{% if data.properties.action == 'select' and data.properties.labels._action_select is defined %} ({{ data.properties.labels._action_select }}){% endif %}</LABEL></DIV>{% endif %}
-    {{ block('DataJukebox_list_search') }}
-    <DIV STYLE="CLEAR:both;"></DIV></TD></TR>
-  {{ block('DataJukebox_list_label') }}
-    {{ block('DataJukebox_list_filter') }}
+    {% if data.browser.ui.display %}{{ block('DataJukebox_list_display') }}{% endif %}
+    {% if data.browser.ui.title and data.properties.labels._title_list is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_list is defined %} TITLE="{{ data.properties.tooltips._title_list }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_list }}{% if data.properties.action == 'select' and data.properties.labels._action_select is defined %} ({{ data.properties.labels._action_select }}){% endif %}</LABEL></DIV>{% endif %}
+    {% if data.browser.ui.search %}{{ block('DataJukebox_list_search') }}{% endif %}
+    <DIV STYLE="CLEAR:both;"></DIV>
+  </TD></TR>
+  {% if data.browser.ui.label %}{{ block('DataJukebox_list_label') }}{% endif %}
+  {% if data.browser.ui.filter %}{{ block('DataJukebox_list_filter') }}{% endif %}
 {% endblock DataJukebox_list_header -%}
 
 {% block DataJukebox_list_display -%}
@@ -38,12 +39,12 @@
         {% set tooltips_keys = data.properties.tooltips|keys -%}
         {%- for field in data.properties.fields -%}
           {%- if field not in data.properties.fields_hidden -%}
-            <TR><TD CLASS="field"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}</TD><TD CLASS="input"><INPUT TYPE="checkbox"{% if field not in data.properties.fields_required %} ID="_fd[]" NAME="{{ data.browser.uid }}_fd[]"{% endif %} VALUE="{{ field }}{% if app.request.query.get(data.browser.uid~'_fd') is null %} {% endif %}" ONCHANGE="javascript:this.value=this.value.trim()"{% if field in data.properties.fields_required or field in data.browser.fields %} CHECKED{% endif %}{% if field in data.properties.fields_required%} DISABLED{% endif %} /></TD></TR>
+            <TR><TD CLASS="field"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if data.browser.ui.search and field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}</TD><TD CLASS="input"><INPUT TYPE="checkbox"{% if field not in data.properties.fields_required %} ID="_fd[]" NAME="{{ data.browser.uid }}_fd[]"{% endif %} VALUE="{{ field }}{% if app.request.query.get(data.browser.uid~'_fd') is null %} {% endif %}" ONCHANGE="javascript:this.value=this.value.trim()"{% if field in data.properties.fields_required or field in data.browser.fields %} CHECKED{% endif %}{% if field in data.properties.fields_required%} DISABLED{% endif %} /></TD></TR>
           {% endif -%}
         {%- endfor -%}
         {% for field in data.properties.fields_search -%}
           {%- if field not in data.properties.fields -%}
-            <TR><TD CLASS="field"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}</TD><TD CLASS="input"><INPUT TYPE="checkbox" DISABLED /></TD></TR>
+            <TR><TD CLASS="field"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL><SPAN CLASS="icon">&#x2699;</SPAN></TD><TD CLASS="input"><INPUT TYPE="checkbox" DISABLED /></TD></TR>
           {% endif -%}
         {%- endfor -%}
         <TR><TD COLSPAN="2"><TABLE ID="_bottom"><TR><TD CLASS="action" ID="_display_reset"{% if data.properties.tooltips._display_reset is defined %} TITLE="{{ data.properties.tooltips._display_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displayReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD><TD CLASS="action" ID="_display_submit"{% if data.properties.tooltips._display_submit is defined %} TITLE="{{ data.properties.tooltips._display_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_displaySubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD></TR></TABLE></TD></TR>
@@ -79,7 +80,7 @@
     {%- set tooltips_keys = data.properties.tooltips|keys -%}
     {%- for field in data.browser.fields -%}
       {%- if field not in data.properties.fields_hidden -%}
-        <TH CLASS="field" ID="{{ field }}"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}{% if field in data.properties.fields_order %}<SPAN CLASS="order"><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_order('{{ data.properties.uid|escape('js') }}', '{{ field|escape('js') }}','A');"><SPAN CLASS="icon">&#x21e3;</SPAN></A><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_order('{{ data.properties.uid|escape('js') }}', '{{ field|escape('js') }}','D');"><SPAN CLASS="icon">&#x21e1;</SPAN></A></SPAN>{% endif %}</TH>
+        <TH CLASS="field" ID="{{ field }}"><LABEL{% if field in tooltips_keys and attribute(data.properties.tooltips, field) %} TITLE="{{ attribute(data.properties.tooltips, field) }}" STYLE="CURSOR:help;"{% endif %}>{{ attribute(data.properties.labels, field) }}</LABEL>{% if data.browser.ui.search and field in data.properties.fields_search %}<SPAN CLASS="icon">&#x2699;</SPAN>{% endif %}{% if data.browser.ui.order and field in data.properties.fields_order %}<SPAN CLASS="order"><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_order('{{ data.properties.uid|escape('js') }}', '{{ field|escape('js') }}','A');"><SPAN CLASS="icon">&#x21e3;</SPAN></A><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_order('{{ data.properties.uid|escape('js') }}', '{{ field|escape('js') }}','D');"><SPAN CLASS="icon">&#x21e1;</SPAN></A></SPAN>{% endif %}</TH>
       {%- endif -%}
     {%- endfor -%}
   </TR>
@@ -169,11 +170,12 @@
 
 {% block DataJukebox_list_footer -%}
   <TR CLASS="footer"><TD COLSPAN="999">
-    {{ block('DataJukebox_list_browser') }}
-    {{ block('DataJukebox_list_actions') }}
-    {{ block('DataJukebox_list_links') }}
-    {{ block('DataJukebox_list_help') }}
-    <DIV STYLE="CLEAR:both;"></TD></TR>
+    {% if data.browser.ui.browser %}{{ block('DataJukebox_list_browser') }}{% endif %}
+    {% if data.browser.ui.actions %}{{ block('DataJukebox_list_actions') }}{% endif %}
+    {% if data.browser.ui.links %}{{ block('DataJukebox_list_links') }}{% endif %}
+    {% if data.browser.ui.help %}{{ block('DataJukebox_list_help') }}{% endif %}
+    <DIV STYLE="CLEAR:both;">
+  </TD></TR>
 {% endblock DataJukebox_list_footer -%}
 
 {% block DataJukebox_list_browser -%}

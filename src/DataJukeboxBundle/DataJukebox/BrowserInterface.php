@@ -112,6 +112,28 @@ interface BrowserInterface
    */
   public function getLimit();
 
+  /** Returns the user interface components usage/visibility
+   *
+   * <P>This method shall return an array associating each component and its visibility. The following components are defined/supported:</P>
+   * <LI>
+   * <UL><B>header</B>: data header</UL>
+   * <UL><B>footer</B>: data footer</UL>
+   * <UL><B>title</B>: data title</UL>
+   * <UL><B>label</B>: fields label</UL>
+   * <UL><B>display</B>: displayed (visible) fields</UL>
+   * <UL><B>order</B>: data sorting</UL>
+   * <UL><B>search</B>: global search</UL>
+   * <UL><B>filter</B>: per-field filter</UL>
+   * <UL><B>browser</B>: data (pages) browsing</UL>
+   * <UL><B>actions</B>: standard (CRUD) actions</UL>
+   * <UL><B>links</B>: user-defined links</UL>
+   * <UL><B>help</B>: help</UL>
+   * </LI>
+   *
+   * @return array|boolean
+   */
+  public function getUserInterface();
+
   /** Returns the ad-hoc template data
    * @return array Template data
    */

@@ -5,13 +5,13 @@
   <DIV CLASS="DataJukebox"><DIV CLASS="detail">
     <FORM ID="DataJukebox_{{ data.properties.uid }}_form" ACTION="{% if data.properties.routes.detail[1] is defined and data.properties.routes.detail[1] %}{{ path(data.properties.routes.detail[0], data.properties.routes.detail[1]|DataJukebox_map(app.request.attributes.get('_route_params'))) }}{% endif %}" METHOD="GET" ONSUBMIT="javascript:DataJukebox_onSubmit('{{ data.properties.uid|escape('js') }}');">
       <TABLE CLASS="data">
-        {{ block('DataJukebox_detail_header') }}
+        {% if data.browser.ui.header %}{{ block('DataJukebox_detail_header') }}{% endif %}
         {% if data.rows|length -%}
           {{ block('DataJukebox_detail_row') }}
         {% else -%}
           <TR CLASS="odd"><TD CLASS="empty" COLSPAN="999">{% if data.properties.labels._data_empty is defined %}{{ data.properties.labels._data_empty }}{% else %}&nbsp;{% endif %}</TD></TR>
         {% endif -%}
-        {{ block('DataJukebox_detail_footer') }}
+        {% if data.browser.ui.footer %}{{ block('DataJukebox_detail_footer') }}{% endif %}
       </TABLE>
     </FORM>
   </DIV></DIV>
@@ -20,8 +20,8 @@
 
 {% block DataJukebox_detail_header -%}
   <TR CLASS="header"><TD COLSPAN="2">
-    {{ block('DataJukebox_detail_display') }}
-    {% if data.properties.labels._title_detail is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_detail is defined %} TITLE="{{ data.properties.tooltips._title_detail }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_detail }}</LABEL></DIV>{% endif %}
+    {% if data.browser.ui.display %}{{ block('DataJukebox_detail_display') }}{% endif %}
+    {% if data.browser.ui.title and data.properties.labels._title_detail is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_detail is defined %} TITLE="{{ data.properties.tooltips._title_detail }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_detail }}</LABEL></DIV>{% endif %}
   </TD></TR>
 {% endblock DataJukebox_detail_header -%}
 
@@ -84,8 +84,8 @@
 {% block DataJukebox_detail_footer -%}
   <TR CLASS="footer"><TD COLSPAN="2">
     {% if data.rows|length -%}
-      {{ block('DataJukebox_detail_actions') }}
-      {{ block('DataJukebox_detail_links') }}
+      {% if data.browser.ui.actions %}{{ block('DataJukebox_detail_actions') }}{% endif %}
+      {% if data.browser.ui.links %}{{ block('DataJukebox_detail_links') }}{% endif %}
     {% endif -%}
     <DIV STYLE="CLEAR:both;"></DIV>
   </TD></TR>
