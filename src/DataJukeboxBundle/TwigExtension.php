@@ -243,9 +243,11 @@ class TwigExtension
 
   public function formatCSV($mValue)
   {
+    if (is_integer($mValue)) return sprintf('%d', $mValue);
+    if (is_float($mValue)) return sprintf('%f', $mValue);
     if (is_bool($mValue)) return $mValue ? 'true' : 'false';
     if (is_object($mValue)) {
-      if ($mValue instanceof \DateTime) return sprintf('"%s"', $this->formatDateTime($mValue));
+      if ($mValue instanceof \DateTime) return $this->formatDateTime($mValue);
       return sprintf('#OBJ{%s}#', get_class($mValue));
     }
     if (is_resource($mValue)) return '#RES#';
@@ -265,6 +267,8 @@ class TwigExtension
 
   public function formatJSON($mValue)
   {
+    if (is_integer($mValue)) return sprintf('%d', $mValue);
+    if (is_float($mValue)) return sprintf('%f', $mValue);
     if (is_bool($mValue)) return $mValue ? 'true' : 'false';
     if (is_object($mValue)) {
       if ($mValue instanceof \DateTime) return sprintf('"%s"', $this->formatDateTime($mValue));
