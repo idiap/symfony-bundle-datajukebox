@@ -336,6 +336,7 @@ abstract class Properties
       '_action_form_submit' => 'Submit',
       '_action_form_reset' => 'Reset',
       '_action_form_cancel' => 'Cancel',
+      '_action_view_back' => 'Back',
       '_display' => 'Fields',
       '_display_submit' => 'Submit',
       '_display_reset' => 'Reset',
