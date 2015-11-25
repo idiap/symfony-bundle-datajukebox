@@ -295,6 +295,16 @@ abstract class Properties
     return $this->sFormat;
   }
 
+  /** Returns the fields (name) that have meta-data
+   *
+   * @see Properties::getMeta()
+   * @return array|string Array of default fields (name)
+   */
+  public function getFieldsMeta()
+  {
+    return $this->getFields();
+  }
+
   /** Returns meta-data (label, tooltip, ...) for fields and resources
    * @param string $sMetaType Meta data type (label, tooltip, ...)
    * @param string $sTranslatorDomain Translation domain
@@ -303,12 +313,8 @@ abstract class Properties
    */
   protected function getMeta($sMetaType, $sTranslatorDomain=null, $bDefaultToName=false)
   {
-    // Initialize meta-data for all possible fields
-    $asFields = array_merge(
-      !is_null($this->oClassMetadata) ? $this->oClassMetadata->getFieldNames() : $this->getFields(),
-      array_keys($this->getFooterLinks()),
-      array_keys($this->getFieldsForm())
-    );
+    // Initialize meta-data for supported fields
+    $asFields = $this->getFieldsMeta();
     $asFields = array_combine(
       $asFields,
       $bDefaultToName ? $asFields : array_fill(0, count($asFields), null)
