@@ -49,13 +49,9 @@ class ServiceConfiguration
     $oRootNode = $oTreeBuilder->root('DataJukebox');
 
     $oRootNode
-      ->fixXmlConfig('EntityManager')
       ->children()
 
-      ->arrayNode('EntityManagers')
-      ->useAttributeAsKey('entity')
-      ->prototype('scalar')->end()
-      ->end()
+      // 'EntityManagers' configuration no longer supported; please use Doctrine\Registry::getEntityManagerForClass(...)
 
       ->end()
       ;

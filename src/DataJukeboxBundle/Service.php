@@ -83,39 +83,13 @@ class Service {
     return $this->aConfiguration;
   }
 
-  /** Get the entity manager name for the given entity
-   * @param string $sEntityName Entity name (e.g. "FooBundle:BarEntity")
-   * @return string
-   */
-  public function getEntityManagerName($sEntityName)
-  {
-    static $aEntityManager_cache = array();
-    if (!in_array($sEntityName, $aEntityManager_cache)) {
-      $aEntityManager_cache[$sEntityName] = $this->oManagerRegistry->getDefaultManagerName();
-      $aEntityManagers = $this->aConfiguration['EntityManagers'];
-      if ($aEntityManagers) {
-        if (array_key_exists($sEntityName, $aEntityManagers)) {
-          $aEntityManager_cache[$sEntityName] = $aEntityManagers[$sEntityName];
-        } else {
-          list($sBundleName, $sSimpleClassName) = explode(':', $sEntityName);
-          $sBundleWildcard = sprintf('%s:*', $sBundleName);
-          if (array_key_exists($sBundleWildcard, $aEntityManagers)) {
-            $aEntityManager_cache[$sEntityName] = $aEntityManagers[$sBundleWildcard];
-          }
-        }
-      }
-    }
-    return $aEntityManager_cache[$sEntityName];
-  
-  }
-
   /** Get the entity manager for the given entity
    * @param string $sEntityName Entity name (e.g. "FooBundle:BarEntity")
    * @return EntityManager
    */
   public function getEntityManager($sEntityName)
   {
-    return $this->oManagerRegistry->getManager($this->getEntityManagerName($sEntityName));
+    return $this->oManagerRegistry->getManagerForClass($sEntityName);
   }
 
   /** Get the fully qualified entity class name for the given entity
