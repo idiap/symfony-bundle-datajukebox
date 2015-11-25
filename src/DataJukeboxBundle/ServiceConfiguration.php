@@ -51,7 +51,7 @@ class ServiceConfiguration
     $oRootNode
       ->children()
 
-      // 'EntityManagers' configuration no longer supported; please use Doctrine\Registry::getEntityManagerForClass(...)
+      // 'EntityManagers' configuration no longer supported; please use Doctrine\Registry::getManagerForClass(...)
 
       ->end()
       ;
