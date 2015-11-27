@@ -1,0 +1,7 @@
+DataJukebox_helpExpression:
+  path: /DataJukebox/Help/Expression
+  defaults: { _controller: DataJukeboxBundle:DataJukebox:helpExpression }
+
+DataJukebox_helpFilter:
+  path: /DataJukebox/Help/Filter
+  defaults: { _controller: DataJukeboxBundle:DataJukebox:helpFilter }

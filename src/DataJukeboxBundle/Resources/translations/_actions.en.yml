@@ -40,7 +40,7 @@ tooltip:
   _display_submit: Refresh the view according to selected fields
   _display_reset: Reset the view to default fields
   _display_order: Sort data according to selected fields (click: set; double-click: add/replace)
-  _search: Search matching data
+  _search: Search matching data (click for help)
   _search_submit: Launch the search with the given criteria
   _search_reset: Clear all search criteria
   _range_begin: Go to first page

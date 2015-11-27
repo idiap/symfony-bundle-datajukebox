@@ -1,0 +1,31 @@
+{# -*- mode:web; web-mode-markup-indent-offset:2; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab: #}
+{# DataJukeboxBundle\Resources\views\Help\filter.html.twig #}
+{% extends '::layout.html.twig' %}
+
+{% block layout -%}
+  <DIV ID="DataJukebox_help">
+    <H1>Filters</H1>
+    <BLOCKQUOTE>
+      <P>Filters allow to specify criteria for filtering/selecting the data which ought to be retrieved/displayed; keep in mind the data are always - implicitely - on the left hand-side of comparison operators.<BR />
+        If no comparison operator is specified, the equality (<CODE>=</CODE>) operator is assumed, unless the criteria contains a wildcard (<CODE>*</CODE> or <CODE>?</CODE>), in which case the proportionality operator (<CODE>~</CODE>) is assumed.</P>
+    </BLOCKQUOTE>
+    <DIV CLASS="DataJukebox"><DIV CLASS="list">
+      <TABLE CLASS="data">
+        <TR CLASS="header"><TH ID="Operator">Operator</TH><TH ID="Alias">Alias</TH><TH ID="Description">Description</TH><TH ID="Example">Example</TH><TH ID="SQL">SQL Equivalent</TH><TH ID="Note">Note</TH></TR>
+        <TR CLASS="even"><TD ID="Operator">'&hellip;'</TD><TD ID="Alias">&quot;&hellip;&quot;</TD><TD ID="Description">string delimiters</TD><TD ID="Example">'Foo'</TD><TD ID="SQL"><I>data</I>='Foo'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">=</TD><TD ID="Alias">==</TD><TD ID="Description">comparison: equal</TD><TD ID="Example">=42</TD><TD ID="SQL"><I>data</I>=42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">!=</TD><TD ID="Alias">&lt;&gt;</TD><TD ID="Description">comparison: not&nbsp;equal</TD><TD ID="Example">!=42</TD><TD ID="SQL"><I>data</I>&lt;&gt;42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">&lt;</TD><TD ID="Alias"></TD><TD ID="Description">comparison: smaller</TD><TD ID="Example">&lt;42</TD><TD ID="SQL"><I>data</I>&lt;42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">&lt;=</TD><TD ID="Alias"></TD><TD ID="Description">comparison: smaller&nbsp;or&nbsp;equal</TD><TD ID="Example">&lt;=42</TD><TD ID="SQL"><I>data</I>&lt;=42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">&gt;</TD><TD ID="Alias"></TD><TD ID="Description">comparison: bigger</TD><TD ID="Example">&gt;42</TD><TD ID="SQL"><I>data</I>&gt;42</TD><TD></TD ID="Note"></TR>
+        <TR CLASS="even"><TD ID="Operator">&gt;=</TD><TD ID="Alias"></TD><TD ID="Description">comparison: bigger&nbsp;or&nbsp;equal</TD><TD ID="Example">&gt;=42</TD><TD ID="SQL"><I>data</I>&gt;=42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">~</TD><TD ID="Alias">~=</TD><TD ID="Description">comparison: proportional</TD><TD ID="Example">~'Foo*'</TD><TD ID="SQL"><I>data</I> LIKE 'Foo%'</TD><TD ID="Note">allowed wildcards: * (zero to many characters) or ? (single character)</TD></TR>
+        <TR CLASS="even"><TD ID="Operator">&gt;&lt;</TD><TD ID="Alias">in</TD><TD ID="Description">comparison: included</TD><TD ID="Example">&gt;&lt;[42,'Foo']</TD><TD ID="SQL"><I>data</I> IN (42,'Foo')</TD><TD ID="Note">use square brackets and commas to specify the inclusion set</TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">!</TD><TD ID="Alias">not</TD><TD ID="Description">logical: not</TD><TD ID="Example">!'Foo'</TD><TD ID="SQL">NOT <I>data</I>='Foo'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">&amp;&amp;</TD><TD ID="Alias">and</TD><TD ID="Description">logical: and</TD><TD ID="Example">!'Foo' && !'Bar'</TD><TD ID="SQL">NOT <I>data</I>='Foo' AND NOT <I>data</I>='Bar'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">||</TD><TD ID="Alias">or</TD><TD ID="Description">logical: or</TD><TD ID="Example">'Foo' || 'Bar'</TD><TD ID="SQL"><I>data</I>='Foo' OR <I>data</I>='Bar'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">(&hellip;)</TD><TD ID="Alias"></TD><TD ID="Description">logical: group</TD><TD ID="Example">!('Foo' || 'Bar')</TD><TD ID="SQL">NOT (<I>data</I>='Foo' OR <I>data</I>='Bar')</TD><TD ID="Note"></TD></TR>
+      </TABLE>
+    </DIV></DIV>
+  </DIV>
+{% endblock layout -%}

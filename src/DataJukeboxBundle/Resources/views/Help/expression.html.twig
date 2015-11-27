@@ -1,0 +1,49 @@
+{# -*- mode:web; web-mode-markup-indent-offset:2; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab: #}
+{# DataJukeboxBundle\Resources\views\Help\expression.html.twig #}
+{% extends '::layout.html.twig' %}
+
+{% block layout -%}
+  <DIV ID="DataJukebox_help">
+    <H1>Expressions</H1>
+    <BLOCKQUOTE>
+      <P>Expressions allow to write simple mathematical/logical stanza, which are dynamically evaluated during data processing.<BR />
+        Parameters (variables) are specified using the <CODE>${&lt;parameter name&gt;}</CODE>, where the <CODE>parameter name</CODE> must match what is provisioned by the application.<BR />
+      In the list below, operators are sorted by decreasing precedence.</P>
+    </BLOCKQUOTE>
+    <DIV CLASS="DataJukebox"><DIV CLASS="list">
+      <TABLE CLASS="data">
+        <TR CLASS="header"><TH ID="Operator">Operator</TH><TH ID="Alias">Alias</TH><TH ID="Description">Description</TH><TH ID="Example">Example</TH><TH ID="PHP">PHP Equivalent</TH><TH ID="Note">Note</TH></TR>
+        <TR CLASS="even"><TD ID="Operator">'&hellip;'</TD><TD ID="Alias"></TD><TD ID="Description">string delimiters</TD><TD ID="Example">'Foo'</TD><TD ID="PHP">'Foo'</TD><TD ID="Note">all delimited characters are included 'as-is'</TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">&quot;&hellip;&quot;</TD><TD ID="Alias"></TD><TD ID="Description">string delimiters</TD><TD ID="Example">"Foo"</TD><TD ID="PHP">"Foo"</TD><TD ID="Note"><CODE>${&hellip;}</CODE> (parameters) are evaluated</TD></TR>
+        <TR CLASS="even"><TD ID="Operator">!</TD><TD ID="Alias">not</TD><TD ID="Description">logical: not</TD><TD ID="Example">!${x}='Foo'</TD><TD ID="PHP">!$param['x']=='Foo'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">¬</TD><TD ID="Alias"></TD><TD ID="Description">bitwise: not</TD><TD ID="Example">¬42</TD><TD ID="PHP">~42  # -43</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">**</TD><TD ID="Alias"></TD><TD ID="Description">arithmetic: exponent</TD><TD ID="Example">42**3</TD><TD ID="PHP">pow(42,3)  # 74088</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">*</TD><TD ID="Alias"></TD><TD ID="Description">arithmetic: multiplication</TD><TD ID="Example">42*3</TD><TD ID="PHP">42*3  # 126</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">/</TD><TD ID="Alias"></TD><TD ID="Description">arithmetic: division</TD><TD ID="Example">42/3</TD><TD ID="PHP">42/3  # 14</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">%</TD><TD ID="Alias"></TD><TD ID="Description">arithmetic: modulus</TD><TD ID="Example">42%3</TD><TD ID="PHP">42%3  # 0</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">//</TD><TD ID="Alias"></TD><TD ID="Description">arithmetic: quotient</TD><TD ID="Example">42//3</TD><TD ID="PHP">(int)(42/3)  # 14</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">+</TD><TD ID="Alias"></TD><TD ID="Description">arithmetic: addition</TD><TD ID="Example">42+3</TD><TD ID="PHP">42+3  # 45</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">-</TD><TD ID="Alias"></TD><TD ID="Description">arithmetic: substraction</TD><TD ID="Example">42-3</TD><TD ID="PHP">42-3  # 39</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">&lt;&lt;</TD><TD ID="Alias"></TD><TD ID="Description">bitwise: shift&nbsp;left</TD><TD ID="Example">42&lt;&lt;3</TD><TD ID="PHP">42&lt;&lt;3  # 336</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">&gt;&gt;</TD><TD ID="Alias"></TD><TD ID="Description">bitwise: shift&nbsp;right</TD><TD ID="Example">42&gt;&gt;3</TD><TD ID="PHP">42&gt;&gt;3  # 5</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">=</TD><TD ID="Alias">==</TD><TD ID="Description">comparison: equal</TD><TD ID="Example">${x}=42</TD><TD ID="PHP">$param['x']==42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">!=</TD><TD ID="Alias">&lt;&gt;</TD><TD ID="Description">comparison: not&nbsp;equal</TD><TD ID="Example">${x}!=42</TD><TD ID="PHP">$param['x']!=42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">&lt;</TD><TD ID="Alias"></TD><TD ID="Description">comparison: smaller</TD><TD ID="Example">${x}&lt;42</TD><TD ID="PHP">$param['x']&lt;42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">&lt;=</TD><TD ID="Alias"></TD><TD ID="Description">comparison: smaller&nbsp;or&nbsp;equal</TD><TD ID="Example">${x}&lt;=42</TD><TD ID="PHP">$param['x']&lt;=42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">&gt;</TD><TD ID="Alias"></TD><TD ID="Description">comparison: bigger</TD><TD ID="Example">${x}&gt;42</TD><TD ID="PHP">$param['x']&gt;42</TD><TD></TD ID="Note"></TR>
+        <TR CLASS="even"><TD ID="Operator">&gt;=</TD><TD ID="Alias"></TD><TD ID="Description">comparison: bigger&nbsp;or&nbsp;equal</TD><TD ID="Example">${x}&gt;=42</TD><TD ID="PHP">$param['x']&gt;=42</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">===</TD><TD ID="Alias"></TD><TD ID="Description">comparison: identical</TD><TD ID="Example">${x}===42</TD><TD ID="PHP">$param['x']===42</TD><TD></TD ID="Note"></TR>
+        <TR CLASS="even"><TD ID="Operator">!==</TD><TD ID="Alias"></TD><TD ID="Description">comparison: not&nbsp;identical</TD><TD ID="Example">${x}!==42</TD><TD ID="PHP">$param['x']!==42</TD><TD></TD ID="Note"></TR>
+        <TR CLASS="odd"><TD ID="Operator">~</TD><TD ID="Alias">~=</TD><TD ID="Description">comparison: proportional</TD><TD ID="Example">n/a</TD><TD ID="PHP">NOT IMPLEMENTED YET</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">&gt;&lt;</TD><TD ID="Alias">in</TD><TD ID="Description">comparison: included</TD><TD ID="Example">${x}&gt;&lt;[42,'Foo']</TD><TD ID="PHP">in_array($param['x'], array(42,'Foo'))</TD><TD ID="Note">use square brackets and commas to specify the inclusion set</TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">&amp;</TD><TD ID="Alias"></TD><TD ID="Description">bitwise: and</TD><TD ID="Example">42&amp;3</TD><TD ID="PHP">42&amp;3  # 2</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">^</TD><TD ID="Alias"></TD><TD ID="Description">bitwise: xor</TD><TD ID="Example">42^3</TD><TD ID="PHP">42^3  # 41</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">|</TD><TD ID="Alias"></TD><TD ID="Description">bitwise: or</TD><TD ID="Example">42|3</TD><TD ID="PHP">42|3  # 43</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">&amp;&amp;</TD><TD ID="Alias">and</TD><TD ID="Description">logical: and</TD><TD ID="Example">${x}!='Foo' && ${x}!='Bar'</TD><TD ID="PHP">$param['x']!='Foo' and $param['x']!='Bar'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">^^</TD><TD ID="Alias">xor</TD><TD ID="Description">logical: xor</TD><TD ID="Example">${x}='Foo' ^^ ${x}='Bar'</TD><TD ID="PHP">$param['x']='Foo' xor $param['x']='Bar'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="even"><TD ID="Operator">||</TD><TD ID="Alias">or</TD><TD ID="Description">logical: or</TD><TD ID="Example">${x}='Foo' || ${x}='Bar'</TD><TD ID="PHP">$param['x']='Foo' or $param['x']='Bar'</TD><TD ID="Note"></TD></TR>
+        <TR CLASS="odd"><TD ID="Operator">(&hellip;)</TD><TD ID="Alias"></TD><TD ID="Description">logical: group</TD><TD ID="Example">!(${x}='Foo' || ${x}='Bar')</TD><TD ID="PHP">!($param['x']='Foo' || $param['x']='Bar')</TD><TD ID="Note"></TD></TR>
+      </TABLE>
+    </DIV></DIV>
+  </DIV>
+{% endblock layout -%}

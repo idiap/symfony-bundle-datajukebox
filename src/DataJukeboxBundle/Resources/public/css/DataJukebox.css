@@ -82,6 +82,12 @@ DIV#DataJukebox_popupContainerSpacer { DISPLAY:inline-block; HEIGHT:100%; VERTIC
 DIV#DataJukebox_popupOverlay { DISPLAY:inline-block; VERTICAL-ALIGN:middle; BACKGROUND:#FFFFFF; POINTER-EVENTS:auto; }
 DIV#DataJukebox_popupSpinner { WIDTH:40px; HEIGHT:40px; MARGIN:5px; BACKGROUND:#FFFFFF url('images/dj-spinner.png'); }
 
+DIV#DataJukebox_help TD#Operator { FONT-WEIGHT:bold; }
+DIV#DataJukebox_help TD#Alias { FONT-WEIGHT:bold; }
+DIV#DataJukebox_help TD#Example { FONT-FAMILY:mono; FONT-SIZE:0.9em; WHITE-SPACE:nowrap; }
+DIV#DataJukebox_help TD#SQL { FONT-FAMILY:mono; FONT-SIZE:0.9em; WHITE-SPACE:nowrap; }
+DIV#DataJukebox_help TD#PHP { FONT-FAMILY:mono; FONT-SIZE:0.9em; WHITE-SPACE:nowrap; }
+
 /*
 DIV.DataJukebox .search .label { DISPLAY:none; }
 DIV.DataJukebox .browser LABEL { DISPLAY:none; }

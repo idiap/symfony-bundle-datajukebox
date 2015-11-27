@@ -40,7 +40,7 @@ tooltip:
   _display_submit: Rafraîchir la vue en fonction des champs sélectionnés
   _display_reset: Réinitialiser la vue aux champs par défaut
   _display_order: Trier les données en fonction des champs sélectionnés (cliquer: définir; double-cliquer: ajouter/remplacer)
-  _search: Rechercher des données correspondant aux critères renseignés
+  _search: Rechercher des données correspondant aux critères renseignés (cliquer pour l'aide)
   _search_submit: Lancer la recherche avec les critères renseignés
   _search_reset: Effacer tous les critères de recherche
   _range_begin: Aller à la première page
