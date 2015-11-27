@@ -1,10 +1,8 @@
 {# -*- mode:web; web-mode-markup-indent-offset:2; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab: #}
 {# DataJukeboxBundle\Resources\views\Default\list.html.twig #}
-{% extends '::base.html.twig' %}
+{% extends '::layout.html.twig' %}
 
-{% block body %}
+{% block layout -%}
 {{ parent() }}
-<!-- BEGIN: DataJukeboxBundle\Resources\views\Default\list.html.twig -->
 {{ DataJukebox_list(data) }}
-<!-- END: DataJukeboxBundle\Resources\views\Default\list.html.twig -->
-{% endblock body %}
+{% endblock layout -%}
