@@ -49,12 +49,25 @@ class ComparisonNotEqual
 
   public function evaluate(Expression\Node $oLeft, Expression\Node $oRight, array $amParameters)
   {
+    if (!array_key_exists('__CONNECTION', $amParameters)) {
+      throw new Filter\Exception('Missing database connection');
+    }
+    $oConnection = $amParameters['__CONNECTION'];
+    if (!$oConnection instanceof \Doctrine\DBAL\Connection) {
+      throw new Filter\Exception('Database connection must be a \Doctrine\DBAL\Connection object');
+    }
+    $sEmpty = $oConnection->quote('', 'string');
+
     $mLeft = $oLeft->evaluate($amParameters);
     $mRight = $oRight->evaluate($amParameters);
     if (!is_scalar($mLeft) or !is_scalar($mRight)) {
       return 'FALSE'; // let's fail gracefully
     }
-    return sprintf('%s<>%s', $mLeft, $mRight);
+    if($mRight == $sEmpty) {
+      return sprintf('COALESCE(%s,%s)<>%s', $mLeft, $sEmpty, $mRight);
+    } else {
+      return sprintf('%s<>%s', $mLeft, $mRight);
+    }
   }
 
 }

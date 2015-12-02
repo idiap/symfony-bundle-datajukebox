@@ -49,6 +49,15 @@ class ComparisonEqual
 
   public function evaluate(Expression\Node $oLeft, Expression\Node $oRight, array $amParameters)
   {
+    if (!array_key_exists('__CONNECTION', $amParameters)) {
+      throw new Filter\Exception('Missing database connection');
+    }
+    $oConnection = $amParameters['__CONNECTION'];
+    if (!$oConnection instanceof \Doctrine\DBAL\Connection) {
+      throw new Filter\Exception('Database connection must be a \Doctrine\DBAL\Connection object');
+    }
+    $sEmpty = $oConnection->quote('', 'string');
+
     $mLeft = $oLeft->evaluate($amParameters);
     $mRight = $oRight->evaluate($amParameters);
     if (!is_scalar($mLeft) or !is_scalar($mRight)) {
@@ -58,6 +67,8 @@ class ComparisonEqual
       $mRight = str_replace(array('%', '_'), array('\%', '\_'), $mRight);
       $mRight = str_replace(array('*', '?'), array('%', '_'), $mRight);
       return sprintf('%s LIKE %s', $mLeft, $mRight);
+    } elseif($mRight == $sEmpty) {
+      return sprintf('COALESCE(%s,%s)=%s', $mLeft, $sEmpty, $mRight);
     } else {
       return sprintf('%s=%s', $mLeft, $mRight);
     }

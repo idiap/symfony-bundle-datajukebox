@@ -63,6 +63,7 @@ class Value
     $sType = $amParameters['__TYPE'];
 
     if (is_null($this->mValue)) return 'NULL';
+    if (strlen($this->mValue) == 0) return $oConnection->quote('', 'string');
 
     switch ($sType) {
     case 'string':
