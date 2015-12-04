@@ -384,11 +384,25 @@ class Browser
    */
   public function getTemplateData()
   {
+    // Filter-out 'SYSTEM' criteria
+    // ... order
+    $aasFieldsOrder = array_filter(
+      $this->getFieldsOrder(),
+      function($v) { return $v[0][0] != '*'; }
+    );
+    // ... filter
+    $asFieldsFilter = array_filter(
+      $this->getFieldsFilter(),
+      function($k) { return $k[0] != '*'; },
+      ARRAY_FILTER_USE_KEY
+    );
+
+    // Return data
     return array(
       'uid' => $this->getUID(),
       'fields' => $this->getFields(),
-      'fields_order' => $this->getFieldsOrder(),
-      'fields_filter' => $this->getFieldsFilter(),
+      'fields_order' => $aasFieldsOrder,
+      'fields_filter' => $asFieldsFilter,
       'search' => $this->getSearch(),
       'range' => $this->getRange(),
       'ui' => $this->getUserInterface(),
