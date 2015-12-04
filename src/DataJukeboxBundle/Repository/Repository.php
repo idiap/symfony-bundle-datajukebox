@@ -430,7 +430,7 @@ class Repository
         $asFields_sql[] = implode(' AND ', $asFields_sub);
       }
     } catch(\Exception $e) {
-      //throw $e; // DEBUG
+      if ($this->bDebug) throw $e; // DEBUG
       $asFields_sql = array('FALSE');
     }
     return $asFields_sql;
@@ -479,7 +479,7 @@ class Repository
         }
         $asFields_sql[] = implode(' AND ', $asFields_sub);
       } catch(\Exception $e) {
-        //throw $e; // DEBUG
+        if ($this->bDebug) throw $e; // DEBUG
         $asFields_sql = array('FALSE');
         break;
       }
