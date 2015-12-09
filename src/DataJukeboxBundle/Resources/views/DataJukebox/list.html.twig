@@ -1,5 +1,5 @@
 {# -*- mode:web; web-mode-markup-indent-offset:2; -*- ex: set tabstop=2 expandtab: #}
-{# DataJukeboxBundle\Resources\views\Data\list.html.twig #}
+{# DataJukeboxBundle\Resources\views\DataJukebox\list.html.twig #}
 
 {% block DataJukebox_list -%}
   <DIV CLASS="DataJukebox"><DIV CLASS="list">
@@ -8,28 +8,36 @@
       {% for field in data.properties.fields_order -%}
         <INPUT TYPE="hidden" ID="_or[]" NAME="{{ data.browser.uid }}_or[]"{% if loop.index0 < data.browser.fields_order|length %} VALUE="{{ data.browser.fields_order[loop.index0][0] }}_{{ data.browser.fields_order[loop.index0][1] }}"{% else %} DISABLED{% endif %} />
       {% endfor -%}
-      <TABLE CLASS="data">
-        {% if data.browser.ui.header %}{{ block('DataJukebox_list_header') }}{% endif %}
-        {{ block('DataJukebox_list_rows') }}
-        {% if data.browser.ui.footer %}{{ block('DataJukebox_list_footer') }}{% endif %}
-      </TABLE>
+      {{ DataJukebox_listData(data) }}
     </FORM>
   </DIV></DIV>
-  {{ block('DataJukebox_list_javascript') }}
+  {{ DataJukebox_listJavascript(data) }}
 {% endblock DataJukebox_list -%}
 
-{% block DataJukebox_list_header -%}
+{% block DataJukebox_listData -%}
+  <TABLE CLASS="data">
+    {% if data.browser.ui.header %}{{ DataJukebox_listHeader(data) }}{% endif %}
+    {{ DataJukebox_listRows(data) }}
+    {% if data.browser.ui.footer %}{{ DataJukebox_listFooter(data) }}{% endif %}
+  </TABLE>
+{% endblock DataJukebox_listData -%}
+
+{% block DataJukebox_listHeader -%}
   <TR CLASS="header"><TD COLSPAN="999">
-    {% if data.browser.ui.display %}{{ block('DataJukebox_list_display') }}{% endif %}
-    {% if data.browser.ui.title and data.properties.labels._title_list is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_list is defined %} TITLE="{{ data.properties.tooltips._title_list }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_list }}{% if data.properties.action == 'select' and data.properties.labels._action_select is defined %} ({{ data.properties.labels._action_select }}){% endif %}</LABEL></DIV>{% endif %}
-    {% if data.browser.ui.search %}{{ block('DataJukebox_list_search') }}{% endif %}
+    {% if data.browser.ui.display %}{{ DataJukebox_listDisplay(data) }}{% endif %}
+    {% if data.browser.ui.title  %}{{ DataJukebox_listTitle(data) }}{% endif %}
+    {% if data.browser.ui.search %}{{ DataJukebox_listSearch(data) }}{% endif %}
     <DIV STYLE="CLEAR:both;"></DIV>
   </TD></TR>
-  {% if data.browser.ui.label %}{{ block('DataJukebox_list_label') }}{% endif %}
-  {% if data.browser.ui.filter %}{{ block('DataJukebox_list_filter') }}{% endif %}
-{% endblock DataJukebox_list_header -%}
+  {% if data.browser.ui.label %}{{ DataJukebox_listLabel(data) }}{% endif %}
+  {% if data.browser.ui.filter %}{{ DataJukebox_listFilter(data) }}{% endif %}
+{% endblock DataJukebox_listHeader -%}
 
-{% block DataJukebox_list_display -%}
+{% block DataJukebox_listTitle -%}
+  {% if data.properties.labels._title_list is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_list is defined %} TITLE="{{ data.properties.tooltips._title_list }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_list }}{% if data.properties.action == 'select' and data.properties.labels._action_select is defined %} ({{ data.properties.labels._action_select }}){% endif %}</LABEL></DIV>{% endif %}
+{% endblock DataJukebox_listTitle -%}
+
+{% block DataJukebox_listDisplay -%}
   <DIV CLASS="display" STYLE="POSITION:relative;">
     <A HREF="javascript:;" ONCLICK="javascript:document.getElementById('DataJukebox_{{ data.properties.uid }}_display').style.display='inline';"><SPAN CLASS="icon">&#x21f2;</SPAN></A>
     <DIV CLASS="overlay" ID="DataJukebox_{{ data.properties.uid }}_display" STYLE="POSITION:absolute;DISPLAY:none;">
@@ -51,9 +59,9 @@
       </TABLE>
     </DIV>
   </DIV>
-{% endblock DataJukebox_list_display -%}
+{% endblock DataJukebox_listDisplay -%}
 
-{% block DataJukebox_list_search -%}
+{% block DataJukebox_listSearch -%}
   {%- set search_valid = false %}{% for field in data.browser.fields %}{% if field in data.properties.fields_search %}{% set search_valid = true %}{% endif %}{% endfor -%}
   {%- set filter_valid = false %}{% for field in data.browser.fields %}{% if field not in data.properties.fields_hidden and field in data.properties.fields_filter %}{% set filter_valid = true %}{% endif %}{% endfor %}
   {% if search_valid or filter_valid -%}
@@ -61,9 +69,9 @@
       <TD CLASS="title"{% if data.properties.tooltips._search is defined %} TITLE="{{ data.properties.tooltips._search }}" STYLE="CURSOR:help;"{% endif %}><A HREF="{{ path('DataJukebox_helpFilter') }}" STYLE="CURSOR:help;"><SPAN CLASS="icon">&#x2699;</SPAN>{% if data.properties.labels._search is defined %}<LABEL>{{ data.properties.labels._search }}</LABEL>{% endif %}</A></TD><TD CLASS="action" ID="_search_reset"{% if data.properties.tooltips._search_reset is defined %} TITLE="{{ data.properties.tooltips._search_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD>{% if search_valid %}<TD CLASS="input" ID="_search"><INPUT TYPE="text" ID="_sh" NAME="{{ data.browser.uid }}_sh" VALUE="{{ data.browser.search }}" ONKEYPRESS="javacript:DataJukebox_submitOnEnter('{{ data.properties.uid|escape('js') }}',event);" /></TD>{% endif %}<TD CLASS="action" ID="_search_submit"{% if data.properties.tooltips._search_submit is defined %} TITLE="{{ data.properties.tooltips._search_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchSubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD>
     </TR></TABLE></DIV>
   {% endif -%}
-{% endblock DataJukebox_list_search -%}
+{% endblock DataJukebox_listSearch -%}
 
-{% block DataJukebox_list_label -%}
+{% block DataJukebox_listLabel -%}
   <TR CLASS="label">
     {%- if data.properties.routes.select_route is defined and data.properties.routes.select_route or data.properties.routes.select_delete is defined and data.properties.routes.select_delete -%}
       <TH CLASS="action" ID="_pkToggle"><INPUT TYPE="checkbox" NAME="_pkToggle" ONCLICK="javascript:DataJukebox_pkToggle('{{ data.properties.uid|escape('js') }}');" /></TH>
@@ -84,9 +92,9 @@
       {%- endif -%}
     {%- endfor -%}
   </TR>
-{% endblock DataJukebox_list_label -%}
+{% endblock DataJukebox_listLabel -%}
 
-{% block DataJukebox_list_filter -%}
+{% block DataJukebox_listFilter -%}
   {% set filter_valid=false %}{% for field in data.browser.fields %}{% if field not in data.properties.fields_hidden and field in data.properties.fields_filter %}{% set filter_valid = true %}{% endif %}{% endfor -%}
   {%- if filter_valid -%}
     <TR CLASS="filter">
@@ -110,19 +118,19 @@
       {%- endfor -%}
     </TR>
   {%- endif %}
-{% endblock DataJukebox_list_filter -%}
+{% endblock DataJukebox_listFilter -%}
 
-{% block DataJukebox_list_rows -%}
+{% block DataJukebox_listRows -%}
   {%- if data.rows|length -%}
     {%- for row in data.rows -%}
-      {{ block('DataJukebox_list_row') }}
+      {{ DataJukebox_listRow(data, row, loop) }}
     {% endfor -%}
   {%- else -%}
     <TR CLASS="odd"><TD CLASS="empty" COLSPAN="999">{% if data.properties.labels._data_empty is defined %}{{ data.properties.labels._data_empty }}{% else %}&nbsp;{% endif %}</TD></TR>
   {% endif -%}
-{% endblock DataJukebox_list_rows -%}
+{% endblock DataJukebox_listRows -%}
 
-{% block DataJukebox_list_row -%}
+{% block DataJukebox_listRow -%}
   {%- set row_keys=row|keys -%}
   <TR CLASS="{{ cycle(['odd','even'], loop.index0) }}">
     {%- if data.properties.routes.select_route is defined and data.properties.routes.select_route or data.properties.routes.select_delete is defined and data.properties.routes.select_delete -%}
@@ -166,19 +174,19 @@
       {%- endif -%}
     {%- endfor -%}
   </TR>
-{% endblock DataJukebox_list_row -%}
+{% endblock DataJukebox_listRow -%}
 
-{% block DataJukebox_list_footer -%}
+{% block DataJukebox_listFooter -%}
   <TR CLASS="footer"><TD COLSPAN="999">
-    {% if data.browser.ui.browser %}{{ block('DataJukebox_list_browser') }}{% endif %}
-    {% if data.browser.ui.actions %}{{ block('DataJukebox_list_actions') }}{% endif %}
-    {% if data.browser.ui.links %}{{ block('DataJukebox_list_links') }}{% endif %}
-    {% if data.browser.ui.help %}{{ block('DataJukebox_list_help') }}{% endif %}
+    {% if data.browser.ui.browser %}{{ DataJukebox_listBrowser(data) }}{% endif %}
+    {% if data.browser.ui.actions %}{{ DataJukebox_listActions(data) }}{% endif %}
+    {% if data.browser.ui.links %}{{ DataJukebox_listLinks(data) }}{% endif %}
+    {% if data.browser.ui.help %}{{ DataJukebox_listHelp(data) }}{% endif %}
     <DIV STYLE="CLEAR:both;">
   </TD></TR>
-{% endblock DataJukebox_list_footer -%}
+{% endblock DataJukebox_listFooter -%}
 
-{% block DataJukebox_list_browser -%}
+{% block DataJukebox_listBrowser -%}
   <DIV CLASS="browser"><TABLE><TR>
     {% set browse_valid = data.browser.range.from > 0 %}{% set browse_from = 0 %}<TD CLASS="action" ID="_begin"{% if browse_valid and data.properties.tooltips._range_begin is defined %} TITLE="{{ data.properties.tooltips._range_begin }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x21e4;</SPAN>{% if data.properties.labels._range_begin is defined %}<LABEL>{{ data.properties.labels._range_begin }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
     {% set browse_valid = data.browser.range.from > 0 %}{% set browse_from = max(0,data.browser.range.from-data.browser.range.limit) %}<TD CLASS="action" ID="_previous"{% if browse_valid and data.properties.tooltips._range_previous is defined %} TITLE="{{ data.properties.tooltips._range_previous }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x219e;</SPAN>{% if data.properties.labels._range_previous is defined %}<LABEL>{{ data.properties.labels._range_previous }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
@@ -187,9 +195,9 @@
     {% set browse_valid = data.browser.range.to < data.browser.range.count-1 %}{% set browse_from = min(data.browser.range.count-1, data.browser.range.from+data.browser.range.limit) %}<TD CLASS="action" ID="_next"{% if browse_valid and data.properties.tooltips._range_next is defined %} TITLE="{{ data.properties.tooltips._range_next }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x21a0;</SPAN>{% if data.properties.labels._range_next is defined %}<LABEL>{{ data.properties.labels._range_next }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
     {% set browse_valid = data.browser.range.to < data.browser.range.count-1 %}{% set browse_from = min(data.browser.range.count-1, data.browser.range.count-data.browser.range.count%data.browser.range.limit) %}<TD CLASS="action" ID="_end"{% if browse_valid and data.properties.tooltips._range_end is defined %} TITLE="{{ data.properties.tooltips._range_end }}"{% endif %}>{% if browse_valid %}<A HREF="javascript:;" ONCLICK="javacript:DataJukebox_goto('{{ data.properties.uid|escape('js') }}',{{ browse_from }});">{% endif %}<SPAN CLASS="icon">&#x21e5;</SPAN>{% if data.properties.labels._range_end is defined %}<LABEL>{{ data.properties.labels._range_end }}</LABEL>{% endif %}{% if browse_valid %}</A>{% endif %}</TD>
   </TR></TABLE></DIV>
-{% endblock DataJukebox_list_browser -%}
+{% endblock DataJukebox_listBrowser -%}
 
-{% block DataJukebox_list_actions -%}
+{% block DataJukebox_listActions -%}
   <DIV CLASS="action"><TABLE><TR>
     {% if data.properties.routes.select_route is defined and data.properties.routes.select_route -%}
       <TD CLASS="action" ID="_select"{% if data.properties.tooltips._action_select is defined %} TITLE="{{ data.properties.tooltips._action_select }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:if (DataJukebox_confirmSelect('{{ data.properties.uid|escape('js') }}')) DataJukebox_select('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x2611;</SPAN>{% if data.properties.labels._action_select is defined %}<LABEL>{{ data.properties.labels._action_select }}</LABEL>{% endif %}</A></TD>
@@ -204,9 +212,9 @@
       <TD CLASS="action" ID="_export"{% if data.properties.tooltips._action_export is defined %} TITLE="{{ data.properties.tooltips._action_export }}"{% endif %} STYLE="CURSOR:pointer;"><SPAN CLASS="icon">&#x21e3;</SPAN><SELECT ONCHANGE="javascript:if (this.selectedIndex) location.href=this.options[this.selectedIndex].value;" STYLE="CURSOR:pointer;"><OPTION SELECTED>{% if data.properties.labels._action_export is defined %}{{ data.properties.labels._action_export }}{% endif %}&hellip;</OPTION>{% for format in ['xml', 'json', 'csv'] %}<OPTION VALUE="{% if data.properties.routes.export[1] is defined and data.properties.routes.export[1] %}{{ path(data.properties.routes.export[0], app.request.query.all|merge(data.properties.routes.export[1]|DataJukebox_map(app.request.attributes.get('_route_params')))|merge({'_format':format})) }}{% else %}{{ path(data.properties.routes.export[0], app.request.query.all|merge({'_format':format})) }}{% endif %}">{{ format|upper }}</OPTION>{% endfor %}</SELECT></TD>
     {% endif -%}
   </TR></TABLE></DIV>
-{% endblock DataJukebox_list_actions -%}
+{% endblock DataJukebox_listActions -%}
 
-{% block DataJukebox_list_links -%}
+{% block DataJukebox_listLinks -%}
   {%- if data.properties.footer_links|length -%}
     <DIV CLASS="links"><TABLE><TR>
       {% set tooltips_keys = data.properties.tooltips|keys -%}
@@ -229,9 +237,9 @@
       {% endfor -%}
     </TR></TABLE></DIV>
   {% endif -%}
-{% endblock DataJukebox_list_links -%}
+{% endblock DataJukebox_listLinks -%}
 
-{% block DataJukebox_list_help -%}
+{% block DataJukebox_listHelp -%}
   <DIV CLASS="help"><TABLE><TR>
     {% if data.properties.routes.detail is defined and data.properties.routes.detail -%}
       <TD CLASS="help" ID="_detail"{% if data.properties.tooltips._view_detail is defined %} TITLE="{{ data.properties.tooltips._view_detail }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x2299;</SPAN>{% if data.properties.labels._view_detail is defined %}<LABEL>{{ data.properties.labels._view_detail }}</LABEL>{% endif %}</TD>
@@ -244,9 +252,9 @@
     {% endif -%}
     <TD CLASS="help" ID="_order"{% if data.properties.tooltips._display_order is defined %} TITLE="{{ data.properties.tooltips._display_order }}" STYLE="CURSOR:help;"{% endif %}><SPAN CLASS="icon">&#x21e3;</SPAN><SPAN CLASS="icon">&#x21e1;</SPAN>{% if data.properties.labels._display_order is defined %}<LABEL>{{ data.properties.labels._display_order }}</LABEL>{% endif %}</TD>
   </TR></TABLE></DIV>
-{% endblock DataJukebox_list_help -%}
+{% endblock DataJukebox_listHelp -%}
 
-{% block DataJukebox_list_javascript -%}
+{% block DataJukebox_listJavascript -%}
   <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">/*<![CDATA[*/
    DataJukebox_init(
        '{{ data.properties.uid|escape('js') }}',
@@ -256,4 +264,4 @@
        '{% if data.properties.labels._action_select_confirm is defined %}{{ data.properties.labels._action_select_confirm|escape('js') }}{% if data.properties.tooltips._action_select_confirm is defined %}\n{{ data.properties.tooltips._action_select_confirm|escape('js') }}{% endif %}{% endif %}'
    );
    /*]]>*/</SCRIPT>
-{% endblock DataJukebox_list_javascript -%}
+{% endblock DataJukebox_listJavascript -%}

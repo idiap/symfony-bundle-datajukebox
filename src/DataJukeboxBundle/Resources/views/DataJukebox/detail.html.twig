@@ -1,31 +1,39 @@
 {# -*- mode:web; web-mode-markup-indent-offset:2; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab: #}
-{# DataJukeboxBundle\Resources\views\Data\detail.html.twig #}
+{# DataJukeboxBundle\Resources\views\DataJukebox\detail.html.twig #}
 
 {% block DataJukebox_detail -%}
   <DIV CLASS="DataJukebox"><DIV CLASS="detail">
     <FORM ID="DataJukebox_{{ data.properties.uid }}_form" ACTION="{% if data.properties.routes.detail[1] is defined and data.properties.routes.detail[1] %}{{ path(data.properties.routes.detail[0], data.properties.routes.detail[1]|DataJukebox_map(app.request.attributes.get('_route_params'))) }}{% endif %}" METHOD="GET" ONSUBMIT="javascript:DataJukebox_onSubmit('{{ data.properties.uid|escape('js') }}');">
-      <TABLE CLASS="data">
-        {% if data.browser.ui.header %}{{ block('DataJukebox_detail_header') }}{% endif %}
-        {% if data.rows|length -%}
-          {{ block('DataJukebox_detail_row') }}
-        {% else -%}
-          <TR CLASS="odd"><TD CLASS="empty" COLSPAN="999">{% if data.properties.labels._data_empty is defined %}{{ data.properties.labels._data_empty }}{% else %}&nbsp;{% endif %}</TD></TR>
-        {% endif -%}
-        {% if data.browser.ui.footer %}{{ block('DataJukebox_detail_footer') }}{% endif %}
-      </TABLE>
+      {{ DataJukebox_detailData(data) }}
     </FORM>
   </DIV></DIV>
-  {{ block('DataJukebox_detail_javascript') }}
+  {{ DataJukebox_detailJavascript(data) }}
 {% endblock DataJukebox_detail -%}
 
-{% block DataJukebox_detail_header -%}
-  <TR CLASS="header"><TD COLSPAN="2">
-    {% if data.browser.ui.display %}{{ block('DataJukebox_detail_display') }}{% endif %}
-    {% if data.browser.ui.title and data.properties.labels._title_detail is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_detail is defined %} TITLE="{{ data.properties.tooltips._title_detail }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_detail }}</LABEL></DIV>{% endif %}
-  </TD></TR>
-{% endblock DataJukebox_detail_header -%}
+{% block DataJukebox_detailData -%}
+  <TABLE CLASS="data">
+    {% if data.browser.ui.header %}{{ DataJukebox_detailHeader(data) }}{% endif %}
+    {% if data.rows|length -%}
+      {{ DataJukebox_detailRow(data) }}
+    {% else -%}
+      <TR CLASS="odd"><TD CLASS="empty" COLSPAN="999">{% if data.properties.labels._data_empty is defined %}{{ data.properties.labels._data_empty }}{% else %}&nbsp;{% endif %}</TD></TR>
+    {% endif -%}
+    {% if data.browser.ui.footer %}{{ DataJukebox_detailFooter(data) }}{% endif %}
+  </TABLE>
+{% endblock DataJukebox_detailData -%}
 
-{% block DataJukebox_detail_display -%}
+{% block DataJukebox_detailHeader -%}
+  <TR CLASS="header"><TD COLSPAN="2">
+    {% if data.browser.ui.display %}{{ DataJukebox_detailDisplay(data) }}{% endif %}
+    {% if data.browser.ui.title %}{{ DataJukebox_detailTitle(data) }}{% endif %}
+  </TD></TR>
+{% endblock DataJukebox_detailHeader -%}
+
+{% block DataJukebox_detailTitle -%}
+  {% if data.properties.labels._title_detail is defined %}<DIV CLASS="title"><LABEL{% if data.properties.tooltips._title_detail is defined %} TITLE="{{ data.properties.tooltips._title_detail }}" STYLE="CURSOR:help;"{% endif %}>{{ data.properties.labels._title_detail }}</LABEL></DIV>{% endif %}
+{% endblock DataJukebox_detailTitle -%}
+
+{% block DataJukebox_detailDisplay -%}
   <DIV CLASS="display" STYLE="POSITION:relative;">
     <A HREF="javascript:;" ONCLICK="javascript:document.getElementById('DataJukebox_{{ data.properties.uid }}_display').style.display='inline';"><SPAN CLASS="icon">&#x21f2;</SPAN></A>
     <DIV CLASS="overlay" ID="DataJukebox_{{ data.properties.uid }}_display" STYLE="POSITION:absolute;DISPLAY:none;">
@@ -43,9 +51,9 @@
       <DIV CLASS="placeholder">&nbsp;</DIV>
     </DIV>
   </DIV>
-{% endblock DataJukebox_detail_display -%}
+{% endblock DataJukebox_detailDisplay -%}
 
-{% block DataJukebox_detail_row -%}
+{% block DataJukebox_detailRow -%}
   {%- set row = data.rows[0] -%}
   {%- set row_keys = row|keys -%}
   {%- set tooltips_keys = data.properties.tooltips|keys -%}
@@ -79,19 +87,19 @@
       </TR>
       {% set index = index+1 %}{% endif -%}
   {% endfor -%}
-{% endblock DataJukebox_detail_row -%}
+{% endblock DataJukebox_detailRow -%}
 
-{% block DataJukebox_detail_footer -%}
+{% block DataJukebox_detailFooter -%}
   <TR CLASS="footer"><TD COLSPAN="2">
     {% if data.rows|length -%}
-      {% if data.browser.ui.actions %}{{ block('DataJukebox_detail_actions') }}{% endif %}
-      {% if data.browser.ui.links %}{{ block('DataJukebox_detail_links') }}{% endif %}
+      {% if data.browser.ui.actions %}{{ DataJukebox_detailActions(data) }}{% endif %}
+      {% if data.browser.ui.links %}{{ DataJukebox_detailLinks(data) }}{% endif %}
     {% endif -%}
     <DIV STYLE="CLEAR:both;"></DIV>
   </TD></TR>
-{% endblock DataJukebox_detail_footer -%}
+{% endblock DataJukebox_detailFooter -%}
 
-{% block DataJukebox_detail_actions -%}
+{% block DataJukebox_detailActions -%}
   {%- set row = data.rows[0] -%}
   <DIV CLASS="action"><TABLE><TR>
     {% if data.properties.routes.update is defined and data.properties.routes.update and ( row.UpdateAllowed is not defined or row.UpdateAllowed ) -%}
@@ -107,9 +115,9 @@
       <TD CLASS="action" ID="_export"{% if data.properties.tooltips._action_export is defined %} TITLE="{{ data.properties.tooltips._action_export }}"{% endif %} STYLE="CURSOR:pointer;"><SPAN CLASS="icon">&#x21e3;</SPAN><SELECT ONCHANGE="javascript:if (this.selectedIndex) location.href=this.options[this.selectedIndex].value;" STYLE="CURSOR:pointer;"><OPTION SELECTED>{% if data.properties.labels._action_export is defined %}{{ data.properties.labels._action_export }}{% endif %}&hellip;</OPTION>{% for format in ['xml', 'json', 'csv'] %}<OPTION VALUE="{% if data.properties.routes.export[1] is defined and data.properties.routes.export[1] %}{{ path(data.properties.routes.export[0], app.request.query.all|merge(data.properties.routes.export[1]|DataJukebox_map(app.request.attributes.get('_route_params')))|merge({'_format':format, '_pk': row._PK})) }}{% else %}{{ path(data.properties.routes.export[0], app.request.query.all|merge({'_format':format, '_pk': row._PK})) }}{% endif %}">{{ format|upper }}</OPTION>{% endfor %}</SELECT></TD>
     {% endif -%}
   </TR></TABLE></DIV>
-{% endblock DataJukebox_detail_actions -%}
+{% endblock DataJukebox_detailActions -%}
 
-{% block DataJukebox_detail_links -%}
+{% block DataJukebox_detailLinks -%}
   {%- if data.properties.footer_links|length -%}
     {%- set row = data.rows[0] -%}
     <DIV CLASS="links"><TABLE><TR>
@@ -133,10 +141,10 @@
       {% endfor -%}
     </TR></TABLE></DIV>
   {% endif -%}
-{% endblock DataJukebox_detail_links -%}
+{% endblock DataJukebox_detailLinks -%}
 
-{% block DataJukebox_detail_javascript -%}
+{% block DataJukebox_detailJavascript -%}
   <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">/*<![CDATA[*/
     DataJukebox_init('{{ data.properties.uid|escape('js') }}');
   /*]]>*/</SCRIPT>
-{% endblock DataJukebox_detail_javascript -%}
+{% endblock DataJukebox_detailJavascript -%}
