@@ -142,6 +142,7 @@ class TwigExtension
 
       // Format
       new \Twig_SimpleFilter('DataJukebox_format', array($this, 'formatHTML'), array('is_safe' => array('html'))),
+      new \Twig_SimpleFilter('DataJukebox_formatDateTime', array($this, 'formatDateTime'), array('is_safe' => array('html'))),
       new \Twig_SimpleFilter('DataJukebox_formatCSV', array($this, 'formatCSV'), array('is_safe' => array('txt'))),
       new \Twig_SimpleFilter('DataJukebox_formatXML', array($this, 'formatXML'), array('is_safe' => array('txt'))),
       new \Twig_SimpleFilter('DataJukebox_formatJSON', array($this, 'formatJSON'), array('is_safe' => array('txt'))),
@@ -411,11 +412,15 @@ class TwigExtension
    * Format
    */
 
-  public function formatDateTime(\DateTime $oDateTime)
+  public function formatDateTime(\DateTime $oDateTime, $sFormat=null)
   {
-    $sOutput = $oDateTime->format('Y-m-d H:i:s');
-    $sOutput = preg_replace('/^(0000-00-00|1970-01-01) /', '', $sOutput);
-    $sOutput = preg_replace('/( 00:00:00|:00)$/', '', $sOutput);
+    if (is_null($sFormat)) {
+      $sOutput = $oDateTime->format('Y-m-d H:i:s');
+      $sOutput = preg_replace('/^(0000-00-00|1970-01-01) /', '', $sOutput);
+      $sOutput = preg_replace('/( 00:00:00|:00)$/', '', $sOutput);
+    } else {
+      $sOutput = $oDateTime->format($sFormat);
+    }
     return $sOutput;
   }
 
