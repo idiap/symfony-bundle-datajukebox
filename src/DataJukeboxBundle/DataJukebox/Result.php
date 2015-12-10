@@ -76,7 +76,7 @@ class Result
 
 
   /*
-   * METHODS
+   * METHODS: ResultInterface
    ********************************************************************************/
 
   public function getProperties()
@@ -119,6 +119,26 @@ class Result
     $aaPrimaryKeySlugs = array();
     foreach ($this->aData as $aRow) $aaPrimaryKeySlugs[] = array('_pk' => $aRow['_PK']);
     return $aaPrimaryKeySlugs;
+  }
+
+
+  /*
+   * METHODS
+   ********************************************************************************/
+
+  public function &useProperties()
+  {
+    return $this->oProperties;
+  }
+
+  public function &useBrowser()
+  {
+    return $this->oBrowser;
+  }
+
+  public function &useData()
+  {
+    return $this->aData;
   }
 
 }
