@@ -7,11 +7,11 @@ services:
     class: DataJukeboxBundle\Service
     arguments: [@doctrine, %datajukebox.config_yaml%]
 
-  DataJukebox.doctrine.event_listener:
-    class: DataJukeboxBundle\DoctrineEventListener
-    arguments: ['@security.token_storage']
-    tags:
-      - { name: doctrine.event_listener, event: onFlush }
+  # DataJukebox.doctrine.event_listener:
+  #   class: DataJukeboxBundle\DoctrineEventListener
+  #   arguments: ['@security.token_storage']
+  #   tags:
+  #     - { name: doctrine.event_listener, event: onFlush }
 
   DataJukebox.twig.extension:
     class: DataJukeboxBundle\TwigExtension
