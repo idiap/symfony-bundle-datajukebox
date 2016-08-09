@@ -39,14 +39,14 @@ use Doctrine\ORM\Mapping as ORM;
  * and accountability for INSERT, UPDATE and DELETE operations.</P>
  * <P>It ought to go along the following table columns:</P>
  * <UL>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Inserted_tz timestamp(0) with time zone NOT NULL; -- set by trigger</SAMP></LI>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Inserted_id varchar(50);</SAMP></LI>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Update_b boolean NOT NULL DEFAULT( true ); -- permission</SAMP></LI>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Updated_tz timestamp(0) with time zone NOT NULL; -- set by trigger</SAMP></LI>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Updated_id varchar(50);</SAMP></LI>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Disable_b boolean NOT NULL DEFAULT( true ); -- permission</SAMP></LI>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Disabled_b boolean NOT NULL DEFAULT( false ); -- status</SAMP></LI>
- * <LI><SAMP>ALTER TABLE ... ADD COLUMN Delete_b boolean NOT NULL DEFAULT( true ); -- permission</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN ts_InsertedAt timestamp NOT NULL; -- set by trigger</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN id_InsertedBy varchar(50) NULL;</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN b_UpdateAllowed boolean NOT NULL DEFAULT( true ); -- permission</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN ts_UpdatedAt timestamp NOT NULL; -- set by trigger</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN id_UpdatedBy varchar(50) NULL;</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN b_DisableAllowed boolean NOT NULL DEFAULT( true ); -- permission</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN b_Disabled boolean NOT NULL DEFAULT( false ); -- status</SAMP></LI>
+ * <LI><SAMP>ALTER TABLE ... ADD COLUMN b_DeleteAllowed boolean NOT NULL DEFAULT( true ); -- permission</SAMP></LI>
  * </UL>
  *
  * @ORM\MappedSuperclass
@@ -62,49 +62,49 @@ abstract class StatusEntity
 
   /** Insertion timestamp
    * @var \DateTime
-   * @ORM\Column(name="Inserted_tz", type="datetimetz")
+   * @ORM\Column(name="ts_InsertedAt", type="datetime")
    */
   protected $InsertedAt;
 
   /** Insertion principal
    * @var string
-   * @ORM\Column(name="Inserted_id", type="string", length=50)
+   * @ORM\Column(name="id_InsertedBy", type="string", length=50)
    */
   protected $InsertedBy;
 
   /** Update permission flag
    * @var boolean
-   * @ORM\Column(name="Update_b", type="boolean")
+   * @ORM\Column(name="b_UpdateAllowed", type="boolean")
    */
   protected $UpdateAllowed = true;
 
   /** Last update timestamp
    * @var \DateTime
-   * @ORM\Column(name="Updated_tz", type="datetimetz")
+   * @ORM\Column(name="ts_UpdatedAt", type="datetime")
    */
   protected $UpdatedAt;
 
   /** Last update principal
    * @var string
-   * @ORM\Column(name="Updated_id", type="string", length=50)
+   * @ORM\Column(name="id_UpdatedBy", type="string", length=50)
    */
   protected $UpdatedBy;
 
   /** Disablement permission flag
    * @var boolean
-   * @ORM\Column(name="Disable_b", type="boolean")
+   * @ORM\Column(name="b_DisableAllowed", type="boolean")
    */
   protected $DisableAllowed = true;
 
   /** Disablement status flag
    * @var boolean
-   * @ORM\Column(name="Disabled_b", type="boolean")
+   * @ORM\Column(name="b_Disabled", type="boolean")
    */
   protected $Disabled = false;
 
   /** Deletion permission flag
    * @var boolean
-   * @ORM\Column(name="Delete_b", type="boolean")
+   * @ORM\Column(name="b_DeleteAllowed", type="boolean")
    */
   protected $DeleteAllowed = true;
 
