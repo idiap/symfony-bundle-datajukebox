@@ -86,7 +86,7 @@ abstract class StatusProperties
 
   public function getFieldsHidden()
   {
-    switch ($this->getView()) {
+    switch ($this->getAction()) {
     case 'insert':
     case 'update':
       return array_merge(
