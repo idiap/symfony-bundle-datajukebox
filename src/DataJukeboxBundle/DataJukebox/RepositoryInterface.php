@@ -54,7 +54,7 @@ interface RepositoryInterface
   /*
    * GETTERS
    */
-  
+
   /** Returns the associated data properties
    * @return PropertiesInterface
    */

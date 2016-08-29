@@ -77,7 +77,7 @@ final class Properties
   /*
    * GETTERS
    */
-  
+
   public function getPropertiesClass()
   {
     return $this->sPropertiesClass;

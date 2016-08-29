@@ -72,7 +72,7 @@ function DataJukebox_init(sID, sUrlDelete, sUrlSelect, sConfirmDelete, sConfirmS
 function DataJukebox_onSubmit(sID)
 {
   var oForm = DataJukebox_getForm(sID);
-  
+
   // If form is submitted "normally", we're dealing with a display preferences
   // (GET) request. Primary keys must thus not appear in the query string.
   aoInputs = oForm.elements['_pk[]'];
@@ -84,7 +84,7 @@ function DataJukebox_onSubmit(sID)
     }
   }
 
-  
+
   // A field that corresponds to defaults has its value suffixed with a trailing
   // whitespace, which is trimmed-off as soon as the user modifies it.
   // Let's not clutter the (GET) request with such defaults.
