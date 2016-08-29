@@ -1,11 +1,8 @@
 # DataJukeboxBundle\Resources\config\services.yml
-parameters:
-    datajukebox.config_yaml:
-
 services:
   DataJukebox:
     class: DataJukeboxBundle\Service
-    arguments: [@doctrine, %datajukebox.config_yaml%]
+    arguments: [@doctrine]
 
   # DataJukebox.doctrine.event_listener:
   #   class: DataJukeboxBundle\DoctrineEventListener

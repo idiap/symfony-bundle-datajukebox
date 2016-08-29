@@ -33,8 +33,6 @@
 namespace DataJukeboxBundle;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Config\Definition\Processor;
 
 /** Data jukebox service
  *
@@ -52,36 +50,20 @@ class Service {
    */
   private $oManagerRegistry;
 
-  /** Service configuration
-   * @var array
-   */
-  private $aConfiguration;
-
 
   /*
    * CONSTRUCTORS
    ********************************************************************************/
 
-  public function __construct(ManagerRegistry $oManagerRegistry, $sConfigurationPath=null)
+  public function __construct(ManagerRegistry $oManagerRegistry)
   {
     $this->oManagerRegistry = $oManagerRegistry;
-    $aConfiguration = isset($sConfigurationPath) ? Yaml::parse(file_get_contents($sConfigurationPath)) : null;
-    $aConfiguration = isset($aConfiguration['DataJukebox']) ? array($aConfiguration['DataJukebox']) : array();
-    $this->aConfiguration = (new Processor())->processConfiguration(new ServiceConfiguration(), $aConfiguration);
   }
 
 
   /*
    * METHODS
    ********************************************************************************/
-
-  /** Get the service configuration
-   * @return array
-   */
-  public function getConfiguration()
-  {
-    return $this->aConfiguration;
-  }
 
   /** Get the entity manager for the given entity
    * @param string $sEntityName Entity name (e.g. "FooBundle:BarEntity")
