@@ -295,6 +295,14 @@ abstract class Properties
     return $this->sFormat;
   }
 
+  /** Returns the associated translator
+   * @return TranslatorInterface Associated translator (NULL if unset)
+   */
+  public function getTranslator()
+  {
+    return $this->oTranslator;
+  }
+
   /** Returns the fields (name) that have meta-data
    *
    * @see Properties::getMeta()
