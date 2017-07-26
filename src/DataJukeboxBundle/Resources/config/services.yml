@@ -2,7 +2,7 @@
 services:
   DataJukebox:
     class: DataJukeboxBundle\Service
-    arguments: [@doctrine]
+    arguments: ['@doctrine']
 
   # DataJukebox.doctrine.event_listener:
   #   class: DataJukeboxBundle\DoctrineEventListener
