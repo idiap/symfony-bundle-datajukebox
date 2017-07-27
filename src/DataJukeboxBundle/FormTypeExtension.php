@@ -36,7 +36,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /** Form type extension
  *
@@ -67,7 +67,7 @@ class FormTypeExtension extends AbstractTypeExtension
     return 'form';
   }
 
-  public function setDefaultOptions(OptionsResolverInterface $oOptionsResolver)
+  public function configureOptions(OptionsResolver $oOptionsResolver)
   {
     $oOptionsResolver->setDefaults(array('data_properties' => null));
   }

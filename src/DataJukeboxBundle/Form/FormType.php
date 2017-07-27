@@ -34,7 +34,7 @@ namespace DataJukeboxBundle\Form;
 use DataJukeboxBundle\DataJukebox as DataJukebox;
 
 use Symfony\Component\Form as Form;
-use Symfony\Component\OptionsResolver as OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM as ORM;
 
 /** Symfony generic form (type)
@@ -237,7 +237,7 @@ class FormType
 
   }
 
-  public function setDefaultOptions(OptionsResolver\OptionsResolverInterface $oOptionsResolver)
+  public function configureOptions(OptionsResolver $oOptionsResolver)
   {
     // Form defaults
     $oClassMetadata = $this->oProperties->getClassMetadata();
