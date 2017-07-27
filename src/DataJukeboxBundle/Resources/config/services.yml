@@ -18,4 +18,4 @@ services:
   DataJukebox.form.type_extension:
     class: DataJukeboxBundle\FormTypeExtension
     tags:
-      - { name: form.type_extension, alias: form }
+      - { name: form.type_extension, alias: form, extended_type: Symfony\Component\Form\AbstractType }
