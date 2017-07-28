@@ -1,7 +1,7 @@
 # DataJukeboxBundle\Resources\config\services.yml
 services:
   DataJukebox:
-    class: DataJukeboxBundle\Service
+    class: 'DataJukeboxBundle\Service'
     arguments: ['@doctrine']
 
   # DataJukebox.doctrine.event_listener:
@@ -11,11 +11,11 @@ services:
   #     - { name: doctrine.event_listener, event: onFlush }
 
   DataJukebox.twig.extension:
-    class: DataJukeboxBundle\TwigExtension
+    class: 'DataJukeboxBundle\TwigExtension'
     tags:
-      - { name: twig.extension }
+      - { name: 'twig.extension' }
 
   DataJukebox.form.type_extension:
-    class: DataJukeboxBundle\FormTypeExtension
+    class: 'DataJukeboxBundle\FormTypeExtension'
     tags:
-      - { name: form.type_extension, alias: form, extended_type: Symfony\Component\Form\AbstractType }
+      - { name: 'form.type_extension', alias: 'form', extended_type: 'Symfony\Component\Form\AbstractType' }

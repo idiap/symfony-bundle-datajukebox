@@ -1,51 +1,51 @@
 label:
-  _view_list: Liste
-  _view_detail: Détail
-  _action_insert: Ajouter
-  _action_update: Modifier
-  _action_delete: Effacer
-  _action_delete_confirm: VEUILLEZ CONFIRMER !
-  _action_select: Sélectionner
+  _view_list: 'Liste'
+  _view_detail: 'Détail'
+  _action_insert: 'Ajouter'
+  _action_update: 'Modifier'
+  _action_delete: 'Effacer'
+  _action_delete_confirm: 'VEUILLEZ CONFIRMER !'
+  _action_select: 'Sélectionner'
   _action_select_confirm: ''
-  _action_export: Export
-  _action_form_submit: Soumettre
-  _action_form_reset: Réinitialiser
-  _action_form_cancel: Annuler
-  _action_view_back: Retour
-  _display: Champs
-  _display_order: Tri
-  _search: Recherche
-  _range_begin: Début
-  _range_previous: Précédente
-  _range_next: Suivante
-  _range_end: Fin
-  _data_empty: Pas de données
-  _data_required: Obligatoire
+  _action_export: 'Export'
+  _action_form_submit: 'Soumettre'
+  _action_form_reset: 'Réinitialiser'
+  _action_form_cancel: 'Annuler'
+  _action_view_back: 'Retour'
+  _display: 'Champs'
+  _display_order: 'Tri'
+  _search: 'Recherche'
+  _range_begin: 'Début'
+  _range_previous: 'Précédente'
+  _range_next: 'Suivante'
+  _range_end: 'Fin'
+  _data_empty: 'Pas de données'
+  _data_required: 'Obligatoire'
 
 tooltip:
-  _view_list: Voir la liste des données
-  _view_detail: Voir le détail des données
-  _action_insert: Ajouter de nouvelles données
-  _action_update: Modifier les données
-  _action_delete: Effacer les données
-  _action_delete_confirm: Voulez-vous vraiment effacer ces données ? Cette action est irréversible !
-  _action_select: Sélectionner les données cochées
+  _view_list: 'Voir la liste des données'
+  _view_detail: 'Voir le détail des données'
+  _action_insert: 'Ajouter de nouvelles données'
+  _action_update: 'Modifier les données'
+  _action_delete: 'Effacer les données'
+  _action_delete_confirm: 'Voulez-vous vraiment effacer ces données ? Cette action est irréversible !'
+  _action_select: 'Sélectionner les données cochées'
   _action_select_confirm: ''
-  _action_export: Exporter (télécharger) les données dans le format spécifié
-  _action_form_submit: Soumettre les données
-  _action_form_reset: Réinitialiser les données à leur valeur initiale
-  _action_form_cancel: Annuler l'opération en cours
-  _action_view_back: Retourner à la vue précédente ou parente
-  _display: Sélectionner les champs (colonnes) à afficher
-  _display_submit: Rafraîchir la vue en fonction des champs sélectionnés
-  _display_reset: Réinitialiser la vue aux champs par défaut
-  _display_order: Trier les données en fonction des champs sélectionnés (cliquer: définir; double-cliquer: ajouter/remplacer)
-  _search: Rechercher des données correspondant aux critères renseignés (cliquer pour l'aide)
-  _search_submit: Lancer la recherche avec les critères renseignés
-  _search_reset: Effacer tous les critères de recherche
-  _range_begin: Aller à la première page
-  _range_previous: Aller à la page précédente
-  _range_next: Aller à la page suivante
-  _range_end: Aller à la dernière page
-  _range_limit: Quantité de données (lignes) à afficher
-  _data_required: Champs/données obligatoires
+  _action_export: 'Exporter (télécharger) les données dans le format spécifié'
+  _action_form_submit: 'Soumettre les données'
+  _action_form_reset: 'Réinitialiser les données à leur valeur initiale'
+  _action_form_cancel: 'Annuler l''opération en cours'
+  _action_view_back: 'Retourner à la vue précédente ou parente'
+  _display: 'Sélectionner les champs (colonnes) à afficher'
+  _display_submit: 'Rafraîchir la vue en fonction des champs sélectionnés'
+  _display_reset: 'Réinitialiser la vue aux champs par défaut'
+  _display_order: 'Trier les données en fonction des champs sélectionnés (cliquer: définir; double-cliquer: ajouter/remplacer)'
+  _search: 'Rechercher des données correspondant aux critères renseignés (cliquer pour l''aide)'
+  _search_submit: 'Lancer la recherche avec les critères renseignés'
+  _search_reset: 'Effacer tous les critères de recherche'
+  _range_begin: 'Aller à la première page'
+  _range_previous: 'Aller à la page précédente'
+  _range_next: 'Aller à la page suivante'
+  _range_end: 'Aller à la dernière page'
+  _range_limit: 'Quantité de données (lignes) à afficher'
+  _data_required: 'Champs/données obligatoires'

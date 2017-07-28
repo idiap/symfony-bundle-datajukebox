@@ -1,15 +1,15 @@
 label:
-  InsertedAt: Created
-  InsertedBy: Creator
-  UpdateAllowed: Allow Edit
-  UpdatedAt: Edited
-  UpdatedBy: Editor
-  DisableAllowed: Allow Disablement
-  Disabled: Hidden
-  DeleteAllowed: Allow Deletion
+  InsertedAt: 'Created'
+  InsertedBy: 'Creator'
+  UpdateAllowed: 'Allow Edit'
+  UpdatedAt: 'Edited'
+  UpdatedBy: 'Editor'
+  DisableAllowed: 'Allow Disablement'
+  Disabled: 'Hidden'
+  DeleteAllowed: 'Allow Deletion'
 
 tooltip:
-  InsertedAt: Creation date/time
-  InsertedBy: Creation user
-  UpdatedAt: Last change (edit) date/time
-  UpdatedBy: Last change (edit) user
+  InsertedAt: 'Creation date/time'
+  InsertedBy: 'Creation user'
+  UpdatedAt: 'Last change (edit) date/time'
+  UpdatedBy: 'Last change (edit) user'
