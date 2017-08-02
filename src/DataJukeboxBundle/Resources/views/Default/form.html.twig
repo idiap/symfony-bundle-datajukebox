@@ -1,7 +1,7 @@
 {# -*- mode:web; web-mode-markup-indent-offset:2; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab: #}
 {# DataJukeboxBundle\Resources\views\Default\form.html.twig #}
-{% extends '::layout.html.twig' %}
-{% form_theme form 'DataJukeboxBundle:DataJukebox:form.html.twig' %}
+{% extends '@DataJukebox/Default/layout.html.twig' %}
+{% form_theme form '@DataJukebox/DataJukebox/form.html.twig' %}
 
 {% block layout -%}
 {{ parent() }}

@@ -513,11 +513,11 @@ abstract class Properties
    * <P>This default implementation supports the following views/actions (and
    * corresponding templates):</P>
    * <LI>
-   * <UL><B>list</B>: corresponding to <SAMP>DataJukeboxBundle:Default:list.html.twig</SAMP></UL>
-   * <UL><B>select</B>: corresponding to <SAMP>DataJukeboxBundle:Default:list.html.twig</SAMP></UL>
-   * <UL><B>detail</B>: corresponding to <SAMP>DataJukeboxBundle:Default:detail.html.twig</SAMP></UL>
-   * <UL><B>insert</B>: corresponding to <SAMP>DataJukeboxBundle:Default:form.html.twig</SAMP></UL>
-   * <UL><B>update</B>: corresponding to <SAMP>DataJukeboxBundle:Default:form.html.twig</SAMP></UL>
+   * <UL><B>list</B>: corresponding to <SAMP>@DataJukebox/Default/list.html.twig</SAMP></UL>
+   * <UL><B>select</B>: corresponding to <SAMP>@DataJukebox/Default/list.html.twig</SAMP></UL>
+   * <UL><B>detail</B>: corresponding to <SAMP>@DataJukebox/Default/detail.html.twig</SAMP></UL>
+   * <UL><B>insert</B>: corresponding to <SAMP>@DataJukebox/Default/form.html.twig</SAMP></UL>
+   * <UL><B>update</B>: corresponding to <SAMP>@DataJukebox/Default/form.html.twig</SAMP></UL>
    * </LI>
    *
    * @return string Template resource (name)
@@ -530,12 +530,12 @@ abstract class Properties
       switch ($this->sAction) {
       case 'list':
       case 'select':
-        return 'DataJukeboxBundle:Default:list.html.twig';
+        return '@DataJukebox/Default/list.html.twig';
       case 'detail':
-        return 'DataJukeboxBundle:Default:detail.html.twig';
+        return '@DataJukebox/Default/detail.html.twig';
       case 'insert':
       case 'update':
-        return 'DataJukeboxBundle:Default:form.html.twig';
+        return '@DataJukebox/Default/form.html.twig';
       }
 
     case 'xml':
@@ -543,7 +543,7 @@ abstract class Properties
       case 'list':
       case 'detail':
       case 'export':
-        return 'DataJukeboxBundle:Default:xml.txt.twig';
+        return '@DataJukebox/Default/xml.txt.twig';
       }
 
     case 'json':
@@ -551,7 +551,7 @@ abstract class Properties
       case 'list':
       case 'detail':
       case 'export':
-        return 'DataJukeboxBundle:Default:json.txt.twig';
+        return '@DataJukebox/Default/json.txt.twig';
       }
 
     case 'csv':
@@ -559,7 +559,7 @@ abstract class Properties
       case 'list':
       case 'detail':
       case 'export':
-        return 'DataJukeboxBundle:Default:csv.txt.twig';
+        return '@DataJukebox/Default/csv.txt.twig';
       }
     }
     throw new \Exception(sprintf('Invalid/unsupported action/format (%s/%s)', $this->sAction, $this->sFormat));

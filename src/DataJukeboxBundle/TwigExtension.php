@@ -73,9 +73,9 @@ class TwigExtension
   public function initRuntime(\Twig_Environment $oTwigEnvironment)
   {
     $this->oTwigEnvironment = $oTwigEnvironment;
-    $this->oTwigTemplate_list = $this->oTwigEnvironment->loadTemplate('DataJukeboxBundle:DataJukebox:list.html.twig');
-    $this->oTwigTemplate_detail = $this->oTwigEnvironment->loadTemplate('DataJukeboxBundle:DataJukebox:detail.html.twig');
-    $this->oTwigTemplate_popup = $this->oTwigEnvironment->loadTemplate('DataJukeboxBundle:DataJukebox:popup.html.twig');
+    $this->oTwigTemplate_list = $this->oTwigEnvironment->loadTemplate('@DataJukebox/DataJukebox/list.html.twig');
+    $this->oTwigTemplate_detail = $this->oTwigEnvironment->loadTemplate('@DataJukebox/DataJukebox/detail.html.twig');
+    $this->oTwigTemplate_popup = $this->oTwigEnvironment->loadTemplate('@DataJukebox/DataJukebox/popup.html.twig');
   }
 
 

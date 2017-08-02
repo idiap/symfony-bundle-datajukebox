@@ -39,12 +39,12 @@ class DataJukeboxController
 
   public function helpExpressionAction()
   {
-    return $this->render('DataJukeboxBundle:Help:expression.html.twig');
+    return $this->render('@DataJukebox/Help/expression.html.twig');
   }
 
   public function helpFilterAction()
   {
-    return $this->render('DataJukeboxBundle:Help:filter.html.twig');
+    return $this->render('@DataJukebox/Help/filter.html.twig');
   }
 
 }
