@@ -1,0 +1,34 @@
+{# -*- mode:web; web-mode-markup-indent-offset:2; -*- ex: set tabstop=2 expandtab: #}
+{# DataJukeboxBundle\Resources\views\Default\base.html.twig #}
+
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <META CHARSET="UTF-8" />
+    <TITLE>{% block title %}DataJukeboxBundle - Default Templating (replace with yours){% endblock %}</TITLE>
+    {% block stylesheets -%}
+      {%- stylesheets
+      'bundles/datajukebox/css/jquery-ui.css'
+      'bundles/datajukebox/css/jquery-ui-timepicker-addon.css'
+      'bundles/datajukebox/css/DataJukebox.css'
+      filter='cssrewrite'
+      %}
+      <LINK REL="stylesheet" HREF="{{ asset_url }}" />
+      {% endstylesheets %}
+    {% endblock stylesheets %}
+    {% javascripts
+    'bundles/datajukebox/js/jquery.js'
+    'bundles/datajukebox/js/jquery-ui.js'
+    'bundles/datajukebox/js/jquery-ui-timepicker-addon.js'
+    'bundles/datajukebox/js/DataJukebox.js'
+    %}
+    <SCRIPT TYPE="text/javascript" SRC="{{ asset_url }}"></SCRIPT>
+    {% endjavascripts %}
+  </HEAD>
+  <BODY>
+    {% block body %}{% endblock body %}
+    {% block javascripts %}
+      <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">/*<![CDATA[*/$("input:text:visible:first").focus();/*]]>*/</SCRIPT>
+    {% endblock javascripts %}
+  </BODY>
+</HTML>
