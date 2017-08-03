@@ -1,5 +1,5 @@
 <?php // -*- mode:php; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab:
-// DataJukeboxBundle\Controller\HelpController.php
+// DataJukeboxBundle\Controller\DataJukeboxHelpController.php
 
 /** Data Jukebox Bundle
  *
@@ -33,7 +33,7 @@ namespace DataJukeboxBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class DataJukeboxController
+class DataJukeboxHelpController
   extends Controller
 {
 
