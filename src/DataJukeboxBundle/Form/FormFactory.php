@@ -1,5 +1,5 @@
 <?php // -*- mode:php; tab-width:2; c-basic-offset:2; intent-tabs-mode:nil; -*- ex: set tabstop=2 expandtab:
-// DataJukeboxBundle\Data\FormTypeExtension.php
+// DataJukeboxBundle\Form\FormFactory.php
 
 /** Data Jukebox Bundle
  *
@@ -22,7 +22,7 @@
  * </PRE>
  *
  * @package    DataJukeboxBundle
- * @subpackage SymfonyIntegration
+ * @subpackage SymfonyExtension
  * @copyright  2015 Idiap Research Institute <http://www.idiap.ch>
  * @author     Cedric Dufour <http://cedric.dufour.name>
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License (GPL) Version 3
@@ -30,46 +30,35 @@
  * @link       https://github.com/idiap/DataJukeboxBundle
  */
 
-namespace DataJukeboxBundle;
+namespace DataJukeboxBundle\Form;
 
-use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form as SymfonyForm;
 
-/** Form type extension
+/** DataJukebox-specific form factory
  *
- * <P>This extension adds the <SAMP>data_properties</SAMP> variable to forms.</P>
+ * <P>This class overrides the default form factory such as to use the
+ * (variable) DataJukebox Properties name rather than the DataJukebox
+ * (fixed) form (type) name when building the form.</P>
+ * @see \DataJukeboxBundle\DataJukebox\PropertiesInterface
  *
  * @package    DataJukeboxBundle
- * @subpackage SymfonyIntegration
+ * @subpackage SymfonyExtension
  */
-class FormTypeExtension extends AbstractTypeExtension
+class FormFactory
+  extends SymfonyForm\FormFactory
 {
 
   /*
-   * METHODS: AbstractTypeExtension
+   * METHODS: (Symfony) FormFactory
    ********************************************************************************/
 
-  public function buildForm(FormBuilderInterface $oFormBuilder, array $aOptions)
+  /**
+   * {@inheritdoc}
+   */
+  function createNamedBuilder($sName, $sType='Symfony\Component\Form\Extension\Core\Type\FormType', $mData=null, array $amOptions=array())
   {
-    $oFormBuilder->setAttribute('data_properties', $aOptions['data_properties']);
-  }
-
-  public function buildView(FormView $oFormView, FormInterface $oForm, array $aOptions)
-  {
-    $oFormView->vars['data_properties'] = $oForm->getConfig()->getAttribute('data_properties');
-  }
-
-  public function getExtendedType()
-  {
-    return 'form';
-  }
-
-  public function configureOptions(OptionsResolver $oOptionsResolver)
-  {
-    $oOptionsResolver->setDefaults(array('data_properties' => null));
+    if(isset($amOptions['data_properties_object'])) $sName = $amOptions['data_properties_object']->getName();
+    return parent::createNamedBuilder($sName, $sType, $mData, $amOptions);
   }
 
 }

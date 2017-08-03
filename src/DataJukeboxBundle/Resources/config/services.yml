@@ -4,6 +4,16 @@ services:
     class: 'DataJukeboxBundle\Service'
     arguments: ['@doctrine']
 
+  # FORM
+  #   Symfony 3.x: Passing a form type instance to the FormFactory::create*() methods
+  #   is not supported anymore. Pass the fully-qualified class name of the type instead.
+  #    <-> https://github.com/symfony/symfony/blob/master/UPGRADE-3.0.md#form
+  #   This custom form factory service will be used (and lazily instantiated) only from
+  #   Symfony 3.x and above
+  DataJukebox.form.factory:
+    class: 'DataJukeboxBundle\Form\FormFactory'
+    arguments: ['@form.registry']
+
   # DataJukebox.doctrine.event_listener:
   #   class: DataJukeboxBundle\DoctrineEventListener
   #   arguments: ['@security.token_storage']
@@ -14,8 +24,3 @@ services:
     class: 'DataJukeboxBundle\TwigExtension'
     tags:
       - { name: 'twig.extension' }
-
-  DataJukebox.form.type_extension:
-    class: 'DataJukeboxBundle\FormTypeExtension'
-    tags:
-      - { name: 'form.type_extension', alias: 'form', extended_type: 'Symfony\Component\Form\AbstractType' }

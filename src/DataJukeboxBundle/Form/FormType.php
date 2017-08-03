@@ -33,22 +33,22 @@
 namespace DataJukeboxBundle\Form;
 use DataJukeboxBundle\DataJukebox as DataJukebox;
 
-use Symfony\Component\Form as Form;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM as ORM;
+use Symfony\Component\Form as SymfonyForm;
+use Symfony\Component\OptionsResolver as SymfonyOptions;
 
-/** Symfony generic form (type)
+/** DataJukebox-specific form (type)
  *
- * <P>This class provides a default form type implementation which provisions
+ * <P>This class provides a form type implementation which integrate the
+ * (fields) parameters defined by DataJukebox Properties and provisions
  * single or multiple primary key(s) handling for data insert, update or
- * delete operations, along automatic retrieval of fields properties.</P>
+ * delete operations.</P>
  * @see \DataJukeboxBundle\DataJukebox\PropertiesInterface
  *
  * @package    DataJukeboxBundle
  * @subpackage SymfonyExtension
  */
 class FormType
-  extends Form\AbstractType
+  extends SymfonyForm\AbstractType
 {
 
   /*
@@ -127,16 +127,33 @@ class FormType
 
 
   /*
-   * METHODS: AbstractType
+   * METHODS: (Symfony) FormType
    ********************************************************************************/
 
+  /**
+   * {@inheritdoc}
+   */
   public function getName()
   {
+    // FORM
+    //   Symfony 3.x: The getBlockPrefix() method was added to the FormTypeInterface
+    //   in replacement of the getName() method which has been removed.
+    //    <-> https://github.com/symfony/symfony/blob/master/UPGRADE-3.0.md#form
+    //   Backward-compatibility: keep the option (until Symfony 2.x is EOL)
     return $this->oProperties->getName();
   }
 
-  public function buildForm(Form\FormBuilderInterface $oFormBuilder, array $amOptions)
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(SymfonyForm\FormBuilderInterface $oFormBuilder, array $amOptions)
   {
+    // Retrieve properties from options
+    if(isset($amOptions['data_properties_object'])) $this->oProperties = $amOptions['data_properties_object'];
+
+    // Make 'data_properties' available to the form view
+    $oFormBuilder->setAttribute('data_properties', $amOptions['data_properties']);
+
     // Action/fields properties
     $oClassMetadata = $this->oProperties->getClassMetadata();
     $sAction = $this->oProperties->getAction();
@@ -237,14 +254,58 @@ class FormType
 
   }
 
-  public function configureOptions(OptionsResolver $oOptionsResolver)
+  /**
+   * {@inheritdoc}
+   */
+  public function buildView(SymfonyForm\FormView $oFormView, SymfonyForm\FormInterface $oForm, array $amOptions)
   {
+    $oFormView->vars['data_properties'] = $oForm->getConfig()->getAttribute('data_properties');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function configureOptions(SymfonyOptions\OptionsResolver $oOptionsResolver)
+  {
+    // FORM
+    //   Symfony 3.x: Passing a form type instance to the FormFactory::create*() methods
+    //   is not supported anymore. Pass the fully-qualified class name of the type instead.
+    //    <-> https://github.com/symfony/symfony/blob/master/UPGRADE-3.0.md#form
+    //   Backward-compatibility: keep both options (until Symfony 2.x is EOL)
+    if(isset($this->oProperties)) {
+      $oClassMetadata = $this->oProperties->getClassMetadata();
+      $oOptionsResolver->setDefaults(
+        array(
+          'data_class' => !is_null($oClassMetadata) ? $oClassMetadata->name : null,
+          'data_properties' => $this->oProperties->getTemplateData(),
+        )
+      );
+      return;
+    }
+
+    // Lazy resolvers (closures)
+    // ... 'data_class'
+    $fnDataClass = function(SymfonyOptions\Options $amOptions) {
+      if(!isset($amOptions['data_properties_object'])) return null;
+      $oClassMetadata = $amOptions['data_properties_object']->getClassMetadata();
+      return !is_null($oClassMetadata) ? $oClassMetadata->name : null;
+    };
+    // ... 'data_properties'
+    $fnDataProperties = function(SymfonyOptions\Options $amOptions) {
+      if(!isset($amOptions['data_properties_object'])) return null;
+      return $amOptions['data_properties_object']->getTemplateData();
+    };
+
     // Form defaults
-    $oClassMetadata = $this->oProperties->getClassMetadata();
+    $oOptionsResolver->setDefined(
+      array(
+        'data_properties_object',
+      )
+    );
     $oOptionsResolver->setDefaults(
       array(
-        'data_class' => !is_null($oClassMetadata) ? $oClassMetadata->name : null,
-        'data_properties' => $this->oProperties->getTemplateData(),
+        'data_class' => $fnDataClass,
+        'data_properties' => $fnDataProperties,
       )
     );
   }

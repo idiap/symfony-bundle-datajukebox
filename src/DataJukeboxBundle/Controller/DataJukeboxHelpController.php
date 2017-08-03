@@ -31,10 +31,10 @@
 
 namespace DataJukeboxBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 
 class DataJukeboxHelpController
-  extends Controller
+  extends SymfonyController
 {
 
   public function helpExpressionAction()
