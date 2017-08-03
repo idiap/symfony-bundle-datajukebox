@@ -34,7 +34,9 @@ namespace DataJukeboxBundle\Form;
 use DataJukeboxBundle\DataJukebox as DataJukebox;
 
 use Symfony\Component\Form as SymfonyForm;
+use Symfony\Component\Form\Extension\Core\Type as CoreType;
 use Symfony\Component\OptionsResolver as SymfonyOptions;
+use Symfony\Bridge\Doctrine\Form\Type as DoctrineType;
 
 /** DataJukebox-specific form (type)
  *
@@ -50,6 +52,86 @@ use Symfony\Component\OptionsResolver as SymfonyOptions;
 class FormType
   extends SymfonyForm\AbstractType
 {
+
+  /*
+   * CONSTANTS
+   ********************************************************************************/
+
+    // FORM
+    //   Symfony 3.x: Instead of referencing types by name, you must reference them
+    //   by their fully-qualified class name (FQCN)
+    //    <-> https://github.com/symfony/symfony/blob/master/UPGRADE-3.0.md#form
+    //   Backward-compatibility: keep both options (until Symfony 2.x is EOL)
+  const TYPE_FQCN_TO_STRING = array(
+    CoreType\BirthdayType::class => 'birthday',
+    CoreType\ButtonType::class => 'button',
+    CoreType\CheckboxType::class => 'checkbox',
+    CoreType\ChoiceType::class => 'choice',
+    CoreType\CollectionType::class => 'collection',
+    CoreType\CountryType::class => 'country',
+    CoreType\CurrencyType::class => 'currency',
+    CoreType\DateIntervalType::class => 'dateinterval',
+    CoreType\DateTimeType::class => 'datetime',
+    CoreType\DateType::class => 'date',
+    CoreType\EmailType::class => 'email',
+    CoreType\FileType::class => 'file',
+    CoreType\HiddenType::class => 'hidden',
+    CoreType\IntegerType::class => 'integer',
+    CoreType\LanguageType::class => 'language',
+    CoreType\LocaleType::class => 'locale',
+    CoreType\MoneyType::class => 'money',
+    CoreType\NumberType::class => 'number',
+    CoreType\PasswordType::class => 'password',
+    CoreType\PercentType::class => 'percent',
+    CoreType\RadioType::class => 'radio',
+    CoreType\RangeType::class => 'range',
+    CoreType\RepeatedType::class => 'repeated',
+    CoreType\ResetType::class => 'reset',
+    CoreType\SearchType::class => 'search',
+    CoreType\SubmitType::class => 'submit',
+    CoreType\TextareaType::class => 'textarea',
+    CoreType\TextType::class => 'text',
+    CoreType\TimeType::class => 'time',
+    CoreType\TimezoneType::class => 'timezone',
+    CoreType\UrlType::class => 'url',
+    DoctrineType\EntityType::class => 'entity',
+  );
+
+  const TYPE_STRING_TO_FQCN = array(
+    'birthday' => CoreType\BirthdayType::class,
+    'button' => CoreType\ButtonType::class,
+    'checkbox' => CoreType\CheckboxType::class,
+    'choice' => CoreType\ChoiceType::class,
+    'collection' => CoreType\CollectionType::class,
+    'country' => CoreType\CountryType::class,
+    'currency' => CoreType\CurrencyType::class,
+    'dateinterval' => CoreType\DateIntervalType::class,
+    'datetime' => CoreType\DateTimeType::class,
+    'date' => CoreType\DateType::class,
+    'email' => CoreType\EmailType::class,
+    'file' => CoreType\FileType::class,
+    'hidden' => CoreType\HiddenType::class,
+    'integer' => CoreType\IntegerType::class,
+    'language' => CoreType\LanguageType::class,
+    'locale' => CoreType\LocaleType::class,
+    'money' => CoreType\MoneyType::class,
+    'number' => CoreType\NumberType::class,
+    'password' => CoreType\PasswordType::class,
+    'percent' => CoreType\PercentType::class,
+    'radio' => CoreType\RadioType::class,
+    'range' => CoreType\RangeType::class,
+    'repeated' => CoreType\RepeatedType::class,
+    'reset' => CoreType\ResetType::class,
+    'search' => CoreType\SearchType::class,
+    'submit' => CoreType\SubmitType::class,
+    'textarea' => CoreType\TextareaType::class,
+    'text' => CoreType\TextType::class,
+    'time' => CoreType\TimeType::class,
+    'timezone' => CoreType\TimezoneType::class,
+    'url' => CoreType\UrlType::class,
+    'entity' => DoctrineType\EntityType::class,
+  );
+
 
   /*
    * PROPERTIES
@@ -199,7 +281,7 @@ class FormType
       // ... hidden
       if (in_array($sField, $asFields_hidden)) {
         if (!in_array($sField, $asFields_required)) continue;
-        $sField_type = 'hidden';
+        $sField_type = CoreType\HiddenType::class;
       }
       // ... required and read-only (disabled)
       $aField_options = array_merge(
@@ -216,17 +298,36 @@ class FormType
       // ... (custom) widget
       switch ((is_null($sField_type) and !is_null($oClassMetadata)) ? $oClassMetadata->getTypeOfField($sField) : $sField_type) {
       case 'datetime':
+      case CoreType\DateTimeType::class:
         // We need a properly formatted 'single_text' widget for JQuery
         if (!array_key_exists('widget', $aField_options) or $aField_options['widget']=='single_text') {
           $aField_options = array_merge($aField_options, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd HH:mm'));
         }
         break;
       case 'date':
+      case CoreType\DateType::class:
         // We need 'single_text'-style widget along JQuery
         if (!array_key_exists('widget', $aField_options) or $aField_options['widget']=='single_text') {
           $aField_options = array_merge($aField_options, array('widget' => 'single_text', 'format' => 'yyyy-MM-dd'));
         }
         break;
+      }
+
+      // FORM
+      //   Symfony 3.x:
+      //   1. Instead of referencing types by name, you must reference them by their fully-qualified class name (FQCN)
+      //   2. Choices must be given as HTML label=>value pairs
+      //    <-> https://github.com/symfony/symfony/blob/master/UPGRADE-3.0.md#form
+      //   Backward-compatibility: keep both options (until Symfony 2.x is EOL)
+      if(\Symfony\Component\HttpKernel\Kernel::VERSION_ID<30000) {
+        if(array_key_exists($sField_type, self::TYPE_FQCN_TO_STRING))
+          $sField_type = self::TYPE_FQCN_TO_STRING[$sField_type];
+      } else {
+        if(array_key_exists($sField_type, self::TYPE_STRING_TO_FQCN))
+          $sField_type = self::TYPE_STRING_TO_FQCN[$sField_type];
+        // In DataJukebox, choices shall ALWAYS be given as HTML value=>label pairs (which makes much more sense!)
+        if(isset($aField_options['choices']) and is_array($aField_options['choices']))
+          $aField_options['choices'] = array_flip($aField_options['choices']);
       }
 
       // Add the field to the form
