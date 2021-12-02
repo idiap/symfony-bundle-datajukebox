@@ -31,11 +31,12 @@
 
 namespace DataJukeboxBundle\Controller;
 use DataJukeboxBundle\Form\FormType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyController;
 
-abstract class Controller
-  extends SymfonyController
+abstract class Controller extends SymfonyController
 {
 
   /*
@@ -45,40 +46,28 @@ abstract class Controller
   /**
    * {@inheritdoc}
    */
-  function createForm($oFormType, $mData=null, array $amOptions=array())
+  public function createForm(string $type, $data = null, array $options = []): FormInterface
   {
-    if(!$oFormType instanceof FormType) {
-      throw new \RuntimeException('Form type must be a \DataJukeboxBundle\Form\FormType object');
-    }
-
     // FORM
     //   Symfony 3.x: Passing a form type instance to the FormFactory::create*() methods
     //   is not supported anymore. Pass the fully-qualified class name of the type instead.
     //    <-> https://github.com/symfony/symfony/blob/master/UPGRADE-3.0.md#form
     //   Backward-compatibility: keep both options (until Symfony 2.x is EOL)
-    if(\Symfony\Component\HttpKernel\Kernel::VERSION_ID<30000) {
-      return parent::createForm($oFormType, $mData, $amOptions);
-    }
-
-    $amOptions['data_properties_object'] = $oFormType->getProperties();
-    return $this->container->get('DataJukebox.form.factory')->create(FormType::class, $mData, $amOptions);
+    // $options['data_properties_object'] = $type->getProperties();
+    return $this->container->get('DataJukebox.form.factory')->create($type, $data, $options);
   }
 
   /**
    * {@inheritdoc}
    */
-  function createFormBuilder($mData=null, array $amOptions=array())
+  public function createFormBuilder($data = null, array $options = []): FormBuilderInterface
   {
     // FORM
     //   Symfony 3.x: Passing a form type instance to the FormFactory::create*() methods
     //   is not supported anymore. Pass the fully-qualified class name of the type instead.
     //    <-> https://github.com/symfony/symfony/blob/master/UPGRADE-3.0.md#form
     //   Backward-compatibility: keep both options (until Symfony 2.x is EOL)
-    if(\Symfony\Component\HttpKernel\Kernel::VERSION_ID<30000) {
-      return parent::createFormBuilder($mData, $amOptions);
-    }
-
-    return $this->container->get('DataJukebox.form.factory')->createBuilder(FormType::class, $mData, $amOptions);
+    return $this->container->get('DataJukebox.form.factory')->createBuilder(FormType::class, $data, $options);
   }
 
 }

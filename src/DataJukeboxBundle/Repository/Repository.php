@@ -215,7 +215,7 @@ class Repository
       throw new ORM\EntityNotFoundException();
     }
     if ($iResults > 1) {
-      throw new ORM\NonUniqueResultException();
+      $aaResults = [$aaResults[0]];
     }
     $this->mergePrimaryKey($aaResults);
     if ($this->oProperties instanceof DataJukebox\FormatInterface) {

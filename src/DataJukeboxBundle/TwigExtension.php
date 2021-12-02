@@ -32,56 +32,38 @@
 
 namespace DataJukeboxBundle;
 
+use Twig\Extension\AbstractExtension;
+use Twig\Environment;
+use Twig\TwigFunction;
+use Twig\TwigFilter;
+use Twig\Template;
+
 /** Twig extension
  * @package    DataJukeboxBundle
  * @subpackage SymfonyIntegration
  */
-class TwigExtension
-  extends \Twig_Extension
-  implements \Twig_Extension_InitRuntimeInterface
+class TwigExtension extends AbstractExtension
 {
-
-  /*
-   * PROPERTIES
-   ********************************************************************************/
-
-  /** Twig environment
-   *  @var \Twig_Environment
-   */
-  private $oTwigEnvironment;
-
+  private $environment;
   /** Twig template (list view)
-   *  @var \Twig_TemplateInterface
+   *  @var TwigTemplate
    */
   private $oTwigTemplate_list;
 
   /** Twig template (detail view)
-   *  @var \Twig_TemplateInterface
+   *  @var TwigTemplate
    */
   private $oTwigTemplate_detail;
 
   /** Twig template (popup)
-   *  @var \Twig_TemplateInterface
+   *  @var TwigTemplate
    */
   private $oTwigTemplate_popup;
 
-
-  /*
-   * METHODS: Twig_Extension_InitRuntimeInterface
-   ********************************************************************************/
-
-  public function initRuntime(\Twig_Environment $oTwigEnvironment)
+  public function __construct(Environment $environment)
   {
-    $this->oTwigEnvironment = $oTwigEnvironment;
-    $this->oTwigTemplate_list = $this->oTwigEnvironment->loadTemplate('@DataJukebox/DataJukebox/list.html.twig');
-    $this->oTwigTemplate_detail = $this->oTwigEnvironment->loadTemplate('@DataJukebox/DataJukebox/detail.html.twig');
-    $this->oTwigTemplate_popup = $this->oTwigEnvironment->loadTemplate('@DataJukebox/DataJukebox/popup.html.twig');
+    $this->environment = $environment;
   }
-
-
-  /*
-   * METHODS: Twig_Extension
-   ********************************************************************************/
 
   public function getName()
   {
@@ -93,45 +75,45 @@ class TwigExtension
     return array(
 
       // List view
-      new \Twig_SimpleFunction('DataJukebox_list', array($this, 'renderList'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listData', array($this, 'renderListData'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listHeader', array($this, 'renderListHeader'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listTitle', array($this, 'renderListTitle'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listDisplay', array($this, 'renderListDisplay'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listSearch', array($this, 'renderListSearch'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listLabel', array($this, 'renderListLabel'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listFilter', array($this, 'renderListFilter'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listRows', array($this, 'renderListRows'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listRow', array($this, 'renderListRow'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listFooter', array($this, 'renderListFooter'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listBrowser', array($this, 'renderListBrowser'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listActions', array($this, 'renderListActions'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listLinks', array($this, 'renderListLinks'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listHelp', array($this, 'renderListHelp'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listJavascript', array($this, 'renderListJavascript'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_listTemplate', array($this, 'initListTemplate'), array('is_safe' => array('html'))),
+      new TwigFunction('DataJukebox_list', array($this, 'renderList'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listData', array($this, 'renderListData'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listHeader', array($this, 'renderListHeader'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listTitle', array($this, 'renderListTitle'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listDisplay', array($this, 'renderListDisplay'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listSearch', array($this, 'renderListSearch'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listLabel', array($this, 'renderListLabel'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listFilter', array($this, 'renderListFilter'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listRows', array($this, 'renderListRows'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listRow', array($this, 'renderListRow'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listFooter', array($this, 'renderListFooter'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listBrowser', array($this, 'renderListBrowser'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listActions', array($this, 'renderListActions'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listLinks', array($this, 'renderListLinks'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listHelp', array($this, 'renderListHelp'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listJavascript', array($this, 'renderListJavascript'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_listTemplate', array($this, 'initListTemplate'), array('is_safe' => array('html'))),
 
       // Detail view
-      new \Twig_SimpleFunction('DataJukebox_detail', array($this, 'renderDetail'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailData', array($this, 'renderDetailData'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailHeader', array($this, 'renderDetailHeader'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailTitle', array($this, 'renderDetailTitle'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailDisplay', array($this, 'renderDetailDisplay'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailRow', array($this, 'renderDetailRow'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailFooter', array($this, 'renderDetailFooter'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailActions', array($this, 'renderDetailActions'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailLinks', array($this, 'renderDetailLinks'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailJavascript', array($this, 'renderDetailJavascript'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_detailTemplate', array($this, 'initDetailTemplate'), array('is_safe' => array('html'))),
+      new TwigFunction('DataJukebox_detail', array($this, 'renderDetail'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailData', array($this, 'renderDetailData'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailHeader', array($this, 'renderDetailHeader'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailTitle', array($this, 'renderDetailTitle'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailDisplay', array($this, 'renderDetailDisplay'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailRow', array($this, 'renderDetailRow'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailFooter', array($this, 'renderDetailFooter'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailActions', array($this, 'renderDetailActions'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailLinks', array($this, 'renderDetailLinks'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailJavascript', array($this, 'renderDetailJavascript'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      // new TwigFunction('DataJukebox_detailTemplate', array($this, 'initDetailTemplate'), array('is_safe' => array('html'), 'needs_environment' => true)),
 
       // Popup
-      new \Twig_SimpleFunction('DataJukebox_popupContainer', array($this, 'renderPopupContainer'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFunction('DataJukebox_popupTemplate', array($this, 'initPopupTemplate'), array('is_safe' => array('html'))),
+      new TwigFunction('DataJukebox_popupContainer', array($this, 'renderPopupContainer'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      // new TwigFunction('DataJukebox_popupTemplate', array($this, 'initPopupTemplate'), array('is_safe' => array('html'), 'needs_environment' => true)),
 
       // Export
-      new \Twig_SimpleFunction('DataJukebox_csv', array($this, 'renderCSV'), array('is_safe' => array('txt'))),
-      new \Twig_SimpleFunction('DataJukebox_xml', array($this, 'renderXML'), array('is_safe' => array('txt'))),
-      new \Twig_SimpleFunction('DataJukebox_json', array($this, 'renderJSON'), array('is_safe' => array('txt'))),
+      new TwigFunction('DataJukebox_csv', array($this, 'renderCSV'), array('is_safe' => array('txt'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_xml', array($this, 'renderXML'), array('is_safe' => array('txt'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_json', array($this, 'renderJSON'), array('is_safe' => array('txt'), 'needs_environment' => true)),
 
     );
   }
@@ -141,14 +123,14 @@ class TwigExtension
     return array(
 
       // Format
-      new \Twig_SimpleFilter('DataJukebox_format', array($this, 'formatHTML'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFilter('DataJukebox_formatDateTime', array($this, 'formatDateTime'), array('is_safe' => array('html'))),
-      new \Twig_SimpleFilter('DataJukebox_formatCSV', array($this, 'formatCSV'), array('is_safe' => array('txt'))),
-      new \Twig_SimpleFilter('DataJukebox_formatXML', array($this, 'formatXML'), array('is_safe' => array('txt'))),
-      new \Twig_SimpleFilter('DataJukebox_formatJSON', array($this, 'formatJSON'), array('is_safe' => array('txt'))),
+      new TwigFilter('DataJukebox_format', array($this, 'formatHTML'), array('is_safe' => array('html'))),
+      new TwigFilter('DataJukebox_formatDateTime', array($this, 'formatDateTime'), array('is_safe' => array('html'))),
+      new TwigFilter('DataJukebox_formatCSV', array($this, 'formatCSV'), array('is_safe' => array('txt'))),
+      new TwigFilter('DataJukebox_formatXML', array($this, 'formatXML'), array('is_safe' => array('txt'))),
+      new TwigFilter('DataJukebox_formatJSON', array($this, 'formatJSON'), array('is_safe' => array('txt'))),
 
       // Helpers
-      new \Twig_SimpleFilter('DataJukebox_map', array($this, 'arrayMap')),
+      new TwigFilter('DataJukebox_map', array($this, 'arrayMap')),
 
     );
   }
@@ -162,163 +144,164 @@ class TwigExtension
    * List view
    */
 
-  public function renderList($data)
+  public function renderList(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_list', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_list', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListData($data)
+  public function renderListData(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listData', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listData', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListHeader($data)
+  public function renderListHeader(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listHeader', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listHeader', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListTitle($data)
+  public function renderListTitle(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listTitle', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listTitle', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListDisplay($data)
+  public function renderListDisplay(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listDisplay', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listDisplay', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListSearch($data)
+  public function renderListSearch(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listSearch', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listSearch', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListLabel($data)
+  public function renderListLabel(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listLabel', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listLabel', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListFilter($data)
+  public function renderListFilter(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listFilter', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listFilter', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListRows($data)
+  public function renderListRows(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listRows', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listRows', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListRow($data, $row, $loop)
+  public function renderListRow(Environment $environment, $data, $row, $loop)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listRow', $this->oTwigEnvironment->mergeGlobals(array('data' => $data, 'row' => $row, 'loop' => $loop)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listRow', $environment->mergeGlobals(array('data' => $data, 'row' => $row, 'loop' => $loop)));
   }
 
-  public function renderListFooter($data)
+  public function renderListFooter(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listFooter', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listFooter', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListBrowser($data)
+  public function renderListBrowser(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listBrowser', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listBrowser', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListActions($data)
+  public function renderListActions(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listActions', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listActions', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListLinks($data)
+  public function renderListLinks(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listLinks', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listLinks', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListHelp($data)
+  public function renderListHelp(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listHelp', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listHelp', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderListJavascript($data)
+  public function renderListJavascript(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_list->renderBlock('DataJukebox_listJavascript', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadListTemplate($environment)->renderBlock('DataJukebox_listJavascript', $environment->mergeGlobals(array('data' => $data)));
   }
 
   public function initListTemplate($template)
   {
-    $this->oTwigTemplate_list = $this->oTwigEnvironment->loadTemplate($template);
+    $this->oTwigTemplate_list = $this->environment->load($template);
+    // $this->oTwigTemplate_list = $this->loadListTemplate($environment);
   }
 
   /*
    * Detail view
    */
 
-  public function renderDetail($data)
+  public function renderDetail(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detail', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detail', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailData($data)
+  public function renderDetailData(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailData', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailData', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailHeader($data)
+  public function renderDetailHeader(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailHeader', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailHeader', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailTitle($data)
+  public function renderDetailTitle(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailTitle', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailTitle', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailDisplay($data)
+  public function renderDetailDisplay(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailDisplay', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailDisplay', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailRow($data)
+  public function renderDetailRow(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailRow', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailRow', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailFooter($data)
+  public function renderDetailFooter(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailFooter', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailFooter', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailActions($data)
+  public function renderDetailActions(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailActions', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailActions', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailLinks($data)
+  public function renderDetailLinks(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailLinks', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailLinks', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function renderDetailJavascript($data)
+  public function renderDetailJavascript(Environment $environment, $data)
   {
-    return $this->oTwigTemplate_detail->renderBlock('DataJukebox_detailJavascript', $this->oTwigEnvironment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailJavascript', $environment->mergeGlobals(array('data' => $data)));
   }
 
-  public function initDetailTemplate($template)
-  {
-    $this->oTwigTemplate_detail = $this->oTwigEnvironment->loadTemplate($template);
-  }
+  // public function initDetailTemplate($template)
+  // {
+  //   $this->loadDetailTemplate($environment) = $environment->load($template);
+  // }
 
   /*
    * Popup
    */
 
-  public function renderPopupContainer()
+  public function renderPopupContainer(Environment $environment)
   {
-    return $this->oTwigTemplate_popup->renderBlock('DataJukebox_popupContainer', array());
+    return $this->loadPopupTemplate($environment)->renderBlock('DataJukebox_popupContainer', array());
   }
 
-  public function initPopupTemplate($template)
-  {
-    $this->oTwigTemplate_popup = $this->oTwigEnvironment->loadTemplate($template);
-  }
+  // public function initPopupTemplate(Environment $environment, $template)
+  // {
+  //   $this->oTwigTemplate_popup = $environment->load($template);
+  // }
 
   /*
    * Export
@@ -490,4 +473,15 @@ class TwigExtension
     return $aMap_out;
   }
 
+  private function loadListTemplate(Environment $environment) {
+    return $environment->load('@DataJukebox/DataJukebox/list.html.twig');
+  }
+
+  private function loadDetailTemplate(Environment $environment) {
+    return $environment->load('@DataJukebox/DataJukebox/detail.html.twig');
+  }
+
+  private function loadPopupTemplate(Environment $environment) {
+    return $environment->load('@DataJukebox/DataJukebox/popup.html.twig');
+  }
 }

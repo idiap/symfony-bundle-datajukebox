@@ -32,7 +32,7 @@
 
 namespace DataJukeboxBundle;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /** Data jukebox service
  *
@@ -46,7 +46,7 @@ class Service {
    ********************************************************************************/
 
   /** Manager registry (e.g. Doctrine)
-   * @var ManagerRegistry
+   * @var Registry
    */
   private $oManagerRegistry;
 
@@ -55,7 +55,7 @@ class Service {
    * CONSTRUCTORS
    ********************************************************************************/
 
-  public function __construct(ManagerRegistry $oManagerRegistry)
+  public function __construct(Registry $oManagerRegistry)
   {
     $this->oManagerRegistry = $oManagerRegistry;
   }

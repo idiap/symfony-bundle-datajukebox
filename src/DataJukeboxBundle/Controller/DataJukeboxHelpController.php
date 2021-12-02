@@ -31,7 +31,7 @@
 
 namespace DataJukeboxBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyController;
 
 class DataJukeboxHelpController
   extends SymfonyController

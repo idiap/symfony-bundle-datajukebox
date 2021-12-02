@@ -359,6 +359,7 @@ abstract class Properties
       '_range_limit' => 'Rows',
       '_data_empty' => 'No Data',
       '_data_required' => 'Required',
+      '_action_duplicate' => 'Duplicate',
     );
     if ($sTranslatorDomain!='_actions' or $sMetaType!='label') {
       array_walk(
