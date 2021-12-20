@@ -360,6 +360,7 @@ abstract class Properties
       '_data_empty' => 'No Data',
       '_data_required' => 'Required',
       '_action_duplicate' => 'Duplicate',
+      '_action_handle' => 'Terminate',
     );
     if ($sTranslatorDomain!='_actions' or $sMetaType!='label') {
       array_walk(
