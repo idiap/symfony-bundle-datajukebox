@@ -99,6 +99,7 @@ class TwigExtension extends AbstractExtension
       new TwigFunction('DataJukebox_detailHeader', array($this, 'renderDetailHeader'), array('is_safe' => array('html'), 'needs_environment' => true)),
       new TwigFunction('DataJukebox_detailTitle', array($this, 'renderDetailTitle'), array('is_safe' => array('html'), 'needs_environment' => true)),
       new TwigFunction('DataJukebox_detailDisplay', array($this, 'renderDetailDisplay'), array('is_safe' => array('html'), 'needs_environment' => true)),
+      new TwigFunction('DataJukebox_detailSearch', array($this, 'renderDetailSearch'), array('is_safe' => array('html'), 'needs_environment' => true)),
       new TwigFunction('DataJukebox_detailRow', array($this, 'renderDetailRow'), array('is_safe' => array('html'), 'needs_environment' => true)),
       new TwigFunction('DataJukebox_detailFooter', array($this, 'renderDetailFooter'), array('is_safe' => array('html'), 'needs_environment' => true)),
       new TwigFunction('DataJukebox_detailActions', array($this, 'renderDetailActions'), array('is_safe' => array('html'), 'needs_environment' => true)),
@@ -234,19 +235,19 @@ class TwigExtension extends AbstractExtension
    * Detail view
    */
 
-  public function renderDetail(Environment $environment, $data)
+  public function renderDetail(Environment $environment, $data, $listRoute = null)
   {
-    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detail', $environment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detail', $environment->mergeGlobals(array('data' => $data, 'listRoute' => $listRoute)));
   }
 
-  public function renderDetailData(Environment $environment, $data)
+  public function renderDetailData(Environment $environment, $data, $listRoute = null)
   {
-    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailData', $environment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailData', $environment->mergeGlobals(array('data' => $data, 'listRoute' => $listRoute)));
   }
 
-  public function renderDetailHeader(Environment $environment, $data)
+  public function renderDetailHeader(Environment $environment, $data, $listRoute = null)
   {
-    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailHeader', $environment->mergeGlobals(array('data' => $data)));
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailHeader', $environment->mergeGlobals(array('data' => $data, 'listRoute' => $listRoute)));
   }
 
   public function renderDetailTitle(Environment $environment, $data)
@@ -257,6 +258,11 @@ class TwigExtension extends AbstractExtension
   public function renderDetailDisplay(Environment $environment, $data)
   {
     return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailDisplay', $environment->mergeGlobals(array('data' => $data)));
+  }
+
+  public function renderDetailSearch(Environment $environment, $data, $listRoute = null)
+  {
+    return $this->loadDetailTemplate($environment)->renderBlock('DataJukebox_detailSearch', $environment->mergeGlobals(array('data' => $data, 'listRoute' => $listRoute)));
   }
 
   public function renderDetailRow(Environment $environment, $data)
