@@ -66,7 +66,14 @@
   {%- set filter_valid = false %}{% for field in data.browser.fields %}{% if field not in data.properties.fields_hidden and field in data.properties.fields_filter %}{% set filter_valid = true %}{% endif %}{% endfor %}
   {% if search_valid or filter_valid -%}
     <DIV CLASS="search"><TABLE><TR>
-      <TD CLASS="title"{% if data.properties.tooltips._search is defined %} TITLE="{{ data.properties.tooltips._search }}" STYLE="CURSOR:help;"{% endif %}><A HREF="{{ path('DataJukebox_helpFilter') }}" STYLE="CURSOR:help;"><SPAN CLASS="icon">&#x2699;</SPAN>{% if data.properties.labels._search is defined %}<LABEL>{{ data.properties.labels._search }}</LABEL>{% endif %}</A></TD><TD CLASS="action" ID="_search_reset"{% if data.properties.tooltips._search_reset is defined %} TITLE="{{ data.properties.tooltips._search_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD>{% if search_valid %}<TD CLASS="input" ID="_search"><INPUT TYPE="text" ID="_sh" NAME="{{ data.browser.uid }}_sh" VALUE="{{ data.browser.search }}" ONKEYPRESS="javacript:DataJukebox_submitOnEnter('{{ data.properties.uid|escape('js') }}',event);" /></TD>{% endif %}<TD CLASS="action" ID="_search_submit"{% if data.properties.tooltips._search_submit is defined %} TITLE="{{ data.properties.tooltips._search_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchSubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD>
+      <TD CLASS="title"{% if data.properties.tooltips._search is defined %} TITLE="{{ data.properties.tooltips._search }}" STYLE="CURSOR:help;"{% endif %}>
+        <A HREF="{{ path('DataJukebox_helpFilter') }}" STYLE="CURSOR:help;">
+          {# <span style="margin-right: 50px;">Need help with the search? Click here</span> #}
+          <SPAN CLASS="icon">&#x2699;</SPAN>
+          {% if data.properties.labels._search is defined %}<LABEL>{{ data.properties.labels._search }} (Need help? Click here)</LABEL>{% endif %}
+        </A>
+      </TD>
+      <TD CLASS="action" ID="_search_reset"{% if data.properties.tooltips._search_reset is defined %} TITLE="{{ data.properties.tooltips._search_reset }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchReset('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x274c;</SPAN></A></TD>{% if search_valid %}<TD CLASS="input" ID="_search"><INPUT TYPE="text" ID="_sh" NAME="{{ data.browser.uid }}_sh" VALUE="{{ data.browser.search }}" ONKEYPRESS="javacript:DataJukebox_submitOnEnter('{{ data.properties.uid|escape('js') }}',event);" /></TD>{% endif %}<TD CLASS="action" ID="_search_submit"{% if data.properties.tooltips._search_submit is defined %} TITLE="{{ data.properties.tooltips._search_submit }}"{% endif %}><A HREF="javascript:;" ONCLICK="javascript:DataJukebox_searchSubmit('{{ data.properties.uid|escape('js') }}');"><SPAN CLASS="icon">&#x27a1;</SPAN></A></TD>
     </TR></TABLE></DIV>
   {% endif -%}
 {% endblock DataJukebox_listSearch -%}

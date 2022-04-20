@@ -75,7 +75,9 @@
         <TR>
           <TD CLASS="title"{% if data.properties.tooltips._search is defined %} TITLE="{{ data.properties.tooltips._search }}" STYLE="CURSOR:help;"{% endif %}>
             <A HREF="{{ path('DataJukebox_helpFilter') }}" STYLE="CURSOR:help;">
-              <SPAN CLASS="icon">&#x2699;</SPAN>{% if data.properties.labels._search is defined %}<LABEL>{{ data.properties.labels._search }}</LABEL>{% endif %}
+              {# <span style="margin-right: 20px;">Need help with the search? Click here</span> #}
+              <SPAN CLASS="icon">&#x2699;</SPAN>
+              {% if data.properties.labels._search is defined %}<LABEL>{{ data.properties.labels._search }} (Need help? Click here)</LABEL>{% endif %}
             </A>
           </TD>
           <TD CLASS="action" ID="_search_reset"{% if data.properties.tooltips._search_reset is defined %} TITLE="{{ data.properties.tooltips._search_reset }}"{% endif %}>
