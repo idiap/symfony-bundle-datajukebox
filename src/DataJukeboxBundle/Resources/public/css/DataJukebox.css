@@ -21,6 +21,23 @@ DIV.DataJukebox .errors { COLOR:#B00000; FONT-WEIGHT:bold; }
 DIV.DataJukebox .errors UL { MARGIN:1px; }
 DIV.DataJukebox .help { FONT-WEIGHT:bold; }
 
+#DataJukebox_help {
+  margin: auto;
+  text-align: center;
+}
+
+#DataJukebox_help div.DataJukebox div.filter {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+#DataJukebox_help div.DataJukebox div.filter tr * {
+  padding: 5px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
 DIV.DataJukebox DIV.title { FLOAT:left; MARGIN-RIGHT:5px; }
 DIV.DataJukebox DIV.title LABEL { TEXT-DECORATION:underline; }
 DIV.DataJukebox DIV.action { FLOAT:left; }
