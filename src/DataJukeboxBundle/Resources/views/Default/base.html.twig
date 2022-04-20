@@ -7,23 +7,30 @@
     <META CHARSET="UTF-8" />
     <TITLE>{% block title %}DataJukeboxBundle - Default Templating (replace with yours){% endblock %}</TITLE>
     {% block stylesheets -%}
-      {%- stylesheets
-      '/Symfony/bundles/datajukebox/css/jquery-ui.css'
-      '/Symfony/bundles/datajukebox/css/jquery-ui-timepicker-addon.css'
-      '/Symfony/bundles/datajukebox/css/DataJukebox.css'
+      <link rel="stylesheet" href="/Symfony/bundles/datajukebox/css/jquery-ui.css" />
+      <link rel="stylesheet" href="/Symfony/bundles/datajukebox/css/jquery-ui-timepicker-addon.css" />
+      <link rel="stylesheet" href="/Symfony/bundles/datajukebox/css/DataJukebox.css" />
+      {# {% stylesheets
+      'bundles/datajukebox/css/jquery-ui.css'
+      'bundles/datajukebox/css/jquery-ui-timepicker-addon.css'
+      'bundles/datajukebox/css/DataJukebox.css'
       filter='cssrewrite'
-      %}
-      <LINK REL="stylesheet" HREF="{{ asset_url }}" />
-      {% endstylesheets %}
+      %} #}
+      {# <link rel="stylesheet" href="{{ asset_url }}" /> #}
+      {# {% endstylesheets %} #}
     {% endblock stylesheets %}
-    {% javascripts
-    '/Symfony/bundles/datajukebox/js/jquery.js'
-    '/Symfony/bundles/datajukebox/js/jquery-ui.js'
-    '/Symfony/bundles/datajukebox/js/jquery-ui-timepicker-addon.js'
-    '/Symfony/bundles/datajukebox/js/DataJukebox.js'
-    %}
-    <SCRIPT TYPE="text/javascript" SRC="{{ asset_url }}"></SCRIPT>
-    {% endjavascripts %}
+    {# {% javascripts
+    'bundles/datajukebox/js/jquery.js'
+    'bundles/datajukebox/js/jquery-ui.js'
+    'bundles/datajukebox/js/jquery-ui-timepicker-addon.js'
+    'bundles/datajukebox/js/DataJukebox.js'
+    %} #}
+      <script type="text/javascript" src="/Symfony/bundles/datajukebox/js/jquery.js"></script>
+      <script type="text/javascript" src="/Symfony/bundles/datajukebox/js/jquery-ui.js"></script>
+      <script type="text/javascript" src="/Symfony/bundles/datajukebox/js/jquery-ui-timepicker-addon.js"></script>
+      <script type="text/javascript" src="/Symfony/bundles/datajukebox/js/DataJukebox.js"></script>
+      {# <script type="text/javascript" src="{{ asset_url }}"></script> #}
+    {# {% endjavascripts %} #}
   </HEAD>
   <BODY>
     {% block body %}{% endblock body %}
