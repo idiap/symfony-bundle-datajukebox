@@ -313,7 +313,7 @@ class TwigExtension extends AbstractExtension
    * Export
    */
 
-  public function renderCSV($data)
+  public function renderCSV(Environment $environment, $data)
   {
     // CSV output (as per RFC4180)
     $sOutput = '';
@@ -341,7 +341,7 @@ class TwigExtension extends AbstractExtension
     return $sOutput;
   }
 
-  public function renderXML($data)
+  public function renderXML(Environment $environment, $data)
   {
     // XML output
     $sOutput = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
@@ -367,11 +367,11 @@ class TwigExtension extends AbstractExtension
     return $sOutput;
   }
 
-  public function renderJSON($data)
+  public function renderJSON(Environment $environment, $data)
   {
     // XML output
     // ... header
-    $sOutput .= "{\r\n";
+    $sOutput = "{\r\n";
     // ... data
     $sOutput .= sprintf("  \"%s\": [\r\n", $data['properties']['name']);
     $sOutput .= "    {\r\n";
