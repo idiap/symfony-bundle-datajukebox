@@ -1,6 +1,5 @@
 # Data Jukebox Bundle
 
-
 ## Synopsis
 
 The Data Jukebox Bundle is a PHP/Symfony bundle which aims to provide - for
