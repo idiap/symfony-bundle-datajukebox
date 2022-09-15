@@ -55,8 +55,9 @@ build automatically, with just a few lines in the corresponding controllers.
 ## Installation
 
 ### Routes configuration
-
 [config/routes.yaml] Add "datajukebox" bloc at root:
+```
 datajukebox:
     resource: '@DataJukeboxBundle/Resources/config/routing.yml'
     prefix: '/Symfony'
+```    
