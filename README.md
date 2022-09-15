@@ -50,3 +50,13 @@ build automatically, with just a few lines in the corresponding controllers.
 - searchable fields (fields that are used for global data filtering)
 - additional form options (for further customizing forms)
 - additional links (for powerful data-driven hyperlinks)
+
+
+## Installation
+
+### Routes configuration
+
+[config/routes.yaml] Add "datajukebox" bloc at root:
+datajukebox:
+    resource: '@DataJukeboxBundle/Resources/config/routing.yml'
+    prefix: '/Symfony'
