@@ -44,21 +44,19 @@ use Symfony\Component\Form as SymfonyForm;
  * @package    DataJukeboxBundle
  * @subpackage SymfonyExtension
  */
-class FormFactory
-  extends SymfonyForm\FormFactory
+class FormFactory extends SymfonyForm\FormFactory
 {
+    /*
+    * METHODS: (Symfony) FormFactory
+    ********************************************************************************/
 
-  /*
-   * METHODS: (Symfony) FormFactory
-   ********************************************************************************/
-
-  /**
-   * {@inheritdoc}
-   */
-  function createNamedBuilder($sName, $sType='Symfony\Component\Form\Extension\Core\Type\FormType', $mData=null, array $amOptions=array())
-  {
-    if(isset($amOptions['data_properties_object'])) $sName = $amOptions['data_properties_object']->getName();
-    return parent::createNamedBuilder($sName, $sType, $mData, $amOptions);
-  }
-
+    /**
+     * {@inheritdoc}
+     */
+    function createNamedBuilder($sName, $sType='Symfony\Component\Form\Extension\Core\Type\FormType', $mData=null, array $amOptions=array())
+    {
+        if(isset($amOptions['data_properties_object'])) $sName = $amOptions['data_properties_object']->getName();
+        return parent::createNamedBuilder($sName, $sType, $mData, $amOptions);
+    }
 }
+
