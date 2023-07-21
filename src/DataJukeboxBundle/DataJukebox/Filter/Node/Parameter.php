@@ -73,7 +73,7 @@ class Parameter
       break;
 
     case 'date':
-      switch($oConnection->getDriver()->getName()) {
+      switch($oConnection->getParams()['driver']) {
 
       case 'pdo_mysql':
       case 'drizzle_pdo_mysql':
@@ -97,7 +97,7 @@ class Parameter
 
     case 'datetime':
     case 'datetimetz':
-      switch($oConnection->getDriver()->getName()) {
+      switch($oConnection->getParams()['driver']) {
 
       case 'pdo_mysql':
       case 'drizzle_pdo_mysql':
@@ -120,7 +120,7 @@ class Parameter
       break;
 
     case 'time':
-      switch($oConnection->getDriver()->getName()) {
+      switch($oConnection->getParams()['driver']) {
 
       case 'pdo_mysql':
       case 'drizzle_pdo_mysql':

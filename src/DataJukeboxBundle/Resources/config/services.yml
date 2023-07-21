@@ -3,6 +3,7 @@ services:
   DataJukebox:
     class: 'DataJukeboxBundle\Service'
     arguments: ['@doctrine']
+    public: true
 
   # FORM
   #   Symfony 3.x: Passing a form type instance to the FormFactory::create*() methods
@@ -13,6 +14,7 @@ services:
   DataJukebox.form.factory:
     class: 'DataJukeboxBundle\Form\FormFactory'
     arguments: ['@form.registry']
+    public: true
 
   # DataJukebox.doctrine.event_listener:
   #   class: DataJukeboxBundle\DoctrineEventListener
@@ -22,5 +24,11 @@ services:
 
   DataJukebox.twig.extension:
     class: 'DataJukeboxBundle\TwigExtension'
+    arguments: ['@twig']
     tags:
       - { name: 'twig.extension' }
+
+  DataJukebox.controller.controller:
+    class: 'DataJukeboxBundle\Controller\Controller'
+    arguments: ['DataJukebox.form.factory']
+    public: true

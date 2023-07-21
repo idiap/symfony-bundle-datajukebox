@@ -49,8 +49,7 @@ use Symfony\Bridge\Doctrine\Form\Type as DoctrineType;
  * @package    DataJukeboxBundle
  * @subpackage SymfonyExtension
  */
-class FormType
-  extends SymfonyForm\AbstractType
+class FormType extends SymfonyForm\AbstractType
 {
 
   /*
