@@ -101,10 +101,17 @@ class Service {
     static $aAnnotationFqcn_cache = array();
     if (!in_array($sEntityName, $aAnnotationFqcn_cache)) {
       $oAnnotationReader = new \Doctrine\Common\Annotations\AnnotationReader();
+
+      // $oAnnotation = $oAnnotationReader->getClassAnnotation(
+      //   new \ReflectionClass($this->getEntityFqcn($sEntityName)),
+      //   'DataJukeboxBundle\\Annotations\\Properties'
+      // );
+
       $oAnnotation = $oAnnotationReader->getClassAnnotation(
-        new \ReflectionClass($this->getEntityFqcn($sEntityName)),
+        new \ReflectionClass($sEntityName),
         'DataJukeboxBundle\\Annotations\\Properties'
       );
+
       if (!$oAnnotation) {
         throw new \Exception(sprintf('No DataJukebox annotation in entity \'%s\'', $sEntityName));
       }
@@ -131,6 +138,7 @@ class Service {
     static $aProperties_cache = array();
     if (!in_array($sEntityName, $aProperties_cache)) {
       $sPropertiesFqcn = $this->getPropertiesFqcn($sEntityName);
+      
       $aProperties_cache[$sEntityName] = new $sPropertiesFqcn(
         $this->getEntityManager($sEntityName),
         $sEntityName
@@ -148,6 +156,7 @@ class Service {
   {
     $oEntityManager = $oProperties->getEntityManager();
     $oClassMetadata = $oProperties->getClassMetadata();
+    
     $sRepositoryClassName = $oClassMetadata->customRepositoryClassName;
     if (is_null($sRepositoryClassName)) $sRepositoryClassName = 'DataJukeboxBundle\\Repository\\Repository';
     $oRepository = new $sRepositoryClassName($oEntityManager, $oClassMetadata);

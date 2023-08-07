@@ -1,7 +1,7 @@
 DataJukebox_helpExpression:
   path: '/DataJukebox/Help/Expression'
-  defaults: { _controller: 'DataJukeboxBundle:DataJukeboxHelp:helpExpression' }
+  defaults: { _controller: 'DataJukeboxBundle\Controller\DataJukeboxHelpController::helpExpressionAction' }
 
 DataJukebox_helpFilter:
   path: '/DataJukebox/Help/Filter'
-  defaults: { _controller: 'DataJukeboxBundle:DataJukeboxHelp:helpFilter' }
+  defaults: { _controller: 'DataJukeboxBundle\Controller\DataJukeboxHelpController::helpFilterAction' }

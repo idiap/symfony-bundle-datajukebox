@@ -45,42 +45,42 @@ namespace DataJukeboxBundle\Annotations;
 final class Properties
 {
 
-  /*
-   * PROPERTIES
-   ********************************************************************************/
+    /*
+    * PROPERTIES
+    ********************************************************************************/
 
-  /** Properties class
-   * @var string
-   */
-  private $sPropertiesClass;
+    /** Properties class
+     * @var string
+     */
+    private $sPropertiesClass;
 
 
-  /*
-   * CONSTRUCTORS
-   ********************************************************************************/
+    /*
+    * CONSTRUCTORS
+    ********************************************************************************/
 
-  public function __construct(array $aOptions)
-  {
-    foreach ($aOptions as $sKey => $mValue) {
-      switch($sKey) {
-      case 'propertiesClass': $this->sPropertiesClass = $mValue;  break;
-      default: throw new \InvalidArgumentException(sprintf('Invalid DataJukebox annotation \'%s\'', $sKey));
-      }
+    public function __construct(array $aOptions)
+    {
+        foreach ($aOptions as $sKey => $mValue) {
+            switch($sKey) {
+                case 'propertiesClass': $this->sPropertiesClass = $mValue;  break;
+                default: throw new \InvalidArgumentException(sprintf('Invalid DataJukebox annotation \'%s\'', $sKey));
+            }
+        }
     }
-  }
 
 
-  /*
-   * METHODS
-   ********************************************************************************/
+    /*
+    * METHODS
+    ********************************************************************************/
 
-  /*
-   * GETTERS
-   */
+    /*
+    * GETTERS
+    */
 
-  public function getPropertiesClass()
-  {
-    return $this->sPropertiesClass;
-  }
+    public function getPropertiesClass()
+    {
+        return $this->sPropertiesClass;
+    }
 
 }
